@@ -32,11 +32,9 @@ pyinstaller --clean --noconfirm --onefile --windowed --name "OracleHC Report Gen
 
 ---
 
-## 📂 Vị trí File sau khi Build
+## 📦 Xuất bản và Sử dụng
+Sau khi quá trình Build Final hoàn tất, sản phẩm cuối cùng sẽ nằm tại:
 
-Sau khi quá trình **Build Final** hoàn tất, bạn có thể tìm thấy file chạy duy nhất tại đường dẫn sau:
+👉 Đường dẫn: dist\OracleHC Report Generator.exe
 
-> `dist\OracleHC Report Generator.exe`
-
----
-
+Lưu ý: Bạn có thể copy file .exe này ra bất cứ đâu để sử dụng mà không cần cài đặt Python hay các thư viện liên quan.
