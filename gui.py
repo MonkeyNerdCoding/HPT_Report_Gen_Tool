@@ -18,6 +18,19 @@ from assets import resource_path
 APP_TITLE = "OracleHC Report Generator"
 PRIMARY_COLOR = "#cb0236"
 PRIMARY_HOVER = "#a9022d"
+PRIMARY_DARK = "#7f011f"
+APP_BG = "#f4f5f7"
+PANEL_BG = "#ffffff"
+PANEL_ALT = "#fafbfc"
+BORDER_COLOR = "#dde1e7"
+BORDER_STRONG = "#c9ced8"
+TEXT_PRIMARY = "#1d1f27"
+TEXT_SECONDARY = "#5f6470"
+TEXT_MUTED = "#7a808c"
+CONTROL_BG = "#fbfcfd"
+CONTROL_HOVER = "#eef1f5"
+DISABLED_BG = "#e5e8ee"
+DISABLED_TEXT = "#8b929f"
 SETTINGS_DIR = Path(os.getenv("APPDATA", Path.home())) / APP_TITLE
 SETTINGS_FILE = SETTINGS_DIR / "settings.json"
 
@@ -30,8 +43,8 @@ class ReportGeneratorApp(ctk.CTk):
         ctk.set_default_color_theme("blue")
 
         self.title(APP_TITLE)
-        self.geometry("860x680")
-        self.minsize(760, 600)
+        self.geometry("940x720")
+        self.minsize(820, 640)
 
         self.html_folder_var = ctk.StringVar()
         self.word_file_var = ctk.StringVar()
@@ -52,35 +65,49 @@ class ReportGeneratorApp(ctk.CTk):
         self._poll_events()
 
     def _build_ui(self) -> None:
-        self.configure(fg_color="#f7f7f8")
+        self.configure(fg_color=APP_BG)
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
         container = ctk.CTkFrame(self, fg_color="transparent")
-        container.grid(row=0, column=0, sticky="nsew", padx=28, pady=24)
+        container.grid(row=0, column=0, sticky="nsew", padx=32, pady=28)
         container.grid_columnconfigure(0, weight=1)
         container.grid_rowconfigure(3, weight=1)
 
-        header = ctk.CTkFrame(container, fg_color="transparent")
-        header.grid(row=0, column=0, sticky="ew", pady=(0, 22))
+        header = ctk.CTkFrame(
+            container,
+            fg_color=PANEL_BG,
+            corner_radius=8,
+            border_width=1,
+            border_color=BORDER_COLOR,
+        )
+        header.grid(row=0, column=0, sticky="ew", pady=(0, 18), ipady=2)
         header.grid_columnconfigure(0, weight=1)
         header.grid_columnconfigure(1, weight=0)
+
+        eyebrow = ctk.CTkLabel(
+            header,
+            text="Enterprise Reporting Workspace",
+            font=ctk.CTkFont(size=11, weight="bold"),
+            text_color=PRIMARY_COLOR,
+        )
+        eyebrow.grid(row=0, column=0, sticky="w", padx=(22, 18), pady=(18, 0))
 
         title = ctk.CTkLabel(
             header,
             text=APP_TITLE,
-            font=ctk.CTkFont(size=26, weight="bold"),
-            text_color="#1f1f24",
+            font=ctk.CTkFont(size=28, weight="bold"),
+            text_color=TEXT_PRIMARY,
         )
-        title.grid(row=0, column=0, sticky="w")
+        title.grid(row=1, column=0, sticky="w", padx=(22, 18), pady=(2, 0))
 
         subtitle = ctk.CTkLabel(
             header,
-            text="Select a source root and template, then choose where to save the Word report",
+            text="Select the source folder and Word template, then generate a polished healthcheck report.",
             font=ctk.CTkFont(size=14),
-            text_color="#60616a",
+            text_color=TEXT_SECONDARY,
         )
-        subtitle.grid(row=1, column=0, sticky="w", pady=(4, 0))
+        subtitle.grid(row=2, column=0, sticky="w", padx=(22, 18), pady=(4, 0))
 
         self.mode_selector = ctk.CTkSegmentedButton(
             header,
@@ -88,26 +115,54 @@ class ReportGeneratorApp(ctk.CTk):
             variable=self.mode_var,
             selected_color=PRIMARY_COLOR,
             selected_hover_color=PRIMARY_HOVER,
-            unselected_color="#ececf0",
-            unselected_hover_color="#dedee5",
-            text_color="#000000",
+            unselected_color="#f0f2f5",
+            unselected_hover_color="#e5e9ef",
+            text_color=TEXT_PRIMARY,
+            border_width=1,
+            corner_radius=8,
+            height=36,
+            font=ctk.CTkFont(size=13, weight="bold"),
             command=lambda _value: self._on_mode_changed(),
         )
-        self.mode_selector.grid(row=2, column=0, sticky="w", pady=(14, 0))
+        self.mode_selector.grid(row=3, column=0, sticky="w", padx=(22, 18), pady=(16, 18))
 
         logo_image = self._load_logo_image()
         if logo_image:
-            logo = ctk.CTkLabel(header, text="", image=logo_image)
+            logo_holder = ctk.CTkFrame(header, fg_color=PANEL_ALT, corner_radius=8, border_width=1, border_color=BORDER_COLOR)
+            logo_holder.grid(row=0, column=1, rowspan=4, sticky="e", padx=(20, 22), pady=18)
+            logo = ctk.CTkLabel(logo_holder, text="", image=logo_image)
             logo.image = logo_image
-            logo.grid(row=0, column=1, rowspan=2, sticky="e", padx=(24, 0))
+            logo.grid(row=0, column=0, padx=18, pady=14)
 
-        form = ctk.CTkFrame(container, fg_color="#ffffff", corner_radius=8)
-        form.grid(row=1, column=0, sticky="ew", pady=(0, 18))
+        form = ctk.CTkFrame(
+            container,
+            fg_color=PANEL_BG,
+            corner_radius=8,
+            border_width=1,
+            border_color=BORDER_COLOR,
+        )
+        form.grid(row=1, column=0, sticky="ew", pady=(0, 16), ipady=4)
         form.grid_columnconfigure(1, weight=1)
+
+        form_heading = ctk.CTkLabel(
+            form,
+            text="Report Inputs",
+            text_color=TEXT_PRIMARY,
+            font=ctk.CTkFont(size=15, weight="bold"),
+        )
+        form_heading.grid(row=0, column=0, columnspan=3, sticky="w", padx=18, pady=(16, 2))
+
+        form_caption = ctk.CTkLabel(
+            form,
+            text="Choose the source data and the Word template used for the final report.",
+            text_color=TEXT_MUTED,
+            font=ctk.CTkFont(size=12),
+        )
+        form_caption.grid(row=1, column=0, columnspan=3, sticky="w", padx=18, pady=(0, 8))
 
         self.source_row_widgets = self._add_path_row(
             form,
-            row=0,
+            row=2,
             label="HTML Root Folder",
             variable=self.html_folder_var,
             browse_command=self._browse_html_folder,
@@ -115,89 +170,110 @@ class ReportGeneratorApp(ctk.CTk):
         self.sql_root_note = ctk.CTkLabel(
             form,
             text="Folder should contain CSV files, or DB subfolders with CSV files",
-            text_color="#6b6c75",
+            text_color=TEXT_MUTED,
             font=ctk.CTkFont(size=12),
             anchor="w",
         )
-        self.sql_root_note.grid(row=1, column=1, columnspan=2, sticky="w", pady=(0, 10))
+        self.sql_root_note.grid(row=3, column=1, columnspan=2, sticky="w", pady=(0, 6))
 
         self._add_path_row(
             form,
-            row=2,
+            row=4,
             label="Word File / Template",
             variable=self.word_file_var,
             browse_command=self._browse_word_file,
         )
         self._on_mode_changed()
 
-        actions = ctk.CTkFrame(container, fg_color="transparent")
-        actions.grid(row=2, column=0, sticky="ew", pady=(0, 16))
+        actions = ctk.CTkFrame(
+            container,
+            fg_color=PANEL_BG,
+            corner_radius=8,
+            border_width=1,
+            border_color=BORDER_COLOR,
+        )
+        actions.grid(row=2, column=0, sticky="ew", pady=(0, 16), ipady=6)
         actions.grid_columnconfigure(0, weight=1)
 
         self.create_button = ctk.CTkButton(
             actions,
             text="Generate Report",
-            height=44,
+            height=48,
             corner_radius=8,
-            fg_color="#ffffff",
-            hover_color="#ececf0",
-            text_color="#000000",
+            fg_color=PRIMARY_COLOR,
+            hover_color=PRIMARY_HOVER,
+            text_color="#ffffff",
+            text_color_disabled=DISABLED_TEXT,
             border_width=1,
-            border_color=PRIMARY_COLOR,
+            border_color=PRIMARY_DARK,
             font=ctk.CTkFont(size=15, weight="bold"),
             command=self._start_generation,
         )
-        self.create_button.grid(row=0, column=0, sticky="ew")
+        self.create_button.grid(row=0, column=0, sticky="ew", padx=16, pady=(12, 6))
 
         status_row = ctk.CTkFrame(actions, fg_color="transparent")
-        status_row.grid(row=1, column=0, sticky="ew", pady=(12, 0))
+        status_row.grid(row=1, column=0, sticky="ew", padx=16, pady=(6, 10))
         status_row.grid_columnconfigure(1, weight=1)
 
         ctk.CTkLabel(
             status_row,
             text="Status:",
-            text_color="#4b4c55",
+            text_color=TEXT_SECONDARY,
             font=ctk.CTkFont(size=13, weight="bold"),
         ).grid(row=0, column=0, sticky="w", padx=(0, 8))
         self.status_label = ctk.CTkLabel(
             status_row,
             textvariable=self.status_var,
-            text_color="#4b4c55",
-            font=ctk.CTkFont(size=13),
+            text_color=TEXT_PRIMARY,
+            font=ctk.CTkFont(size=13, weight="bold"),
         )
         self.status_label.grid(row=0, column=1, sticky="w")
 
-        self.progress = ctk.CTkProgressBar(status_row, mode="indeterminate", progress_color=PRIMARY_COLOR)
+        self.progress = ctk.CTkProgressBar(
+            status_row,
+            mode="indeterminate",
+            height=10,
+            corner_radius=8,
+            fg_color="#e8ebf0",
+            progress_color=PRIMARY_COLOR,
+        )
         self.progress.grid(row=0, column=2, sticky="e", ipadx=80)
         self.progress.set(0)
 
-        log_frame = ctk.CTkFrame(container, fg_color="#ffffff", corner_radius=8)
+        log_frame = ctk.CTkFrame(
+            container,
+            fg_color=PANEL_BG,
+            corner_radius=8,
+            border_width=1,
+            border_color=BORDER_COLOR,
+        )
         log_frame.grid(row=3, column=0, sticky="nsew")
         log_frame.grid_columnconfigure(0, weight=1)
         log_frame.grid_rowconfigure(1, weight=1)
 
         log_header = ctk.CTkFrame(log_frame, fg_color="transparent")
-        log_header.grid(row=0, column=0, sticky="ew", padx=16, pady=(14, 8))
+        log_header.grid(row=0, column=0, sticky="ew", padx=18, pady=(16, 10))
         log_header.grid_columnconfigure(0, weight=1)
 
         ctk.CTkLabel(
             log_header,
             text="Runtime Log",
-            text_color="#1f1f24",
-            font=ctk.CTkFont(size=14, weight="bold"),
+            text_color=TEXT_PRIMARY,
+            font=ctk.CTkFont(size=15, weight="bold"),
         ).grid(row=0, column=0, sticky="w")
 
         self.clear_log_button = ctk.CTkButton(
             log_header,
             text="Clear Log",
-            width=96,
-            height=30,
+            width=104,
+            height=32,
             corner_radius=8,
-            fg_color="#ececf0",
-            hover_color="#dedee5",
-            text_color="#000000",
+            fg_color=CONTROL_BG,
+            hover_color=CONTROL_HOVER,
+            text_color=TEXT_PRIMARY,
             border_width=1,
-            border_color="#c8c8d0",
+            border_color=BORDER_STRONG,
+            font=ctk.CTkFont(size=12, weight="bold"),
             command=self._clear_log,
         )
         self.clear_log_button.grid(row=0, column=1, sticky="e")
@@ -206,13 +282,13 @@ class ReportGeneratorApp(ctk.CTk):
             log_frame,
             corner_radius=8,
             border_width=1,
-            border_color="#dedee5",
-            fg_color="#fbfbfc",
-            text_color="#202128",
+            border_color=BORDER_COLOR,
+            fg_color="#f8fafc",
+            text_color="#242833",
             font=ctk.CTkFont(family="Consolas", size=12),
             wrap="word",
         )
-        self.log_text.grid(row=1, column=0, sticky="nsew", padx=16, pady=(0, 16))
+        self.log_text.grid(row=1, column=0, sticky="nsew", padx=18, pady=(0, 18))
         self.log_text.insert("end", "Ready.\n")
         self.log_text.configure(state="disabled")
 
@@ -223,14 +299,16 @@ class ReportGeneratorApp(ctk.CTk):
         self.open_folder_button = ctk.CTkButton(
             footer,
             text="Open Output Folder",
-            width=150,
-            height=34,
+            width=164,
+            height=38,
             corner_radius=8,
-            fg_color="#ececf0",
-            hover_color="#dedee5",
-            text_color="#000000",
+            fg_color=CONTROL_BG,
+            hover_color=CONTROL_HOVER,
+            text_color=TEXT_PRIMARY,
+            text_color_disabled=DISABLED_TEXT,
             border_width=1,
-            border_color="#c8c8d0",
+            border_color=BORDER_STRONG,
+            font=ctk.CTkFont(size=12, weight="bold"),
             command=self._open_output_folder,
             state="disabled",
         )
@@ -239,14 +317,16 @@ class ReportGeneratorApp(ctk.CTk):
         self.open_file_button = ctk.CTkButton(
             footer,
             text="Open Output File",
-            width=140,
-            height=34,
+            width=148,
+            height=38,
             corner_radius=8,
             fg_color=PRIMARY_COLOR,
             hover_color=PRIMARY_HOVER,
-            text_color="#000000",
+            text_color="#ffffff",
+            text_color_disabled=DISABLED_TEXT,
             border_width=1,
-            border_color="#7f011f",
+            border_color=PRIMARY_DARK,
+            font=ctk.CTkFont(size=12, weight="bold"),
             command=self._open_output_file,
             state="disabled",
         )
@@ -265,37 +345,43 @@ class ReportGeneratorApp(ctk.CTk):
         label_widget = ctk.CTkLabel(
             parent,
             text=label,
-            width=150,
+            width=160,
             anchor="w",
-            text_color="#30313a",
+            text_color=TEXT_PRIMARY,
             font=ctk.CTkFont(size=13, weight="bold"),
         )
-        label_widget.grid(row=row, column=0, sticky="w", padx=(16, 10), pady=12)
+        label_widget.grid(row=row, column=0, sticky="w", padx=(18, 12), pady=12)
 
         entry = ctk.CTkEntry(
             parent,
             textvariable=variable,
-            height=36,
+            height=40,
             corner_radius=8,
-            border_color="#d6d6de",
-            fg_color="#fbfbfc",
+            border_width=1,
+            border_color=BORDER_COLOR,
+            fg_color=CONTROL_BG,
+            text_color=TEXT_PRIMARY,
+            placeholder_text="No file or folder selected",
+            placeholder_text_color=TEXT_MUTED,
+            font=ctk.CTkFont(size=13),
         )
         entry.grid(row=row, column=1, sticky="ew", pady=12)
 
         button = ctk.CTkButton(
             parent,
             text="Browse",
-            width=96,
-            height=36,
+            width=104,
+            height=40,
             corner_radius=8,
             fg_color=PRIMARY_COLOR,
             hover_color=PRIMARY_HOVER,
-            text_color="#000000",
+            text_color="#ffffff",
             border_width=1,
-            border_color="#7f011f",
+            border_color=PRIMARY_DARK,
+            font=ctk.CTkFont(size=12, weight="bold"),
             command=browse_command,
         )
-        button.grid(row=row, column=2, sticky="e", padx=(10, 16), pady=12)
+        button.grid(row=row, column=2, sticky="e", padx=(12, 18), pady=12)
         return label_widget, entry, button
 
     def _browse_html_folder(self) -> None:
