@@ -11,7 +11,7 @@ from tkinter import filedialog, messagebox
 import customtkinter as ctk
 from PIL import Image
 
-from app_logic import generate_report
+from app_logic import generate_report, run_sql_pipeline
 from assets import resource_path
 
 
@@ -35,15 +35,18 @@ class ReportGeneratorApp(ctk.CTk):
 
         self.html_folder_var = ctk.StringVar()
         self.word_file_var = ctk.StringVar()
+        self.mode_var = ctk.StringVar(value="OracleHC")
         self.status_var = ctk.StringVar(value="Ready")
         self.last_output_file: str | None = None
         self.last_output_folder: str | None = None
+        self.generated_report_files: list[str] = []
         self.last_save_dir: str = ""
-        self.events: queue.Queue[tuple[str, str]] = queue.Queue()
+        self.events: queue.Queue[tuple[str, object]] = queue.Queue()
         self.logo_warning: str | None = None
 
         self._build_ui()
         self._load_settings()
+        self._on_mode_changed()
         if self.logo_warning:
             self._append_log(self.logo_warning)
         self._poll_events()
@@ -79,6 +82,19 @@ class ReportGeneratorApp(ctk.CTk):
         )
         subtitle.grid(row=1, column=0, sticky="w", pady=(4, 0))
 
+        self.mode_selector = ctk.CTkSegmentedButton(
+            header,
+            values=["OracleHC", "SQLHealcheck Tool"],
+            variable=self.mode_var,
+            selected_color=PRIMARY_COLOR,
+            selected_hover_color=PRIMARY_HOVER,
+            unselected_color="#ececf0",
+            unselected_hover_color="#dedee5",
+            text_color="#000000",
+            command=lambda _value: self._on_mode_changed(),
+        )
+        self.mode_selector.grid(row=2, column=0, sticky="w", pady=(14, 0))
+
         logo_image = self._load_logo_image()
         if logo_image:
             logo = ctk.CTkLabel(header, text="", image=logo_image)
@@ -89,20 +105,30 @@ class ReportGeneratorApp(ctk.CTk):
         form.grid(row=1, column=0, sticky="ew", pady=(0, 18))
         form.grid_columnconfigure(1, weight=1)
 
-        self._add_path_row(
+        self.source_row_widgets = self._add_path_row(
             form,
             row=0,
             label="HTML Root Folder",
             variable=self.html_folder_var,
             browse_command=self._browse_html_folder,
         )
+        self.sql_root_note = ctk.CTkLabel(
+            form,
+            text="Folder should contain CSV files, or DB subfolders with CSV files",
+            text_color="#6b6c75",
+            font=ctk.CTkFont(size=12),
+            anchor="w",
+        )
+        self.sql_root_note.grid(row=1, column=1, columnspan=2, sticky="w", pady=(0, 10))
+
         self._add_path_row(
             form,
-            row=1,
+            row=2,
             label="Word File / Template",
             variable=self.word_file_var,
             browse_command=self._browse_word_file,
         )
+        self._on_mode_changed()
 
         actions = ctk.CTkFrame(container, fg_color="transparent")
         actions.grid(row=2, column=0, sticky="ew", pady=(0, 16))
@@ -110,11 +136,14 @@ class ReportGeneratorApp(ctk.CTk):
 
         self.create_button = ctk.CTkButton(
             actions,
-            text="Create Report",
+            text="Generate Report",
             height=44,
             corner_radius=8,
-            fg_color=PRIMARY_COLOR,
-            hover_color=PRIMARY_HOVER,
+            fg_color="#ffffff",
+            hover_color="#ececf0",
+            text_color="#000000",
+            border_width=1,
+            border_color=PRIMARY_COLOR,
             font=ctk.CTkFont(size=15, weight="bold"),
             command=self._start_generation,
         )
@@ -166,7 +195,9 @@ class ReportGeneratorApp(ctk.CTk):
             corner_radius=8,
             fg_color="#ececf0",
             hover_color="#dedee5",
-            text_color="#30313a",
+            text_color="#000000",
+            border_width=1,
+            border_color="#c8c8d0",
             command=self._clear_log,
         )
         self.clear_log_button.grid(row=0, column=1, sticky="e")
@@ -197,7 +228,9 @@ class ReportGeneratorApp(ctk.CTk):
             corner_radius=8,
             fg_color="#ececf0",
             hover_color="#dedee5",
-            text_color="#30313a",
+            text_color="#000000",
+            border_width=1,
+            border_color="#c8c8d0",
             command=self._open_output_folder,
             state="disabled",
         )
@@ -211,6 +244,9 @@ class ReportGeneratorApp(ctk.CTk):
             corner_radius=8,
             fg_color=PRIMARY_COLOR,
             hover_color=PRIMARY_HOVER,
+            text_color="#000000",
+            border_width=1,
+            border_color="#7f011f",
             command=self._open_output_file,
             state="disabled",
         )
@@ -223,17 +259,18 @@ class ReportGeneratorApp(ctk.CTk):
         label: str,
         variable: ctk.StringVar,
         browse_command,
-    ) -> None:
+    ) -> tuple[ctk.CTkLabel, ctk.CTkEntry, ctk.CTkButton]:
         parent.grid_rowconfigure(row, weight=0)
 
-        ctk.CTkLabel(
+        label_widget = ctk.CTkLabel(
             parent,
             text=label,
             width=150,
             anchor="w",
             text_color="#30313a",
             font=ctk.CTkFont(size=13, weight="bold"),
-        ).grid(row=row, column=0, sticky="w", padx=(16, 10), pady=12)
+        )
+        label_widget.grid(row=row, column=0, sticky="w", padx=(16, 10), pady=12)
 
         entry = ctk.CTkEntry(
             parent,
@@ -253,13 +290,18 @@ class ReportGeneratorApp(ctk.CTk):
             corner_radius=8,
             fg_color=PRIMARY_COLOR,
             hover_color=PRIMARY_HOVER,
+            text_color="#000000",
+            border_width=1,
+            border_color="#7f011f",
             command=browse_command,
         )
         button.grid(row=row, column=2, sticky="e", padx=(10, 16), pady=12)
+        return label_widget, entry, button
 
     def _browse_html_folder(self) -> None:
+        title = "Select SQL Root Folder" if self._is_sql_mode() else "Select HTML Root Folder"
         path = filedialog.askdirectory(
-            title="Select HTML Root Folder",
+            title=title,
             initialdir=self._initial_dir(self.html_folder_var),
         )
         if path:
@@ -294,17 +336,43 @@ class ReportGeneratorApp(ctk.CTk):
             return None
         return ctk.CTkImage(light_image=image, dark_image=image, size=(120, 54))
 
+    def _is_sql_mode(self) -> bool:
+        return self.mode_var.get() == "SQLHealcheck Tool"
+
+    def _on_mode_changed(self) -> None:
+        source_label = self.source_row_widgets[0]
+        if self._is_sql_mode():
+            source_label.configure(text="SQL Root Folder")
+            self.sql_root_note.grid()
+            self.status_var.set("Ready")
+            return
+
+        source_label.configure(text="HTML Root Folder")
+        self.sql_root_note.grid_remove()
+        self.status_var.set("Ready")
+
     def _start_generation(self) -> None:
         html_folder = self.html_folder_var.get().strip()
         word_file = self.word_file_var.get().strip()
 
-        validation_error = self._validate_inputs(html_folder, word_file)
+        validation_error = (
+            self._validate_sql_inputs(html_folder, word_file)
+            if self._is_sql_mode()
+            else self._validate_oracle_inputs(html_folder, word_file)
+        )
         if validation_error:
             self.status_var.set("Failed")
             messagebox.showerror(APP_TITLE, validation_error)
             self._append_log(f"Validation failed: {validation_error}")
             return
 
+        if self._is_sql_mode():
+            self._start_sql_generation(html_folder, word_file)
+            return
+
+        self._start_oracle_generation(html_folder, word_file)
+
+    def _start_oracle_generation(self, html_folder: str, word_file: str) -> None:
         output_file = self._ask_output_file(word_file)
         if not output_file:
             self.status_var.set("Ready")
@@ -312,6 +380,7 @@ class ReportGeneratorApp(ctk.CTk):
             return
 
         self.last_output_file = None
+        self.generated_report_files = []
         self.last_output_folder = str(Path(output_file).parent)
         self.last_save_dir = self.last_output_folder
         self._save_settings()
@@ -331,6 +400,37 @@ class ReportGeneratorApp(ctk.CTk):
         )
         worker.start()
 
+    def _start_sql_generation(self, input_folder: str, word_file: str) -> None:
+        output_folder = self._ask_sql_output_folder(input_folder)
+        if not output_folder:
+            self.status_var.set("Ready")
+            self._append_log("Output folder selection canceled. No report was created.")
+            return
+
+        self.last_output_file = None
+        self.generated_report_files = []
+        self.last_output_folder = str(Path(output_folder).resolve())
+        self.last_save_dir = self.last_output_folder
+        self._save_settings()
+        self.open_file_button.configure(state="disabled")
+        self.open_folder_button.configure(state="disabled")
+        self.create_button.configure(state="disabled", text="Processing...")
+        self.status_var.set("Processing")
+        self.progress.start()
+        self._append_log("")
+        self._append_log("Starting SQLHealcheck generation...")
+        self._append_log(f"SQL root folder: {input_folder}")
+        self._append_log(f"Selected output folder: {output_folder}")
+        self._append_log(f"Merged Excel output: {Path(output_folder).resolve() / 'merged_healthcheck_info.xlsx'}")
+        self._append_log(f"Word report output: {Path(output_folder).resolve() / 'final_healthcheck_report.docx'}")
+
+        worker = threading.Thread(
+            target=self._run_sql_generation,
+            args=(input_folder, word_file, output_folder),
+            daemon=True,
+        )
+        worker.start()
+
     def _ask_output_file(self, word_file: str) -> str:
         template_stem = Path(word_file).stem or "OracleHC_Report"
         initial_dir = self.last_save_dir or str(Path(word_file).parent)
@@ -340,6 +440,13 @@ class ReportGeneratorApp(ctk.CTk):
             initialfile=f"{template_stem}_report.docx",
             defaultextension=".docx",
             filetypes=[("Word Documents", "*.docx"), ("All Files", "*.*")],
+        )
+
+    def _ask_sql_output_folder(self, input_folder: str) -> str:
+        initial_dir = self.last_save_dir or input_folder or str(Path.cwd())
+        return filedialog.askdirectory(
+            title="Select Output Folder",
+            initialdir=initial_dir,
         )
 
     def _run_generation(self, html_folder: str, word_file: str, output_file: str) -> None:
@@ -356,6 +463,20 @@ class ReportGeneratorApp(ctk.CTk):
 
         self.events.put(("success", output_file))
 
+    def _run_sql_generation(self, input_folder: str, word_file: str, output_folder: str) -> None:
+        try:
+            report_files = run_sql_pipeline(
+                input_root=input_folder,
+                template_file=word_file,
+                output_root=output_folder,
+                log_callback=lambda message: self.events.put(("log", message)),
+            )
+        except Exception as exc:
+            self.events.put(("error", f"{exc}\n\n{traceback.format_exc()}"))
+            return
+
+        self.events.put(("success", report_files))
+
     def _poll_events(self) -> None:
         while True:
             try:
@@ -364,19 +485,35 @@ class ReportGeneratorApp(ctk.CTk):
                 break
 
             if event_type == "log":
-                self._append_log(payload)
+                self._append_log(str(payload))
             elif event_type == "success":
                 self._handle_success(payload)
             elif event_type == "error":
-                self._handle_error(payload)
+                self._handle_error(str(payload))
 
         self.after(100, self._poll_events)
 
-    def _handle_success(self, output_file: str) -> None:
+    def _handle_success(self, result: object) -> None:
         self.progress.stop()
         self.progress.set(0)
-        self.create_button.configure(state="normal", text="Create Report")
+        self.create_button.configure(state="normal", text="Generate Report")
         self.status_var.set("Success")
+        if isinstance(result, list):
+            output_files = [str(path) for path in result]
+            self.generated_report_files = output_files
+            docx_files = [path for path in output_files if Path(path).suffix.lower() == ".docx"]
+            self.last_output_file = docx_files[0] if docx_files else (output_files[0] if len(output_files) == 1 else None)
+            self.last_output_folder = str(Path(output_files[0]).parent) if output_files else self.last_output_folder
+            self.open_file_button.configure(state="normal" if self.last_output_file else "disabled")
+            self.open_folder_button.configure(state="normal")
+            self._append_log("Success. SQLHealcheck files created:")
+            for output_file in output_files:
+                self._append_log(f"  {output_file}")
+            messagebox.showinfo(APP_TITLE, "Created SQLHealcheck Excel and Word report.")
+            return
+
+        output_file = str(result)
+        self.generated_report_files = [output_file]
         self.last_output_file = output_file
         self.last_output_folder = str(Path(output_file).parent)
         self.open_file_button.configure(state="normal")
@@ -387,14 +524,14 @@ class ReportGeneratorApp(ctk.CTk):
     def _handle_error(self, details: str) -> None:
         self.progress.stop()
         self.progress.set(0)
-        self.create_button.configure(state="normal", text="Create Report")
+        self.create_button.configure(state="normal", text="Generate Report")
         self.status_var.set("Failed")
         summary = details.splitlines()[0] if details else "Report generation failed."
         self._append_log("Failed.")
         self._append_log(details)
         messagebox.showerror(APP_TITLE, summary)
 
-    def _validate_inputs(self, html_folder: str, word_file: str) -> str | None:
+    def _validate_oracle_inputs(self, html_folder: str, word_file: str) -> str | None:
         if not html_folder or not word_file:
             return "Please select an HTML root folder and Word file/template."
 
@@ -408,6 +545,31 @@ class ReportGeneratorApp(ctk.CTk):
         if word_path.suffix.lower() != ".docx":
             return f"Word file must be a .docx file: {word_path}"
         return None
+
+    def _validate_sql_inputs(self, input_folder: str, word_file: str) -> str | None:
+        if not input_folder or not word_file:
+            return "Please select a SQL root folder and Word file/template."
+
+        input_path = Path(input_folder)
+        word_path = Path(word_file)
+
+        if not input_path.is_dir():
+            return f"SQL root folder does not exist: {input_path}"
+        if not self._has_sql_healthcheck_input(input_path):
+            return f"Selected SQL root folder must contain CSV files or DB subfolders with CSV files: {input_path}"
+        if not word_path.is_file():
+            return f"Word file does not exist: {word_path}"
+        if word_path.suffix.lower() != ".docx":
+            return f"Word file must be a .docx file: {word_path}"
+        return None
+
+    def _has_sql_healthcheck_input(self, input_path: Path) -> bool:
+        if any(child.is_file() and child.suffix.lower() == ".csv" for child in input_path.iterdir()):
+            return True
+        return any(
+            child.is_dir() and any(csv_file.is_file() for csv_file in child.glob("*.csv"))
+            for child in input_path.iterdir()
+        )
 
     def _append_log(self, message: str) -> None:
         self.log_text.configure(state="normal")
@@ -441,11 +603,13 @@ class ReportGeneratorApp(ctk.CTk):
 
         self.html_folder_var.set(data.get("html_folder", ""))
         self.word_file_var.set(data.get("word_file", ""))
+        self.mode_var.set(data.get("mode", "OracleHC"))
         self.last_save_dir = data.get("last_save_dir", data.get("output_folder", ""))
 
     def _save_settings(self) -> None:
         SETTINGS_DIR.mkdir(parents=True, exist_ok=True)
         data = {
+            "mode": self.mode_var.get(),
             "html_folder": self.html_folder_var.get().strip(),
             "word_file": self.word_file_var.get().strip(),
             "last_save_dir": self.last_save_dir,
