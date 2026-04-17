@@ -1,0 +1,2049 @@
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 Mar12 ?        06:17:18 /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+root         2     0  0 Mar12 ?        00:00:40 [kthreadd]
+root         4     2  0 Mar12 ?        00:00:00 [kworker/0:0H]
+root         6     2  0 Mar12 ?        00:01:37 [ksoftirqd/0]
+root         7     2  0 Mar12 ?        00:00:08 [migration/0]
+root         8     2  0 Mar12 ?        00:00:00 [rcu_bh]
+root         9     2  0 Mar12 ?        04:12:54 [rcu_sched]
+root        10     2  0 Mar12 ?        00:00:00 [lru-add-drain]
+root        11     2  0 Mar12 ?        00:01:14 [watchdog/0]
+root        12     2  0 Mar12 ?        00:01:10 [watchdog/1]
+root        13     2  0 Mar12 ?        00:00:11 [migration/1]
+root        14     2  0 Mar12 ?        00:00:58 [ksoftirqd/1]
+root        16     2  0 Mar12 ?        00:00:00 [kworker/1:0H]
+root        18     2  0 Mar12 ?        00:01:05 [watchdog/2]
+root        19     2  0 Mar12 ?        00:00:09 [migration/2]
+root        20     2  0 Mar12 ?        00:00:29 [ksoftirqd/2]
+root        22     2  0 Mar12 ?        00:00:00 [kworker/2:0H]
+root        23     2  0 Mar12 ?        00:01:06 [watchdog/3]
+root        24     2  0 Mar12 ?        00:00:09 [migration/3]
+root        25     2  0 Mar12 ?        00:00:47 [ksoftirqd/3]
+root        27     2  0 Mar12 ?        00:00:00 [kworker/3:0H]
+root        28     2  0 Mar12 ?        00:01:04 [watchdog/4]
+root        29     2  0 Mar12 ?        00:00:10 [migration/4]
+root        30     2  0 Mar12 ?        00:02:48 [ksoftirqd/4]
+root        32     2  0 Mar12 ?        00:00:00 [kworker/4:0H]
+root        33     2  0 Mar12 ?        00:01:05 [watchdog/5]
+root        34     2  0 Mar12 ?        00:00:08 [migration/5]
+root        35     2  0 Mar12 ?        00:00:22 [ksoftirqd/5]
+root        37     2  0 Mar12 ?        00:00:00 [kworker/5:0H]
+root        38     2  0 Mar12 ?        00:01:13 [watchdog/6]
+root        39     2  0 Mar12 ?        00:00:04 [migration/6]
+root        40     2  0 Mar12 ?        00:00:08 [ksoftirqd/6]
+root        42     2  0 Mar12 ?        00:00:00 [kworker/6:0H]
+root        44     2  0 Mar12 ?        00:00:56 [watchdog/7]
+root        45     2  0 Mar12 ?        00:00:04 [migration/7]
+root        46     2  0 Mar12 ?        00:00:14 [ksoftirqd/7]
+root        48     2  0 Mar12 ?        00:00:00 [kworker/7:0H]
+root        49     2  0 Mar12 ?        00:01:02 [watchdog/8]
+root        50     2  0 Mar12 ?        00:00:06 [migration/8]
+root        51     2  0 Mar12 ?        00:00:21 [ksoftirqd/8]
+root        53     2  0 Mar12 ?        00:00:00 [kworker/8:0H]
+root        54     2  0 Mar12 ?        00:01:04 [watchdog/9]
+root        55     2  0 Mar12 ?        00:00:09 [migration/9]
+root        56     2  0 Mar12 ?        00:00:20 [ksoftirqd/9]
+root        58     2  0 Mar12 ?        00:00:00 [kworker/9:0H]
+root        59     2  0 Mar12 ?        00:01:05 [watchdog/10]
+root        60     2  0 Mar12 ?        00:00:07 [migration/10]
+root        61     2  0 Mar12 ?        00:00:12 [ksoftirqd/10]
+root        63     2  0 Mar12 ?        00:00:00 [kworker/10:0H]
+root        64     2  0 Mar12 ?        00:01:03 [watchdog/11]
+root        65     2  0 Mar12 ?        00:00:05 [migration/11]
+root        66     2  0 Mar12 ?        00:00:11 [ksoftirqd/11]
+root        68     2  0 Mar12 ?        00:00:00 [kworker/11:0H]
+root        69     2  0 Mar12 ?        00:01:04 [watchdog/12]
+root        70     2  0 Mar12 ?        00:00:07 [migration/12]
+root        71     2  0 Mar12 ?        00:00:25 [ksoftirqd/12]
+root        73     2  0 Mar12 ?        00:00:00 [kworker/12:0H]
+root        74     2  0 Mar12 ?        00:00:58 [watchdog/13]
+root        75     2  0 Mar12 ?        00:00:45 [migration/13]
+root        76     2  0 Mar12 ?        00:01:25 [ksoftirqd/13]
+root        78     2  0 Mar12 ?        00:00:00 [kworker/13:0H]
+root        79     2  0 Mar12 ?        00:01:03 [watchdog/14]
+root        80     2  0 Mar12 ?        00:00:24 [migration/14]
+root        81     2  0 Mar12 ?        00:00:30 [ksoftirqd/14]
+root        83     2  0 Mar12 ?        00:00:00 [kworker/14:0H]
+root        84     2  0 Mar12 ?        00:01:04 [watchdog/15]
+root        85     2  0 Mar12 ?        00:00:10 [migration/15]
+root        86     2  0 Mar12 ?        00:00:17 [ksoftirqd/15]
+root        88     2  0 Mar12 ?        00:00:00 [kworker/15:0H]
+root        89     2  0 Mar12 ?        00:01:03 [watchdog/16]
+root        90     2  0 Mar12 ?        00:00:08 [migration/16]
+root        91     2  0 Mar12 ?        00:00:07 [ksoftirqd/16]
+root        93     2  0 Mar12 ?        00:00:00 [kworker/16:0H]
+root        94     2  0 Mar12 ?        00:01:02 [watchdog/17]
+root        95     2  0 Mar12 ?        00:00:10 [migration/17]
+root        96     2  0 Mar12 ?        00:00:27 [ksoftirqd/17]
+root        98     2  0 Mar12 ?        00:00:00 [kworker/17:0H]
+root        99     2  0 Mar12 ?        00:01:03 [watchdog/18]
+root       100     2  0 Mar12 ?        00:00:02 [migration/18]
+root       101     2  0 Mar12 ?        00:00:00 [ksoftirqd/18]
+root       103     2  0 Mar12 ?        00:00:00 [kworker/18:0H]
+root       104     2  0 Mar12 ?        00:00:55 [watchdog/19]
+root       105     2  0 Mar12 ?        00:00:47 [migration/19]
+root       106     2  0 Mar12 ?        00:00:23 [ksoftirqd/19]
+root       108     2  0 Mar12 ?        00:00:00 [kworker/19:0H]
+root       109     2  0 Mar12 ?        00:00:58 [watchdog/20]
+root       110     2  0 Mar12 ?        00:00:23 [migration/20]
+root       111     2  0 Mar12 ?        00:00:10 [ksoftirqd/20]
+root       112     2  0 Mar12 ?        00:01:20 [kworker/20:0]
+root       113     2  0 Mar12 ?        00:00:00 [kworker/20:0H]
+root       114     2  0 Mar12 ?        00:01:01 [watchdog/21]
+root       115     2  0 Mar12 ?        00:00:08 [migration/21]
+root       116     2  0 Mar12 ?        00:00:05 [ksoftirqd/21]
+root       118     2  0 Mar12 ?        00:00:00 [kworker/21:0H]
+root       119     2  0 Mar12 ?        00:01:03 [watchdog/22]
+root       120     2  0 Mar12 ?        00:00:04 [migration/22]
+root       121     2  0 Mar12 ?        00:00:00 [ksoftirqd/22]
+root       123     2  0 Mar12 ?        00:00:00 [kworker/22:0H]
+root       124     2  0 Mar12 ?        00:01:02 [watchdog/23]
+root       125     2  0 Mar12 ?        00:00:06 [migration/23]
+root       126     2  0 Mar12 ?        00:00:00 [ksoftirqd/23]
+root       128     2  0 Mar12 ?        00:00:00 [kworker/23:0H]
+root       131     2  0 Mar12 ?        00:00:00 [kdevtmpfs]
+root       132     2  0 Mar12 ?        00:00:00 [netns]
+root       133     2  0 Mar12 ?        00:00:50 [khungtaskd]
+root       134     2  0 Mar12 ?        00:00:00 [writeback]
+root       135     2  0 Mar12 ?        00:00:00 [kintegrityd]
+root       136     2  0 Mar12 ?        00:00:00 [bioset]
+root       137     2  0 Mar12 ?        00:00:00 [bioset]
+root       138     2  0 Mar12 ?        00:00:00 [bioset]
+root       139     2  0 Mar12 ?        00:00:00 [kblockd]
+root       140     2  0 Mar12 ?        00:00:00 [md]
+root       141     2  0 Mar12 ?        00:00:00 [edac-poller]
+root       142     2  0 Mar12 ?        00:00:00 [watchdogd]
+root       151     2  0 Mar12 ?        00:01:47 [kswapd0]
+root       152     2  0 Mar12 ?        00:01:21 [kswapd1]
+root       153     2  0 Mar12 ?        00:00:00 [ksmd]
+root       154     2  0 Mar12 ?        00:00:43 [khugepaged]
+root       155     2  0 Mar12 ?        00:00:00 [crypto]
+root       163     2  0 Mar12 ?        00:00:00 [kthrotld]
+root       167     2  0 Mar12 ?        00:00:00 [kmpath_rdacd]
+root       168     2  0 Mar12 ?        00:00:00 [kaluad]
+root       169     2  0 Mar12 ?        00:00:00 [kpsmoused]
+root       176     2  0 Mar12 ?        00:04:46 [kworker/19:1]
+root       180     2  0 Mar12 ?        00:00:00 [ipv6_addrconf]
+root       193     2  0 Mar12 ?        00:00:00 [deferwq]
+root       233     2  0 Mar12 ?        00:00:32 [kauditd]
+root       421     2  0 Mar12 ?        00:00:00 [scsi_eh_0]
+root       422     2  0 Mar12 ?        00:00:00 [scsi_tmf_0]
+oracle     436     1  0 Jun13 ?        00:04:19 ora_w004_VES081
+root       448     2  0 Mar12 ?        00:00:00 [ata_sff]
+root       455     2  0 Mar12 ?        00:00:00 [scsi_eh_1]
+root       456     2  0 Mar12 ?        00:00:00 [scsi_tmf_1]
+root       457     2  0 Mar12 ?        00:00:00 [scsi_eh_2]
+root       458     2  0 Mar12 ?        00:00:00 [scsi_tmf_2]
+root       459     2  0 Mar12 ?        00:00:00 [scsi_eh_3]
+root       460     2  0 Mar12 ?        00:00:00 [scsi_tmf_3]
+root       461     2  0 Mar12 ?        00:00:00 [scsi_eh_4]
+root       462     2  0 Mar12 ?        00:00:00 [scsi_tmf_4]
+root       463     2  0 Mar12 ?        00:00:00 [scsi_eh_5]
+root       464     2  0 Mar12 ?        00:00:00 [scsi_tmf_5]
+root       465     2  0 Mar12 ?        00:00:00 [scsi_eh_6]
+root       466     2  0 Mar12 ?        00:00:00 [scsi_tmf_6]
+root       476     2  0 Mar12 ?        00:00:00 [ttm_swap]
+root       480     2  0 Mar12 ?        00:00:00 [poll_megasas0_s]
+root       504     2  0 Mar12 ?        00:01:08 [kworker/0:1H]
+root       508     2  0 Mar12 ?        00:00:40 [kworker/22:1]
+root       565     2  0 Mar12 ?        00:00:00 [kdmflush]
+root       566     2  0 Mar12 ?        00:00:00 [bioset]
+root       577     2  0 Mar12 ?        00:00:00 [kdmflush]
+root       578     2  0 Mar12 ?        00:00:00 [bioset]
+root       591     2  0 Mar12 ?        00:00:00 [bioset]
+root       592     2  0 Mar12 ?        00:00:00 [xfsalloc]
+root       593     2  0 Mar12 ?        00:00:00 [xfs_mru_cache]
+root       594     2  0 Mar12 ?        00:00:00 [xfs-buf/dm-0]
+root       595     2  0 Mar12 ?        00:00:00 [xfs-data/dm-0]
+root       596     2  0 Mar12 ?        00:00:00 [xfs-conv/dm-0]
+root       597     2  0 Mar12 ?        00:00:00 [xfs-cil/dm-0]
+root       598     2  0 Mar12 ?        00:00:00 [xfs-reclaim/dm-]
+root       599     2  0 Mar12 ?        00:00:00 [xfs-log/dm-0]
+root       600     2  0 Mar12 ?        00:00:00 [xfs-eofblocks/d]
+root       601     2  0 Mar12 ?        02:04:38 [xfsaild/dm-0]
+root       602     2  0 Mar12 ?        00:00:05 [kworker/7:1H]
+root       603     2  0 Mar12 ?        00:00:05 [kworker/8:1H]
+root       695     1  0 Mar12 ?        00:07:28 /usr/lib/systemd/systemd-journald
+root       704     2  0 Mar12 ?        00:00:03 [kworker/2:1H]
+root       732     1  0 Mar12 ?        00:00:00 /usr/sbin/lvmetad -f
+root       748     1  0 Mar12 ?        00:00:00 /usr/lib/systemd/systemd-udevd
+root       779     2  0 Aug02 ?        00:01:12 [kworker/11:1]
+root       799     2  0 08:31 ?        00:00:00 [kworker/2:1]
+root       838     2  0 Mar12 ?        00:00:05 [kworker/11:1H]
+root       873     2  0 Mar12 ?        00:00:00 [kipmi0]
+root       874     2  0 Mar12 ?        00:00:00 [kvm-irqfd-clean]
+root       878     2  0 Mar12 ?        00:00:23 [kworker/1:1H]
+root       929     2  0 Mar12 ?        00:00:00 [xfs-buf/sda2]
+root       930     2  0 Mar12 ?        00:00:00 [xfs-data/sda2]
+root       931     2  0 Mar12 ?        00:00:00 [xfs-conv/sda2]
+root       932     2  0 Mar12 ?        00:00:00 [xfs-cil/sda2]
+root       933     2  0 Mar12 ?        00:00:00 [xfs-reclaim/sda]
+root       934     2  0 Mar12 ?        00:00:00 [xfs-log/sda2]
+root       935     2  0 Mar12 ?        00:00:00 [xfs-eofblocks/s]
+root       936     2  0 Mar12 ?        00:00:00 [xfsaild/sda2]
+root       939     2  0 Mar12 ?        00:00:00 [kdmflush]
+root       940     2  0 Mar12 ?        00:00:00 [bioset]
+root       941     2  0 Mar12 ?        00:00:00 [kdmflush]
+root       942     2  0 Mar12 ?        00:00:00 [bioset]
+root       944     2  0 Mar12 ?        00:00:00 [kdmflush]
+root       945     2  0 Mar12 ?        00:00:00 [bioset]
+root       947     2  0 Mar12 ?        00:00:00 [kdmflush]
+root       948     2  0 Mar12 ?        00:00:00 [bioset]
+root       950     2  0 Mar12 ?        00:00:00 [kdmflush]
+root       951     2  0 Mar12 ?        00:00:00 [bioset]
+root       987     2  0 Mar12 ?        00:00:00 [xfs-buf/dm-3]
+root       988     2  0 Mar12 ?        00:00:00 [xfs-data/dm-3]
+root       989     2  0 Mar12 ?        00:00:00 [xfs-conv/dm-3]
+root       990     2  0 Mar12 ?        00:00:00 [xfs-cil/dm-3]
+root       991     2  0 Mar12 ?        00:00:00 [xfs-reclaim/dm-]
+root       992     2  0 Mar12 ?        00:00:00 [xfs-log/dm-3]
+root       993     2  0 Mar12 ?        00:00:00 [xfs-eofblocks/d]
+root       997     2  0 Mar12 ?        00:00:00 [xfs-buf/dm-4]
+root       998     2  0 Mar12 ?        00:00:00 [xfs-data/dm-4]
+root       999     2  0 Mar12 ?        00:00:00 [xfs-conv/dm-4]
+root      1000     2  0 Mar12 ?        00:00:00 [xfs-cil/dm-4]
+root      1001     2  0 Mar12 ?        00:00:00 [xfs-reclaim/dm-]
+root      1002     2  0 Mar12 ?        00:00:00 [xfs-log/dm-4]
+root      1003     2  0 Mar12 ?        00:00:00 [xfs-eofblocks/d]
+root      1004     2  0 Mar12 ?        02:02:30 [xfsaild/dm-3]
+root      1005     2  0 Mar12 ?        02:12:48 [xfsaild/dm-4]
+root      1008     2  0 Mar12 ?        00:00:00 [xfs-buf/dm-5]
+root      1009     2  0 Mar12 ?        00:00:00 [xfs-data/dm-5]
+root      1010     2  0 Mar12 ?        00:00:00 [xfs-conv/dm-5]
+root      1011     2  0 Mar12 ?        00:00:00 [xfs-cil/dm-5]
+root      1012     2  0 Mar12 ?        00:00:00 [xfs-reclaim/dm-]
+root      1013     2  0 Mar12 ?        00:00:00 [xfs-log/dm-5]
+root      1014     2  0 Mar12 ?        00:00:00 [xfs-eofblocks/d]
+root      1015     2  0 Mar12 ?        02:12:46 [xfsaild/dm-5]
+root      1019     2  0 Mar12 ?        00:00:00 [xfs-buf/dm-2]
+root      1020     2  0 Mar12 ?        00:00:00 [xfs-data/dm-2]
+root      1021     2  0 Mar12 ?        00:00:00 [xfs-conv/dm-2]
+root      1022     2  0 Mar12 ?        00:00:00 [xfs-cil/dm-2]
+root      1023     2  0 Mar12 ?        00:00:00 [xfs-reclaim/dm-]
+root      1024     2  0 Mar12 ?        00:00:00 [xfs-log/dm-2]
+root      1025     2  0 Mar12 ?        00:00:00 [xfs-eofblocks/d]
+root      1026     2  0 Mar12 ?        00:00:00 [xfsaild/dm-2]
+root      1031     2  0 Mar12 ?        00:00:00 [xfs-buf/dm-6]
+root      1032     2  0 Mar12 ?        00:00:00 [xfs-data/dm-6]
+root      1033     2  0 Mar12 ?        00:00:00 [xfs-conv/dm-6]
+root      1035     2  0 Mar12 ?        00:00:00 [xfs-cil/dm-6]
+root      1036     2  0 Mar12 ?        00:00:00 [xfs-reclaim/dm-]
+root      1037     2  0 Mar12 ?        00:00:00 [xfs-log/dm-6]
+root      1038     2  0 Mar12 ?        00:00:00 [xfs-eofblocks/d]
+root      1040     2  0 Mar12 ?        02:04:21 [xfsaild/dm-6]
+root      1083     2  0 Mar12 ?        00:00:32 [kworker/3:1H]
+root      1084     1  0 Mar12 ?        00:02:02 /sbin/auditd
+root      1086  1084  0 Mar12 ?        00:02:37 /sbin/audispd
+root      1087  1086  0 Mar12 ?        00:01:08 /usr/sbin/sedispatch
+root      1090     2  0 Mar12 ?        00:00:00 [rpciod]
+root      1091     2  0 Mar12 ?        00:00:00 [xprtiod]
+dbus      1113     1  0 Mar12 ?        00:27:08 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+rpc       1114     1  0 Mar12 ?        00:00:34 /sbin/rpcbind -w
+root      1116     1  0 Mar12 ?        00:10:24 /usr/lib/systemd/systemd-logind
+root      1118     2  0 Mar12 ?        00:00:03 [kworker/4:1H]
+rtkit     1119     1  0 Mar12 ?        00:03:47 /usr/libexec/rtkit-daemon
+root      1120     1  0 Mar12 ?        00:03:44 /usr/libexec/udisks2/udisksd
+root      1121     1  0 Mar12 ?        00:01:38 /usr/libexec/accounts-daemon
+avahi     1123     1  0 Mar12 ?        00:09:08 avahi-daemon: running [VE-S08-1.local]
+root      1127     1  0 Mar12 ?        11:16:22 /sbin/rngd -f
+root      1129     1  0 Mar12 ?        00:00:21 /usr/sbin/smartd -n -q never
+root      1132     1  0 Mar12 ?        00:06:22 /usr/sbin/NetworkManager --no-daemon
+root      1133     1  0 Mar12 ?        00:00:00 /usr/sbin/abrtd -d -s
+avahi     1136  1123  0 Mar12 ?        00:00:00 avahi-daemon: chroot helper
+polkitd   1137     1  0 Mar12 ?        00:21:46 /usr/lib/polkit-1/polkitd --no-debug
+root      1144     1  0 Mar12 ?        00:00:47 /usr/bin/abrt-watch-log -F BUG: WARNING: at WARNING: CPU: INFO: possible recursive locking detected ernel BUG at list_del corruption list_add corruption do_IRQ: stack overflow: ear stack overflow (cur: eneral protection fault nable to handle kernel ouble fault: RTNL: assertion failed eek! page_mapcount(page) went negative! adness at NETDEV WATCHDOG ysctl table check failed : nobody cared IRQ handler type mismatch Kernel panic - not syncing: Machine Check Exception: Machine check events logged divide error: bounds: coprocessor segment overrun: invalid TSS: segment not present: invalid opcode: alignment check: stack segment: fpu exception: simd exception: iret exception: /var/log/messages -- /usr/bin/abrt-dump-oops -xtD
+root      1146     1  0 Mar12 ?        00:00:00 /usr/bin/abrt-watch-log -F Backtrace /var/log/Xorg.0.log -- /usr/bin/abrt-dump-xorg -xD
+libstor+  1149     1  0 Mar12 ?        00:01:02 /usr/bin/lsmd -d
+root      1158     1  0 Mar12 ?        00:00:53 /usr/sbin/ModemManager
+root      1160     1  0 Mar12 ?        00:53:15 /usr/sbin/irqbalance --foreground
+root      1164     1  0 Mar12 ?        00:00:29 /usr/sbin/gssproxy -D
+root      1201     1  0 Mar12 ?        00:00:00 /usr/sbin/mcelog --ignorenodev --daemon --syslog
+root      1211     1  0 Mar12 ?        00:12:33 /bin/bash /usr/sbin/ksmtuned
+root      1391     2  0 Mar12 ?        00:00:09 [kworker/9:1H]
+root      1403     2  0 Mar12 ?        00:00:00 [kworker/19:1H]
+root      1594     1  0 Mar12 ?        00:00:00 /sbin/iscsid -f -d2
+root      1596     1  0 Mar12 ?        00:30:43 /usr/bin/python2 -Es /usr/sbin/tuned -l -P
+root      1598     1  0 Mar12 ?        00:00:00 /usr/sbin/cupsd -f
+root      1599     1  0 Mar12 ?        00:01:21 /usr/sbin/sshd -D
+root      1601     1  0 Mar12 ?        00:15:46 /usr/sbin/rsyslogd -n
+root      1602     1  0 Mar12 ?        00:00:00 /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
+root      1610     2  0 Mar12 ?        00:00:00 [iscsi_eh]
+root      1626     1  0 Mar12 ?        00:00:00 /usr/sbin/libvirtd
+root      1638     1  0 Mar12 ?        00:00:00 /usr/sbin/gdm
+root      1640     1  0 Mar12 ?        00:00:01 /usr/sbin/atd -f
+root      1644     1  0 Mar12 ?        00:02:34 /usr/sbin/crond -n
+root      1677     1  0 Mar12 ?        00:00:01 rhnsd
+root      2039     1  0 Mar12 ?        00:02:17 /usr/libexec/postfix/master -w
+postfix   2042  2039  0 Mar12 ?        00:00:55 qmgr -l -t unix -u
+nobody    2113     1  0 Mar12 ?        00:00:00 /usr/sbin/dnsmasq --conf-file=/var/lib/libvirt/dnsmasq/default.conf --leasefile-ro --dhcp-script=/usr/libexec/libvirt_leaseshelper
+root      2114  2113  0 Mar12 ?        00:00:00 /usr/sbin/dnsmasq --conf-file=/var/lib/libvirt/dnsmasq/default.conf --leasefile-ro --dhcp-script=/usr/libexec/libvirt_leaseshelper
+root      2127     2  0 Mar12 ?        00:01:14 [kworker/6:1H]
+oracle    2353     1  0 Mar12 ?        03:30:18 /oracle/product/19.0.0/dbhome_1/bin/tnslsnr LISTENER -inherit
+root      2437  1638  0 Mar12 tty1     00:05:04 /usr/bin/X :0 -background none -noreset -audit 4 -verbose -auth /run/gdm/auth-for-gdm-ZnOdmk/database -seat seat0 -nolisten tcp vt1
+root      2492  1638  0 Mar12 ?        00:00:00 gdm-session-worker [pam/gdm-launch-environment]
+gdm       2496  2492  0 Mar12 ?        00:01:54 /usr/libexec/gnome-session-binary --autostart /usr/share/gdm/greeter/autostart
+gdm       2501     1  0 Mar12 ?        00:00:00 dbus-launch --exit-with-session /usr/libexec/gnome-session-binary --autostart /usr/share/gdm/greeter/autostart
+gdm       2502     1  0 Mar12 ?        00:00:00 /usr/bin/dbus-daemon --fork --print-pid 5 --print-address 7 --session
+gdm       2522     1  0 Mar12 ?        00:00:00 /usr/libexec/at-spi-bus-launcher
+gdm       2527  2522  0 Mar12 ?        00:00:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 3
+gdm       2530     1  0 Mar12 ?        00:00:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+gdm       2584  2496  0 Mar12 ?        04:49:24 /usr/bin/gnome-shell
+root      2592     1  0 Mar12 ?        00:01:09 /usr/libexec/upowerd
+gdm       2634     1  0 Mar12 ?        00:00:00 /usr/bin/pulseaudio --start --log-target=syslog
+gdm       2687  2584  0 Mar12 ?        00:05:21 ibus-daemon --xim --panel disable
+root      2688     2  0 Mar12 ?        00:00:00 [kworker/23:1H]
+gdm       2691  2687  0 Mar12 ?        00:00:00 /usr/libexec/ibus-dconf
+gdm       2694     1  0 Mar12 ?        00:00:00 /usr/libexec/ibus-x11 --kill-daemon
+gdm       2696     1  0 Mar12 ?        00:00:00 /usr/libexec/ibus-portal
+gdm       2707     1  0 Mar12 ?        00:00:00 /usr/libexec/xdg-permission-store
+root      2719     1  0 Mar12 ?        00:01:11 /usr/libexec/boltd
+root      2721     1  0 Mar12 ?        00:01:32 /usr/sbin/wpa_supplicant -u -f /var/log/wpa_supplicant.log -c /etc/wpa_supplicant/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
+root      2722     1  0 Mar12 ?        00:06:35 /usr/libexec/packagekitd
+gdm       2730  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-xsettings
+gdm       2733  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-a11y-settings
+gdm       2734  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-clipboard
+gdm       2735  2496  0 Mar12 ?        1-07:37:20 /usr/libexec/gsd-color
+gdm       2738  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-datetime
+gdm       2739  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-housekeeping
+gdm       2740  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-keyboard
+gdm       2741  2496  0 Mar12 ?        00:00:53 /usr/libexec/gsd-media-keys
+gdm       2744  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-mouse
+gdm       2746  2496  0 Mar12 ?        00:01:17 /usr/libexec/gsd-power
+gdm       2747  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-print-notifications
+gdm       2750  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-rfkill
+gdm       2753  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-screensaver-proxy
+gdm       2757  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-sharing
+gdm       2762  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-smartcard
+gdm       2767  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-sound
+gdm       2768  2496  0 Mar12 ?        00:00:00 /usr/libexec/gsd-wacom
+colord    2797     1  0 Mar12 ?        00:00:00 /usr/libexec/colord
+gdm       2852  2687  0 Mar12 ?        00:00:00 /usr/libexec/ibus-engine-simple
+root      2871     2  0 Mar12 ?        00:00:05 [kworker/5:1H]
+oracle    2873     1  0 Mar12 ?        00:29:53 ora_pmon_VES081
+oracle    2875     1  0 Mar12 ?        00:08:06 ora_clmn_VES081
+oracle    2877     1  0 Mar12 ?        01:00:57 ora_psp0_VES081
+oracle    2879     1  0 Mar12 ?        1-13:16:56 ora_vktm_VES081
+oracle    2883     1  0 Mar12 ?        00:12:19 ora_gen0_VES081
+oracle    2886     1  0 Mar12 ?        00:07:53 ora_mman_VES081
+oracle    2890     1  0 Mar12 ?        01:43:29 ora_gen1_VES081
+oracle    2893     1  0 Mar12 ?        00:16:51 ora_diag_VES081
+oracle    2895     1  0 Mar12 ?        00:10:20 ora_ofsd_VES081
+oracle    2898     1  0 Mar12 ?        04:53:09 ora_dbrm_VES081
+oracle    2900     1  0 Mar12 ?        17:35:12 ora_vkrm_VES081
+oracle    2902     1  0 Mar12 ?        00:17:37 ora_svcb_VES081
+oracle    2904     1  0 Mar12 ?        00:27:50 ora_pman_VES081
+oracle    2906     1  0 Mar12 ?        06:58:23 ora_dia0_VES081
+oracle    2908     1  0 Mar12 ?        00:13:59 ora_dbw0_VES081
+oracle    2910     1  0 Mar12 ?        00:13:38 ora_dbw1_VES081
+oracle    2912     1  0 Mar12 ?        00:13:34 ora_dbw2_VES081
+oracle    2914     1  0 Mar12 ?        00:49:09 ora_lgwr_VES081
+oracle    2916     1  0 Mar12 ?        01:23:43 ora_ckpt_VES081
+oracle    2918     1  0 Mar12 ?        01:31:19 ora_lg00_VES081
+oracle    2920     1  0 Mar12 ?        00:06:29 ora_smon_VES081
+oracle    2922     1  0 Mar12 ?        00:11:05 ora_lg01_VES081
+oracle    2924     1  0 Mar12 ?        00:36:33 ora_smco_VES081
+oracle    2926     1  0 Mar12 ?        00:04:30 ora_reco_VES081
+oracle    2930     1  0 Mar12 ?        00:10:25 ora_lreg_VES081
+oracle    2934     1  0 Mar12 ?        00:07:27 ora_pxmn_VES081
+oracle    2938     1  0 Mar12 ?        01:08:19 ora_mmon_VES081
+oracle    2940     1  0 Mar12 ?        00:07:25 ora_mmnl_VES081
+oracle    2942     1  0 Mar12 ?        00:05:37 ora_d000_VES081
+oracle    2944     1  0 Mar12 ?        00:04:38 ora_s000_VES081
+oracle    2946     1  0 Mar12 ?        00:05:08 ora_tmon_VES081
+root      2949     2  0 Mar12 ?        00:00:00 [kworker/13:1H]
+root      3012     2  0 Aug02 ?        00:00:00 [kworker/20:1]
+oracle    3072     1  0 Mar12 ?        00:05:03 ora_tt00_VES081
+oracle    3074     1  0 Mar12 ?        00:04:31 ora_tt01_VES081
+oracle    3076     1  0 Mar12 ?        00:14:11 ora_tt02_VES081
+oracle    3091     1  0 Mar12 ?        00:04:46 ora_aqpc_VES081
+oracle    3093     1  0 Mar12 ?        03:18:59 ora_cjq0_VES081
+root      3097     2  0 Mar12 ?        00:00:06 [kworker/10:1H]
+oracle    3099     1  0 Mar12 ?        00:08:17 ora_w002_VES081
+oracle    3541     1  0 Mar12 ?        00:05:21 ora_qm02_VES081
+oracle    3548     1  0 Mar12 ?        00:03:45 ora_q003_VES081
+oracle    3747     1  0 Mar12 ?        00:05:25 ora_q00j_VES081
+root      3778     2  0 07:26 ?        00:00:00 [kworker/17:1]
+oracle    4007     1  0 Sep06 ?        00:00:24 ora_w003_VES081
+oracle    4072     1  0 Sep06 ?        00:00:24 ora_w00p_VES081
+root      4303     2  0 Sep14 ?        00:00:00 [kworker/13:0]
+root      4417     2  0 Sep11 ?        00:00:00 [kworker/22:2]
+oracle    4527     1  0 Sep05 ?        00:00:24 ora_w00a_VES081
+oracle    5291     1  0 Mar29 ?        00:07:51 ora_w00k_VES081
+root      5470     2  0 Mar12 ?        00:00:00 [kworker/22:1H]
+root      6227     2  0 07:32 ?        00:00:00 [kworker/16:0]
+root      6515     2  0 Mar12 ?        00:00:00 [kworker/12:1H]
+root      6527     2  0 08:45 ?        00:00:00 [kworker/5:2]
+root      6614     2  0 06:14 ?        00:00:00 [kworker/4:2]
+root      7996     2  0 Aug31 ?        00:00:00 [kworker/23:1]
+root      9014     2  0 Mar12 ?        00:00:00 [kworker/17:1H]
+root      9898     2  0 Sep13 ?        00:00:00 [kworker/8:0]
+root     10001     2  0 Aug06 ?        00:01:03 [kworker/8:1]
+root     10077     2  0 03:15 ?        00:00:00 [kworker/13:1]
+root     10269     2  0 13:53 ?        00:00:00 [kworker/u48:2]
+oracle   10526     1  0 Aug11 ?        00:01:35 ora_w00c_VES081
+oracle   10590     1  0 Aug11 ?        00:01:31 ora_w00n_VES081
+oracle   10602     1  0 Aug11 ?        00:01:31 ora_w00j_VES081
+oracle   10703     1  0 Sep12 ?        00:05:33 ora_m005_VES081
+root     11184     2  0 Mar13 ?        00:00:00 [kworker/18:1H]
+root     11371     2  0 Sep12 ?        00:00:00 [kworker/11:0]
+root     11817     2  0 Jul26 ?        00:01:13 [kworker/7:1]
+root     11908     2  0 03:45 ?        00:00:00 [kworker/16:1]
+root     12355     2  0 Mar12 ?        00:00:00 [kworker/21:1H]
+root     12847     2  0 13:58 ?        00:00:00 [kworker/u48:0]
+oracle   13428     1  0 Aug28 ?        00:00:45 ora_w00l_VES081
+root     13524     2  0 Aug13 ?        00:00:25 [kworker/15:2]
+root     13773     2  0 Jul09 ?        00:01:08 [kworker/14:1]
+root     14040     2  0 Aug30 ?        00:00:28 [kworker/9:1]
+oracle   14108     1  0 Sep14 ?        00:02:27 ora_m001_VES081
+root     14346     2  0 04:25 ?        00:00:00 [kworker/4:0]
+root     14952     2  0 04:35 ?        00:00:00 [kworker/2:2]
+oracle   15510     1  0 Aug02 ?        00:01:57 ora_w00i_VES081
+root     15609     2  0 May28 ?        00:00:20 [kworker/23:0]
+root     15745     2  0 14:04 ?        00:00:00 [kworker/u50:1]
+root     16052     2  0 14:05 ?        00:00:00 [kworker/1:2]
+root     16396     2  0 Jul31 ?        00:01:14 [kworker/10:1]
+root     16714     2  0 Aug02 ?        00:00:00 [kworker/21:0]
+oracle   17221     1  0 Sep06 ?        00:00:24 ora_w00e_VES081
+oracle   17620     1  0 01:30 ?        00:01:03 ora_m000_VES081
+oracle   17910     1  0 Apr19 ?        00:06:52 ora_w00g_VES081
+root     17990     2  0 05:25 ?        00:00:00 [kworker/12:1]
+root     18203     2  0 14:10 ?        00:00:00 [kworker/0:1]
+root     18205     2  0 14:10 ?        00:00:00 [kworker/6:2]
+root     18534     2  0 13:08 ?        00:00:00 [kworker/u49:0]
+store    19476     1  1 05:39 ?        00:06:29 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-amsrcv.jar
+root     19599     2  0 Mar12 ?        00:00:00 [kworker/16:1H]
+root     19660     2  0 14:13 ?        00:00:00 [kworker/3:2]
+store    20032     1  0 05:40 ?        00:01:41 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-posirt.jar
+store    20117     1  0 05:40 ?        00:01:19 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-possnd.jar
+store    20255     1  0 05:40 ?        00:01:44 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-codercv.jar
+store    20349     1  0 05:40 ?        00:02:00 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-transnd.jar
+store    20434     1  0 05:40 ?        00:01:42 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-tranrcv.jar
+store    20527     1  0 05:40 ?        00:01:59 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-transync.jar
+store    20645     1  0 05:40 ?        00:01:36 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-gmdinq.jar
+store    20788     1  0 05:40 ?        00:01:20 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-trancall.jar
+store    20885     1  0 05:40 ?        00:01:23 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-mgotit.jar
+store    20973     1  0 05:40 ?        00:01:29 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-mvnpay.jar
+store    21068     1  0 05:40 ?        00:01:25 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-mzalo.jar
+store    21190     1  0 05:40 ?        00:01:26 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-mshopee.jar
+store    21332     1  0 05:40 ?        00:01:33 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-mlottegift.jar
+store    21426     1  0 05:40 ?        00:01:29 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-mmomo.jar
+root     21495     2  0 14:15 ?        00:00:00 [kworker/u50:0]
+store    21516     1  0 05:40 ?        00:01:25 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-minfoplus.jar
+store    21624     1  0 05:40 ?        00:01:11 java -jar -Dspring.profiles.active=prod ../jar/lmgs-stm-mbnpl.jar
+oracle   21680     1  0 Jul01 ?        00:03:24 ora_w008_VES081
+oracle   21684     1  0 Jul01 ?        00:03:18 ora_w00h_VES081
+oracle   21694     1  0 Jul01 ?        00:03:18 ora_w007_VES081
+root     21740     2  0 Sep11 ?        00:00:00 [kworker/9:2]
+root     21785     2  0 14:15 ?        00:00:00 [kworker/6:0]
+root     21788     2  0 14:15 ?        00:00:00 [kworker/1:0]
+root     21907     2  0 Sep11 ?        00:00:00 [kworker/7:0]
+root     22200     2  0 Sep11 ?        00:00:00 [kworker/19:2]
+oracle   22460     1  0 Sep08 ?        00:14:20 ora_m003_VES081
+root     23437     2  0 14:19 ?        00:00:00 [kworker/3:1]
+postfix  23706  2039  0 13:15 ?        00:00:00 pickup -l -t unix -u
+root     23979     2  0 12:23 ?        00:00:00 [kworker/u49:1]
+root     24345     2  0 14:20 ?        00:00:00 [kworker/6:3]
+oracle   24448     1  0 14:20 ?        00:00:00 oracleVES081 (LOCAL=NO)
+root     24472     2  0 14:21 ?        00:00:00 [kworker/1:1]
+root     24647     2  0 14:21 ?        00:00:00 [kworker/0:0]
+oracle   24745     1  0 14:21 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   24837     1  0 14:21 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   24845     1  0 14:21 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   24946     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   24952     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   24957     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   24959     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25048     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25061     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25067     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25089     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25095     1  1 14:22 ?        00:00:06 oracleVES081 (LOCAL=NO)
+root     25158     2  0 Mar13 ?        00:00:00 [kworker/15:1H]
+oracle   25166     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25172     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25192     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25259     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25283     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25288     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25293     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25302     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25306     1  0 14:22 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25325     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25329     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25333     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25338     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25343     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25345     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25427     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+root     25433     2  0 Mar12 ?        00:00:00 [kworker/20:1H]
+oracle   25439     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25443     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25448     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25466     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25470     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25474     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25476     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25479     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25483     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25488     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25490     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25493     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25496     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+root     25497     2  0 Aug30 ?        00:00:00 [kworker/18:2]
+oracle   25580     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25584     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25589     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25594     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25599     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25601     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25605     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25611     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25622     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25626     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25631     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25649     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25653     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25655     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25659     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25664     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25670     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25674     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25677     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25679     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25684     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25686     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25689     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25693     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25696     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25700     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25704     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25708     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25712     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25721     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25723     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25725     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25801     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25807     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25813     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25817     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25819     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25837     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25839     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25841     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25845     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25849     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25854     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25857     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25862     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25866     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25942     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25944     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25946     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25950     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25955     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25959     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+root     25964     2  0 Sep14 ?        00:00:00 [kworker/15:0]
+oracle   25965     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25970     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25973     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25978     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25980     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25985     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25987     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25989     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25994     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25996     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   25999     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26001     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26019     1  0 14:23 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26028     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26032     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26033     1  0 Sep12 ?        00:07:00 ora_m004_VES081
+oracle   26038     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26049     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26053     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26055     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26058     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26061     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26065     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26070     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26076     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26078     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26082     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26086     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26089     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26104     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26108     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26117     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26121     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26196     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26200     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26209     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26213     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26217     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26222     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26226     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26231     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26233     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26239     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26241     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26243     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26248     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26321     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26331     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26336     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26340     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26342     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26348     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26352     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26362     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26384     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26389     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26393     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26398     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26402     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26411     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26474     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26491     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26500     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26502     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26507     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26511     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26515     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26595     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26605     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26609     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26613     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26618     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26620     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26626     1  0 14:24 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26655     1  0 14:25 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26735     1  0 14:25 ?        00:00:00 oracleVES081 (LOCAL=NO)
+oracle   26746     1  0 14:25 ?        00:00:00 oracleVES081 (LOCAL=NO)
+root     26980     2  0 14:25 ?        00:00:00 [kworker/6:1]
+root     27296     2  0 Sep14 ?        00:00:00 [kworker/14:0]
+root     27345     2  0 Jul24 ?        00:00:12 [kworker/21:2]
+oracle   27780     1  0 Jun12 ?        00:04:20 ora_w000_VES081
+root     27845     2  0 14:27 ?        00:00:00 [kworker/0:2]
+root     28854  1211  0 14:29 ?        00:00:00 sleep 60
+root     28876     2  0 Mar12 ?        00:00:00 [kworker/14:1H]
+root     29080  1599  0 14:29 ?        00:00:00 sshd: oracle [priv]
+root     29155     2  0 14:29 ?        00:00:00 [kworker/3:0]
+oracle   29164 29080  0 14:29 ?        00:00:00 sshd: oracle@pts/0
+oracle   29168 29164  0 14:29 pts/0    00:00:00 -bash
+root     29202     1  0 14:29 ?        00:00:00 /usr/sbin/abrt-dbus -t133
+root     29264     2  0 Sep11 ?        00:00:00 [kworker/10:2]
+oracle   29331 29168  4 14:29 pts/0    00:00:00 sqlplus   as sysdba @edb360.sql T 1-6 custom_config_01.sql
+oracle   29332 29331 66 14:29 ?        00:00:02 oracleVES081 (DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))
+oracle   29342 29331  0 14:29 pts/0    00:00:00 /bin/bash -c ps -ef >> 00004_edb360_1a_6z_711081_log3.txt
+oracle   29343 29342  0 14:29 pts/0    00:00:00 ps -ef
+root     30142     2  0 Sep14 ?        00:00:20 [kworker/5:0]
+root     31255     2  0 Aug22 ?        00:00:05 [kworker/12:2]
+root     31440     2  0 Apr22 ?        00:00:19 [kworker/18:0]
+oracle   32334     1  0 Aug30 ?        00:00:41 ora_w00o_VES081
+oracle   32344     1  0 Aug30 ?        00:00:41 ora_w009_VES081
+oracle   32402     1  0 Aug30 ?        00:00:42 ora_w00f_VES081
+oracle   32407     1  0 Aug30 ?        00:00:41 ora_w00d_VES081
+root     32601     2  0 Sep12 ?        00:00:02 [kworker/17:0]
+  adding: awr_ash_pre_check_VES081.txt (deflated 79%)
+  adding: verify_stats_wr_sys_VES081.txt (deflated 95%)
+	zip warning: name not matched: escp_output_ve-s08-1_20250915.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+  adding: 00000_readme_first_436.txt (deflated 83%)
+  adding: sorttable.js (deflated 70%)
+  adding: edb360_img.jpg (deflated 36%)
+  adding: edb360_favicon.ico (deflated 15%)
+-rw-r-----. 1 oracle dba 193597 Sep 15 14:29 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:29:58 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+  adding: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 90%)
+  adding: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+  adding: 00001_edb360_1a_6z_711081_index.html (deflated 57%)
+  adding: 00009_edb360_1a_6z_711081_1a_1_system_under_observation.html (deflated 68%)
+  adding: 00003_edb360_1a_6z_711081_log2.txt (deflated 24%)
+	zip warning: name not matched: sqlmon_d8uuyf8kta65w_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 57%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 79%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 57%)
+  adding: 00010_edb360_1a_6z_711081_1a_2_identification.html (deflated 70%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 45%)
+	zip warning: name not matched: sqlmon_8qbqznsysdv3h_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 58%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 79%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 58%)
+  adding: 00011_edb360_1a_6z_711081_1a_3_pluggable_databases.html (deflated 66%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 52%)
+	zip warning: name not matched: sqlmon_5khpsqhw5nfh3_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 59%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 59%)
+  adding: 00012_edb360_1a_6z_711081_1a_4_pluggable_databases_saved_states.html (deflated 60%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 60%)
+	zip warning: name not matched: sqlmon_4hfdcxzb0wg0k_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 60%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 60%)
+  adding: 00013_edb360_1a_6z_711081_1a_5_registry_sql_patch.html (deflated 81%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 61%)
+	zip warning: name not matched: sqlmon_1z35w596d14rj_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 60%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 61%)
+  adding: 00014_edb360_1a_6z_711081_1a_6_registry_history.html (deflated 61%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 63%)
+	zip warning: name not matched: sqlmon_2wn4px394bnm7_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 61%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 61%)
+  adding: 00015_edb360_1a_6z_711081_1a_7_database_links.html (deflated 64%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 64%)
+	zip warning: name not matched: sqlmon_9rpt1u9q7cm0t_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 62%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 62%)
+  adding: 00016_edb360_1a_6z_711081_1a_8_all_parameters.html (deflated 86%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 65%)
+	zip warning: name not matched: sqlmon_f4kjbr6ukjww4_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 62%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 62%)
+  adding: 00017_edb360_1a_6z_711081_1a_9_pdb_parameter_file.html (deflated 60%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 66%)
+	zip warning: name not matched: sqlmon_9sajmcq45anjx_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 63%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 63%)
+  adding: 00018_edb360_1a_6z_711081_1a_10_memory_configuration.html (deflated 75%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 67%)
+	zip warning: name not matched: sqlmon_as1gtvs59qxt3_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 63%)
+-rw-r-----. 1 oracle dba 663062 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:00 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 91%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 63%)
+  adding: 00019_edb360_1a_6z_711081_1b_11_profiles.html (deflated 77%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 67%)
+	zip warning: name not matched: sqlmon_2ws65bnnjtr0b_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 64%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 63%)
+  adding: 00020_edb360_1a_6z_711081_1b_12_users_with_default_password.html (deflated 58%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 67%)
+	zip warning: name not matched: sqlmon_5ys4rspc0r2ba_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 64%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 64%)
+  adding: 00021_edb360_1a_6z_711081_1b_13_package_to_public.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 67%)
+	zip warning: name not matched: sqlmon_gtntfn4gfbgs9_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 64%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 79%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 64%)
+  adding: 00022_edb360_1a_6z_711081_1b_14_users_with_sensitive_roles_granted.html (deflated 59%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 68%)
+	zip warning: name not matched: sqlmon_cucwpmjumsrk1_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 64%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 79%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 64%)
+  adding: 00023_edb360_1a_6z_711081_1b_15_users_with_objects_in_tablespace_system_sysaux.html (deflated 86%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 68%)
+	zip warning: name not matched: sqlmon_5zaxt0fbpthf0_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 65%)
+-rw-r-----. 1 oracle dba 891726 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:03 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 91%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 79%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 65%)
+  adding: 00024_edb360_1a_6z_711081_1d_16_memory_resize_operations_hist.html (deflated 61%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 68%)
+	zip warning: name not matched: sqlmon_4wt4bq73shq7n_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 65%)
+-rw-r-----. 1 oracle dba 924457 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:03 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 91%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 79%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 65%)
+  adding: 00025_edb360_1a_6z_711081_1e_17_cpu_demand_series_percentile_for_instance_1.html (deflated 76%)
+  adding: 00026_edb360_1a_6z_711081_1e_17_cpu_demand_series_percentile_for_instance_1_line_chart.html (deflated 74%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 70%)
+	zip warning: name not matched: sqlmon_ac54q31x773ub_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 65%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 66%)
+  adding: 00027_edb360_1a_6z_711081_1e_18_active_sessions_percentile_for_instance_1.html (deflated 76%)
+  adding: 00028_edb360_1a_6z_711081_1e_18_active_sessions_percentile_for_instance_1_line_chart.html (deflated 74%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 72%)
+	zip warning: name not matched: sqlmon_2upsxmknbab65_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 67%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 80%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 67%)
+  adding: 00029_edb360_1a_6z_711081_1e_19_tablespace_size_series.html (deflated 63%)
+  adding: 00030_edb360_1a_6z_711081_1e_19_tablespace_size_series_line_chart.html (deflated 62%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 73%)
+	zip warning: name not matched: sqlmon_1jtz5j9njssns_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 67%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 81%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 67%)
+  adding: 00031_edb360_1a_6z_711081_1e_20_reads_per_second_series_for_instance_1.html (deflated 80%)
+  adding: 00032_edb360_1a_6z_711081_1e_20_reads_per_second_series_for_instance_1_line_chart.html (deflated 78%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 74%)
+	zip warning: name not matched: sqlmon_459vcxybhtwaz_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 68%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 83%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 68%)
+  adding: 00033_edb360_1a_6z_711081_1e_21_rmbps_series_for_instance_1.html (deflated 79%)
+  adding: 00034_edb360_1a_6z_711081_1e_21_rmbps_series_for_instance_1_line_chart.html (deflated 78%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 75%)
+	zip warning: name not matched: sqlmon_c09p8jq6nk0wf_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 69%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 85%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 69%)
+  adding: 00035_edb360_1a_6z_711081_1e_22_writes_per_second_series_for_instance_1.html (deflated 80%)
+  adding: 00036_edb360_1a_6z_711081_1e_22_writes_per_second_series_for_instance_1_line_chart.html (deflated 78%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_82h2ffrsp3xx2_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 70%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 70%)
+  adding: 00037_edb360_1a_6z_711081_1e_23_wmbps_series_for_instance_1.html (deflated 79%)
+  adding: 00038_edb360_1a_6z_711081_1e_23_wmbps_series_for_instance_1_line_chart.html (deflated 78%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_29uywpy982bjk_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+-rw-r-----. 1 oracle dba 1606162 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:06 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+  adding: 00039_edb360_1a_6z_711081_2a_24_invalid_objects.html (deflated 65%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_g5v9u0p68cb0h_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+  adding: 00040_edb360_1a_6z_711081_2a_25_nonindexed_fk_constraints.html (deflated 88%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_a8a4u0s67a3sk_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+  adding: 00041_edb360_1a_6z_711081_2a_26_redundant_indexes2.html (deflated 72%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_9zt5ctbv0ryqw_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+  adding: 00042_edb360_1a_6z_711081_2a_27_jobs.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_442bjmwyvgqra_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+  adding: 00043_edb360_1a_6z_711081_2a_28_scheduler_jobs.html (deflated 79%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_ffkwb8crsgpv9_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+  adding: 00044_edb360_1a_6z_711081_2a_29_scheduler_jobs_pdbs.html (deflated 91%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_c1535ajnkcfyn_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+  adding: 00045_edb360_1a_6z_711081_2a_30_scheduler_windows.html (deflated 72%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_0nhfs7a7abbpt_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 71%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 72%)
+  adding: 00046_edb360_1a_6z_711081_2a_31_scheduler_windows_pdbs.html (deflated 78%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_40pwnft10uvhr_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 72%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 72%)
+  adding: 00047_edb360_1a_6z_711081_2a_32_scheduler_window_group_members.html (deflated 70%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_ahr7avby4xaxp_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 72%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 72%)
+  adding: 00048_edb360_1a_6z_711081_2a_33_scheduler_window_group_members_pdbs.html (deflated 76%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_43nfjn30y4sa0_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 72%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 72%)
+  adding: 00049_edb360_1a_6z_711081_2a_34_automated_maintenance_tasks.html (deflated 65%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_9hkpkwg6byc6z_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 72%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 72%)
+  adding: 00050_edb360_1a_6z_711081_2a_35_automated_maintenance_tasks_pdbs.html (deflated 72%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_14hvq33k50un5_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 73%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 73%)
+  adding: 00051_edb360_1a_6z_711081_2a_36_automated_maintenance_tasks_history.html (deflated 62%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_4bcqc9cac36p5_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 73%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 73%)
+  adding: 00052_edb360_1a_6z_711081_2a_37_scheduler_jobs_run_details.html (deflated 67%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_5wxwv20r3rszx_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 73%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 73%)
+  adding: 00053_edb360_1a_6z_711081_2a_38_automated_maintenance_tasks_history_pdbs.html (deflated 91%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_b5x5xxdtgdn25_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 73%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 73%)
+  adding: 00054_edb360_1a_6z_711081_2a_39_top_sql_by_temp_space_usage.html (deflated 75%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_ckg2pkq0vc5z2_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 73%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 73%)
+  adding: 00055_edb360_1a_6z_711081_2a_40_top_sql_by_pga_allocated_memory.html (deflated 75%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_c6cr7ymkybw3s_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00056_edb360_1a_6z_711081_2a_41_tables_without_indexes.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_4vxy5s0wa56kj_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00057_edb360_1a_6z_711081_2a_42_tables_without_primary_key_constraints.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_b7n9pbwm9x2q9_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+-rw-r-----. 1 oracle dba 2457645 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:26 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00058_edb360_1a_6z_711081_2b_43_tablespace_usage.html (deflated 72%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_gcqn6z8kzy48v_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00059_edb360_1a_6z_711081_2b_44_data_files.html (deflated 70%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_41bgxkg86gwps_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00060_edb360_1a_6z_711081_2b_45_kernel_io_taking_long.html (deflated 61%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_f5pu3atgcanw1_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00061_edb360_1a_6z_711081_2b_46_log_writer_io_taking_long.html (deflated 82%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_6mq3hbcpdau28_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00062_edb360_1a_6z_711081_2b_47_io_taking_long.html (deflated 72%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_1h53xwwybsgmm_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00063_edb360_1a_6z_711081_2b_48_tablespace_growth_per_day.html (deflated 70%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_da0tjt2zdmzvk_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00064_edb360_1a_6z_711081_2b_49_segment_shrink_recommendations.html (deflated 84%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_fsws7w10hbc34_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00065_edb360_1a_6z_711081_2b_50_objects_in_recycle_bin.html (deflated 61%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_cq25v3v702xxw_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+-rw-r-----. 1 oracle dba 2783696 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:28 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00066_edb360_1a_6z_711081_2c_51_asm_disk_group.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_bxtbafg8msbcv_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00067_edb360_1a_6z_711081_2c_52_asm_disk.html (deflated 72%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_ctp9ydbxfdytz_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+-rw-r-----. 1 oracle dba 2851977 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:29 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00068_edb360_1a_6z_711081_2d_53_block_corruption.html (deflated 59%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_0fd0g8xtbv53x_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00069_edb360_1a_6z_711081_2d_54_rman_backup_job_details.html (deflated 65%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_921b7xhyz2p3b_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00070_edb360_1a_6z_711081_2d_55_fast_recovery_area.html (deflated 59%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_5xddjvpa41wjy_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00071_edb360_1a_6z_711081_2d_56_redo_log.html (deflated 68%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_8pkuwcdydfg19_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00072_edb360_1a_6z_711081_2d_57_redo_log_files.html (deflated 72%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_6cgr995h0x8nf_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00073_edb360_1a_6z_711081_2d_58_nologging_objects.html (deflated 81%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_9srdjbhq5zz4p_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 85%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00074_edb360_1a_6z_711081_2d_59_log_switch_frequency_for_instance_1.html (deflated 87%)
+  adding: 00075_edb360_1a_6z_711081_2d_59_log_switch_frequency_for_instance_1_line_chart.html (deflated 61%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_ccn5zg17xrs68_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+-rw-r-----. 1 oracle dba 3304990 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:32 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 85%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00076_edb360_1a_6z_711081_3a_60_resource_plan_directives.html (deflated 82%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_5dt2rdb4mujrg_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 85%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 74%)
+  adding: 00077_edb360_1a_6z_711081_3a_61_resource_plans.html (deflated 75%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_9nud4pfmb60bw_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+  adding: 00078_edb360_1a_6z_711081_3a_62_resource_plans_for_pdbs.html (deflated 58%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_4rqmns843b39v_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+  adding: 00079_edb360_1a_6z_711081_3a_63_resource_plan_history.html (deflated 61%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_ak9674nqnp5v2_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+-rw-r-----. 1 oracle dba 3434720 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:32 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 85%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+  adding: 00080_edb360_1a_6z_711081_3c_64_default_values_for_dbmsstats.html (deflated 85%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_gtqkfs07yp52q_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 85%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+  adding: 00081_edb360_1a_6z_711081_3c_65_tables_with_missing_stats.html (deflated 64%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_3kcbgvusmt3cf_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+  adding: 00082_edb360_1a_6z_711081_3c_66_indexes_with_missing_stats.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_gbd1rtw0mzfr2_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+  adding: 00083_edb360_1a_6z_711081_3c_67_tables_with_stale_stats.html (deflated 80%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_8wxmrn8f5stvd_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+  adding: 00084_edb360_1a_6z_711081_3c_68_indexes_with_stale_stats.html (deflated 80%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 76%)
+	zip warning: name not matched: sqlmon_5rcwj2cyddk9p_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+-rw-r-----. 1 oracle dba 4869944 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:43 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+  adding: 00085_edb360_1a_6z_711081_3e_69_cpu_busy_and_idle_times_percent_for_instance_1.html (deflated 63%)
+  adding: 00086_edb360_1a_6z_711081_3e_69_cpu_busy_and_idle_times_percent_for_instance_1_line_chart.html (deflated 61%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_9gh9741zzq0nt_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+  adding: 00087_edb360_1a_6z_711081_3e_70_cpu_user_and_sys_times_percent_for_instance_1.html (deflated 63%)
+  adding: 00088_edb360_1a_6z_711081_3e_70_cpu_user_and_sys_times_percent_for_instance_1_line_chart.html (deflated 61%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_6ah08r2j4jrj6_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 75%)
+  adding: 00089_edb360_1a_6z_711081_3e_71_undo_statistics_for_instance_1.html (deflated 66%)
+  adding: 00090_edb360_1a_6z_711081_3e_71_undo_statistics_for_instance_1_line_chart.html (deflated 65%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_9mtush4t663mc_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+  adding: 00091_edb360_1a_6z_711081_3e_72_sql_area_statistics_for_instance_1.html (deflated 64%)
+  adding: 00092_edb360_1a_6z_711081_3e_72_sql_area_statistics_for_instance_1_line_chart.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 77%)
+	zip warning: name not matched: sqlmon_37znf6xhtt8qf_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+  adding: 99810_edb360_1a_6z_711081_chart_setup_driver1.sql (deflated 77%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+  adding: 00093_edb360_1a_6z_711081_3e_73_cpu_rsrc_mgr_wait_time_per_instance.html (deflated 63%)
+  adding: 00094_edb360_1a_6z_711081_3e_73_cpu_rsrc_mgr_wait_time_per_instance_line_chart.html (deflated 61%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 78%)
+	zip warning: name not matched: sqlmon_bpg11pvcukf2r_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+  adding: 00095_edb360_1a_6z_711081_3e_74_os_cpu_wait_time_per_instance.html (deflated 63%)
+  adding: 00096_edb360_1a_6z_711081_3e_74_os_cpu_wait_time_per_instance_line_chart.html (deflated 62%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 78%)
+	zip warning: name not matched: sqlmon_77uqysaj0zsdz_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+-rw-r-----. 1 oracle dba 5326086 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:45 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+  adding: 00097_edb360_1a_6z_711081_3h_75_sql_ordered_by_physical_reads.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 78%)
+	zip warning: name not matched: sqlmon_9w414yhcymh3a_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+  adding: 00098_edb360_1a_6z_711081_3h_76_sql_ordered_by_physical_reads_time_series.html (deflated 76%)
+  adding: 00099_edb360_1a_6z_711081_3h_76_sql_ordered_by_physical_reads_time_series_line_chart.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 78%)
+	zip warning: name not matched: sqlmon_50uabj20wrj8p_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+  adding: 00100_edb360_1a_6z_711081_3h_77_sql_ordered_by_direct_writes.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 78%)
+	zip warning: name not matched: sqlmon_87sawaq4xrvj8_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 76%)
+  adding: 00101_edb360_1a_6z_711081_3h_78_sql_ordered_by_direct_writes_time_series.html (deflated 76%)
+  adding: 00102_edb360_1a_6z_711081_3h_78_sql_ordered_by_direct_writes_time_series_line_chart.html (deflated 74%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 78%)
+	zip warning: name not matched: sqlmon_50uabj20wrj8p_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+  adding: 00103_edb360_1a_6z_711081_3h_79_sql_blocking_sql.html (deflated 77%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 78%)
+	zip warning: name not matched: sqlmon_7n9nq424umwh2_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+-rw-r-----. 1 oracle dba 5534201 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:46 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+  adding: 00104_edb360_1a_6z_711081_4a_80_sga_statistics_for_instance_1.html (deflated 67%)
+  adding: 00105_edb360_1a_6z_711081_4a_80_sga_statistics_for_instance_1_line_chart.html (deflated 65%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 79%)
+	zip warning: name not matched: sqlmon_dt3d4hz1789db_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+-rw-r-----. 1 oracle dba 5618850 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:46 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+  adding: 00106_edb360_1a_6z_711081_4b_81_pga_statistics_for_instance_1.html (deflated 72%)
+  adding: 00107_edb360_1a_6z_711081_4b_81_pga_statistics_for_instance_1_line_chart.html (deflated 70%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 79%)
+	zip warning: name not matched: sqlmon_5jwgdn3ux7ka6_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+-rw-r-----. 1 oracle dba 5738363 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:47 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+  adding: 00108_edb360_1a_6z_711081_4c_82_memory_statistics_for_instance_1.html (deflated 69%)
+  adding: 00109_edb360_1a_6z_711081_4c_82_memory_statistics_for_instance_1_line_chart.html (deflated 67%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 79%)
+	zip warning: name not matched: sqlmon_51rn5uwv2gn7n_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+-rw-r-----. 1 oracle dba 5837765 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:48 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+  adding: 99850_edb360_1a_6z_711081_chart_setup_driver3.sql (deflated 76%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+  adding: 00110_edb360_1a_6z_711081_4e_83_stm_background_cpu_time_per_instance.html (deflated 74%)
+  adding: 00111_edb360_1a_6z_711081_4e_83_stm_background_cpu_time_per_instance_line_chart.html (deflated 72%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 79%)
+	zip warning: name not matched: sqlmon_38adunnc5uq10_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+-rw-r-----. 1 oracle dba 5940831 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:48 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+  adding: 99870_edb360_1a_6z_711081_chart_setup_driver4.sql (deflated 76%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+  adding: 00112_edb360_1a_6z_711081_4f_84_user_io_wait_latency_histogram.html (deflated 72%)
+  adding: 00113_edb360_1a_6z_711081_4f_84_user_io_wait_latency_histogram_line_chart.html (deflated 70%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 79%)
+	zip warning: name not matched: sqlmon_dcvqt635w4nf6_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 77%)
+  adding: 00114_edb360_1a_6z_711081_4f_85_system_io_wait_latency_histogram.html (deflated 72%)
+  adding: 00115_edb360_1a_6z_711081_4f_85_system_io_wait_latency_histogram_line_chart.html (deflated 70%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 79%)
+	zip warning: name not matched: sqlmon_dwm80xxu0hpy8_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+-rw-r-----. 1 oracle dba 6069902 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:49 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 86%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+  adding: 00116_edb360_1a_6z_711081_4g_86_top_5_wait_events.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 79%)
+	zip warning: name not matched: sqlmon_8pxrsg6xk8k79_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 87%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+  adding: 00117_edb360_1a_6z_711081_4g_87__latency_histogram.html (deflated 72%)
+  adding: 00118_edb360_1a_6z_711081_4g_87__latency_histogram_line_chart.html (deflated 69%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 79%)
+	zip warning: name not matched: sqlmon_1pp155yht7y65_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 87%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+  adding: 00119_edb360_1a_6z_711081_4g_88__latency_histogram.html (deflated 72%)
+  adding: 00120_edb360_1a_6z_711081_4g_88__latency_histogram_line_chart.html (deflated 69%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 80%)
+	zip warning: name not matched: sqlmon_3trsvz7yswgvt_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 87%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+  adding: 00121_edb360_1a_6z_711081_4g_89__latency_histogram.html (deflated 72%)
+  adding: 00122_edb360_1a_6z_711081_4g_89__latency_histogram_line_chart.html (deflated 69%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 80%)
+	zip warning: name not matched: sqlmon_2fgqssm5pdca2_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 87%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+  adding: 00123_edb360_1a_6z_711081_4g_90__latency_histogram.html (deflated 72%)
+  adding: 00124_edb360_1a_6z_711081_4g_90__latency_histogram_line_chart.html (deflated 69%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 80%)
+	zip warning: name not matched: sqlmon_dqs04zkzd3ct0_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 87%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+  adding: 00125_edb360_1a_6z_711081_4g_91__latency_histogram.html (deflated 72%)
+  adding: 00126_edb360_1a_6z_711081_4g_91__latency_histogram_line_chart.html (deflated 69%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 80%)
+	zip warning: name not matched: sqlmon_1j071qadwdhqv_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+-rw-r-----. 1 oracle dba 6331703 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:50 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 87%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+  adding: 00127_edb360_1a_6z_711081_4i_92_top_5_wait_events.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 80%)
+	zip warning: name not matched: sqlmon_c2mpswpr75y7q_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 78%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 87%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+  adding: 00128_edb360_1a_6z_711081_4i_93__waits_count_and_average_latency.html (deflated 64%)
+  adding: 00129_edb360_1a_6z_711081_4i_93__waits_count_and_average_latency_line_chart.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 80%)
+	zip warning: name not matched: sqlmon_4zhbc5b2vd2m4_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+  adding: 00130_edb360_1a_6z_711081_4i_94__waits_count_and_average_latency.html (deflated 64%)
+  adding: 00131_edb360_1a_6z_711081_4i_94__waits_count_and_average_latency_line_chart.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 80%)
+	zip warning: name not matched: sqlmon_2k7r3vsv0uyyc_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+  adding: 00132_edb360_1a_6z_711081_4i_95__waits_count_and_average_latency.html (deflated 64%)
+  adding: 00133_edb360_1a_6z_711081_4i_95__waits_count_and_average_latency_line_chart.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 81%)
+	zip warning: name not matched: sqlmon_f14h6npfw91fz_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+  adding: 00134_edb360_1a_6z_711081_4i_96__waits_count_and_average_latency.html (deflated 64%)
+  adding: 00135_edb360_1a_6z_711081_4i_96__waits_count_and_average_latency_line_chart.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 81%)
+	zip warning: name not matched: sqlmon_cvfkwd1tkd6c1_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+  adding: 00136_edb360_1a_6z_711081_4i_97__waits_count_and_average_latency.html (deflated 64%)
+  adding: 00137_edb360_1a_6z_711081_4i_97__waits_count_and_average_latency_line_chart.html (deflated 63%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 81%)
+	zip warning: name not matched: sqlmon_2ffw23xswq11b_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+-rw-r-----. 1 oracle dba 6574449 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:52 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+  adding: 99830_edb360_1a_6z_711081_chart_setup_driver2.sql (deflated 76%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+  adding: 00138_edb360_1a_6z_711081_4l_98_library_cache_hit_ratio.html (deflated 86%)
+  adding: 00139_edb360_1a_6z_711081_4l_98_library_cache_hit_ratio_line_chart.html (deflated 69%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 81%)
+	zip warning: name not matched: sqlmon_d8bzxdq873fxk_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+  adding: 00140_edb360_1a_6z_711081_4l_99_row_cache_hit_ratio.html (deflated 87%)
+  adding: 00141_edb360_1a_6z_711081_4l_99_row_cache_hit_ratio_line_chart.html (deflated 70%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 81%)
+	zip warning: name not matched: sqlmon_dahs0991v0pnu_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 79%)
+  adding: 00142_edb360_1a_6z_711081_4l_100_buffer_cache_hit_ratio.html (deflated 87%)
+  adding: 00143_edb360_1a_6z_711081_4l_100_buffer_cache_hit_ratio_line_chart.html (deflated 70%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 81%)
+	zip warning: name not matched: sqlmon_1h8xdujs29a16_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00144_edb360_1a_6z_711081_4l_101_pga_cache_hit_ratio.html (deflated 66%)
+  adding: 00145_edb360_1a_6z_711081_4l_101_pga_cache_hit_ratio_line_chart.html (deflated 64%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 81%)
+	zip warning: name not matched: sqlmon_bt97qhsfnuwcy_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+-rw-r-----. 1 oracle dba 6860528 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:53 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00146_edb360_1a_6z_711081_5a_102_aas_per_wait_class_for_instance_1.html (deflated 79%)
+  adding: 00147_edb360_1a_6z_711081_5a_102_aas_per_wait_class_for_instance_1_line_chart.html (deflated 76%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 81%)
+	zip warning: name not matched: sqlmon_3z4qkhcng1mg0_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+-rw-r-----. 1 oracle dba 6934534 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:54 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+  adding: 99840_edb360_1a_6z_711081_chart_setup_driver2.sql (deflated 76%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00148_edb360_1a_6z_711081_5c_103_ash_cpu_per_source.html (deflated 74%)
+  adding: 00149_edb360_1a_6z_711081_5c_103_ash_cpu_per_source_line_chart.html (deflated 72%)
+  adding: 00150_edb360_1a_6z_711081_5c_103_ash_cpu_per_source_pie_chart.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 81%)
+	zip warning: name not matched: sqlmon_bpavnjrqw6hc5_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00151_edb360_1a_6z_711081_5c_104_ash__per_source.html (deflated 74%)
+  adding: 00152_edb360_1a_6z_711081_5c_104_ash__per_source_pie_chart.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 81%)
+	zip warning: name not matched: sqlmon_b4tvmf1sqc30p_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00153_edb360_1a_6z_711081_5c_105_ash__per_source.html (deflated 74%)
+  adding: 00154_edb360_1a_6z_711081_5c_105_ash__per_source_pie_chart.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 82%)
+	zip warning: name not matched: sqlmon_3j7u3k9fjg861_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00155_edb360_1a_6z_711081_5c_106_ash__per_source.html (deflated 74%)
+  adding: 00156_edb360_1a_6z_711081_5c_106_ash__per_source_pie_chart.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 82%)
+	zip warning: name not matched: sqlmon_ayzndtqasuzqz_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00157_edb360_1a_6z_711081_5c_107_ash__per_source.html (deflated 74%)
+  adding: 00158_edb360_1a_6z_711081_5c_107_ash__per_source_pie_chart.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 82%)
+	zip warning: name not matched: sqlmon_aqwhq9u9hf02h_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00159_edb360_1a_6z_711081_5c_108_ash__per_source.html (deflated 74%)
+  adding: 00160_edb360_1a_6z_711081_5c_108_ash__per_source_pie_chart.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 82%)
+	zip warning: name not matched: sqlmon_0bjj862mvcn5r_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+-rw-r-----. 1 oracle dba 7205240 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:55 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 93%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00161_edb360_1a_6z_711081_5d_109_parallel_operations.html (deflated 70%)
+  adding: 00162_edb360_1a_6z_711081_5d_109_parallel_operations_line_chart.html (deflated 68%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 82%)
+	zip warning: name not matched: sqlmon_4ujk748d2kxnc_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00163_edb360_1a_6z_711081_5d_110_workarea_executions.html (deflated 69%)
+  adding: 00164_edb360_1a_6z_711081_5d_110_workarea_executions_line_chart.html (deflated 67%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 82%)
+	zip warning: name not matched: sqlmon_a2m28yq64ag5y_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+-rw-r-----. 1 oracle dba 7339818 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:56 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 93%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00165_edb360_1a_6z_711081_6b_111_ash_top_timed_events_for_instance_1_for_9_days_of_history.html (deflated 74%)
+  adding: 00166_edb360_1a_6z_711081_6b_111_ash_top_timed_events_for_instance_1_for_9_days_of_history_bar_chart.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 82%)
+	zip warning: name not matched: sqlmon_a9wjd1fkb84hx_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+-rw-r-----. 1 oracle dba 7399507 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:57 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 80%)
+  adding: 00167_edb360_1a_6z_711081_6c_112_ash_top_sql_for_instance_1_for_9_days_of_history.html (deflated 74%)
+  adding: 00168_edb360_1a_6z_711081_6c_112_ash_top_sql_for_instance_1_for_9_days_of_history_pie_chart.html (deflated 73%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 82%)
+	zip warning: name not matched: sqlmon_708vhw13z1s2c_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 81%)
+-rw-r-----. 1 oracle dba 7453094 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:57 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 92%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 88%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 81%)
+  adding: 00169_edb360_1a_6z_711081_6d_113_ash_top_sql_for_instance_1_for_9_days_of_history.html (deflated 79%)
+  adding: 00170_edb360_1a_6z_711081_6d_113_ash_top_sql_for_instance_1_for_9_days_of_history_line_chart.html (deflated 77%)
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 82%)
+	zip warning: name not matched: sqlmon_6rf0gdbf5uc38_.zip
+
+zip error: Nothing to do! (edb360_1a_6z_711081_255642_20250915_1429.zip)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 81%)
+-rw-r-----. 1 oracle dba 7528073 Sep 15 14:30 /oracle/diag/rdbms/ves081/VES081/trace/VES081_ora_29332_edb360_1a_6z_711081.trc
+
+TKPROF: Release 19.0.0.0.0 - Development on Mon Sep 15 14:30:58 2025
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 93%)
+skip cp /oracle/product/19.0.0/dbhome_1/rdbms/log/alert_VES081*.log .
+skip cp /oracle/product/19.0.0/dbhome_1/rdbms/log/alert_ves081*.log .
+skip cp /oracle/product/19.0.0/dbhome_1/rdbms/log/alert_VES081*.log .
+skip cp /oracle/product/19.0.0/dbhome_1/rdbms/log/alert_ves081*.log .
+skip cp /oracle/product/19.0.0/dbhome_1/rdbms/log/alert_VES081.log .
+skip cp /oracle/diag/rdbms/VES081/VES081/trace/alert_VES081.log .
+skip cp /oracle/diag/rdbms/VES081/VES081/trace/alert_ves081.log .
+skip cp /oracle/diag/rdbms/VES081/VES081/trace/alert_VES081.log .
+skip cp /oracle/diag/rdbms/VES081/VES081/trace/alert_ves081.log .
+skip cp /oracle/diag/rdbms/VES081/VES081/trace/alert_VES081.log .
+skip cp /oracle/diag/rdbms/VES081/ves081/trace/alert_VES081.log .
+skip cp /oracle/diag/rdbms/VES081/ves081/trace/alert_ves081.log .
+skip cp /oracle/diag/rdbms/VES081/ves081/trace/alert_VES081.log .
+skip cp /oracle/diag/rdbms/VES081/ves081/trace/alert_ves081.log .
+skip cp /oracle/diag/rdbms/VES081/ves081/trace/alert_VES081.log .
+skip cp /oracle/diag/rdbms/ves081/VES081/trace/alert_VES081.log .
+skip cp /oracle/diag/rdbms/ves081/VES081/trace/alert_ves081.log .
+skip cp /oracle/diag/rdbms/ves081/VES081/trace/alert_VES081.log .
+skip cp /oracle/diag/rdbms/ves081/VES081/trace/alert_ves081.log .
+skip cp /oracle/diag/rdbms/ves081/VES081/trace/alert_VES081.log .
+skip cp /oracle/diag/rdbms/ves081/ves081/trace/alert_VES081.log .
+skip cp /oracle/diag/rdbms/ves081/ves081/trace/alert_ves081.log .
+skip cp /oracle/diag/rdbms/ves081/ves081/trace/alert_VES081.log .
+skip cp /oracle/diag/rdbms/ves081/ves081/trace/alert_ves081.log .
+skip cp /oracle/diag/rdbms/ves081/ves081/trace/alert_VES081.log .
+skip rename alert_ 00006_edb360_1a_6z_711081_alert_ alert_*.log
+skip zip -m edb360_1a_6z_711081_255642_20250915_1429 listener_log.zip
+  adding: edb360_1a_6z_711081_query.sql (deflated 83%)
+deleting: edb360_1a_6z_711081_query.sql
+skip zip -m edb360_1a_6z_711081_255642_20250915_1429 00006_edb360_1a_6z_711081_alert_*.log
+skip zip -j 00007_edb360_1a_6z_711081_opatch /oracle/product/19.0.0/dbhome_1/cfgtoollogs/opatch/opatch2024-03-15_10-31-34AM_1.log /oracle/product/19.0.0/dbhome_1/cfgtoollogs/opatch/opatch_history.txt
+skip zip -m edb360_1a_6z_711081_255642_20250915_1429 00007_edb360_1a_6z_711081_opatch.zip
+updating: 00003_edb360_1a_6z_711081_log2.txt (deflated 82%)
+updating: 00005_edb360_1a_6z_711081_tkprof_sort.txt (deflated 93%)
+updating: 00002_edb360_1a_6z_711081_log.txt (deflated 87%)
+updating: 00001_edb360_1a_6z_711081_index.html (deflated 81%)
+Archive:  edb360_1a_6z_711081_255642_20250915_1429.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+    11614  09-15-2025 14:29   awr_ash_pre_check_VES081.txt
+   636672  09-15-2025 14:29   verify_stats_wr_sys_VES081.txt
+    35047  09-15-2025 14:29   00000_readme_first_436.txt
+    16877  05-02-2018 14:56   sorttable.js
+    23984  05-02-2018 14:56   edb360_img.jpg
+     1150  05-02-2018 14:56   edb360_favicon.ico
+  3211568  09-15-2025 14:30   00005_edb360_1a_6z_711081_tkprof_sort.txt
+   349840  09-15-2025 14:30   00002_edb360_1a_6z_711081_log.txt
+    29365  09-15-2025 14:30   00001_edb360_1a_6z_711081_index.html
+     8479  09-15-2025 14:29   00009_edb360_1a_6z_711081_1a_1_system_under_observation.html
+    31876  09-15-2025 14:30   00003_edb360_1a_6z_711081_log2.txt
+   112647  09-15-2025 14:30   00004_edb360_1a_6z_711081_log3.txt
+     7134  09-15-2025 14:29   00010_edb360_1a_6z_711081_1a_2_identification.html
+     4768  09-15-2025 14:29   00011_edb360_1a_6z_711081_1a_3_pluggable_databases.html
+     3188  09-15-2025 14:29   00012_edb360_1a_6z_711081_1a_4_pluggable_databases_saved_states.html
+    15409  09-15-2025 14:29   00013_edb360_1a_6z_711081_1a_5_registry_sql_patch.html
+     3963  09-15-2025 14:30   00014_edb360_1a_6z_711081_1a_6_registry_history.html
+     4286  09-15-2025 14:30   00015_edb360_1a_6z_711081_1a_7_database_links.html
+    59969  09-15-2025 14:30   00016_edb360_1a_6z_711081_1a_8_all_parameters.html
+     3664  09-15-2025 14:30   00017_edb360_1a_6z_711081_1a_9_pdb_parameter_file.html
+     9390  09-15-2025 14:30   00018_edb360_1a_6z_711081_1a_10_memory_configuration.html
+     8325  09-15-2025 14:30   00019_edb360_1a_6z_711081_1b_11_profiles.html
+     3354  09-15-2025 14:30   00020_edb360_1a_6z_711081_1b_12_users_with_default_password.html
+     4163  09-15-2025 14:30   00021_edb360_1a_6z_711081_1b_13_package_to_public.html
+     4658  09-15-2025 14:30   00022_edb360_1a_6z_711081_1b_14_users_with_sensitive_roles_granted.html
+    23058  09-15-2025 14:30   00023_edb360_1a_6z_711081_1b_15_users_with_objects_in_tablespace_system_sysaux.html
+     3965  09-15-2025 14:30   00024_edb360_1a_6z_711081_1d_16_memory_resize_operations_hist.html
+    11996  09-15-2025 14:30   00025_edb360_1a_6z_711081_1e_17_cpu_demand_series_percentile_for_instance_1.html
+    13477  09-15-2025 14:30   00026_edb360_1a_6z_711081_1e_17_cpu_demand_series_percentile_for_instance_1_line_chart.html
+    11949  09-15-2025 14:30   00027_edb360_1a_6z_711081_1e_18_active_sessions_percentile_for_instance_1.html
+    13428  09-15-2025 14:30   00028_edb360_1a_6z_711081_1e_18_active_sessions_percentile_for_instance_1_line_chart.html
+     5029  09-15-2025 14:30   00029_edb360_1a_6z_711081_1e_19_tablespace_size_series.html
+     6436  09-15-2025 14:30   00030_edb360_1a_6z_711081_1e_19_tablespace_size_series_line_chart.html
+    15790  09-15-2025 14:30   00031_edb360_1a_6z_711081_1e_20_reads_per_second_series_for_instance_1.html
+    17286  09-15-2025 14:30   00032_edb360_1a_6z_711081_1e_20_reads_per_second_series_for_instance_1_line_chart.html
+    15669  09-15-2025 14:30   00033_edb360_1a_6z_711081_1e_21_rmbps_series_for_instance_1.html
+    17115  09-15-2025 14:30   00034_edb360_1a_6z_711081_1e_21_rmbps_series_for_instance_1_line_chart.html
+    15707  09-15-2025 14:30   00035_edb360_1a_6z_711081_1e_22_writes_per_second_series_for_instance_1.html
+    17149  09-15-2025 14:30   00036_edb360_1a_6z_711081_1e_22_writes_per_second_series_for_instance_1_line_chart.html
+    15608  09-15-2025 14:30   00037_edb360_1a_6z_711081_1e_23_wmbps_series_for_instance_1.html
+    17020  09-15-2025 14:30   00038_edb360_1a_6z_711081_1e_23_wmbps_series_for_instance_1_line_chart.html
+     4592  09-15-2025 14:30   00039_edb360_1a_6z_711081_2a_24_invalid_objects.html
+    30319  09-15-2025 14:30   00040_edb360_1a_6z_711081_2a_25_nonindexed_fk_constraints.html
+    11405  09-15-2025 14:30   00041_edb360_1a_6z_711081_2a_26_redundant_indexes2.html
+     4021  09-15-2025 14:30   00042_edb360_1a_6z_711081_2a_27_jobs.html
+    15698  09-15-2025 14:30   00043_edb360_1a_6z_711081_2a_28_scheduler_jobs.html
+    61015  09-15-2025 14:30   00044_edb360_1a_6z_711081_2a_29_scheduler_jobs_pdbs.html
+     6914  09-15-2025 14:30   00045_edb360_1a_6z_711081_2a_30_scheduler_windows.html
+     9744  09-15-2025 14:30   00046_edb360_1a_6z_711081_2a_31_scheduler_windows_pdbs.html
+     5321  09-15-2025 14:30   00047_edb360_1a_6z_711081_2a_32_scheduler_window_group_members.html
+     6721  09-15-2025 14:30   00048_edb360_1a_6z_711081_2a_33_scheduler_window_group_members_pdbs.html
+     5066  09-15-2025 14:30   00049_edb360_1a_6z_711081_2a_34_automated_maintenance_tasks.html
+     7755  09-15-2025 14:30   00050_edb360_1a_6z_711081_2a_35_automated_maintenance_tasks_pdbs.html
+     4245  09-15-2025 14:30   00051_edb360_1a_6z_711081_2a_36_automated_maintenance_tasks_history.html
+     5182  09-15-2025 14:30   00052_edb360_1a_6z_711081_2a_37_scheduler_jobs_run_details.html
+    39470  09-15-2025 14:30   00053_edb360_1a_6z_711081_2a_38_automated_maintenance_tasks_history_pdbs.html
+    10482  09-15-2025 14:30   00054_edb360_1a_6z_711081_2a_39_top_sql_by_temp_space_usage.html
+    10592  09-15-2025 14:30   00055_edb360_1a_6z_711081_2a_40_top_sql_by_pga_allocated_memory.html
+     9949  09-15-2025 14:30   00056_edb360_1a_6z_711081_2a_41_tables_without_indexes.html
+     9910  09-15-2025 14:30   00057_edb360_1a_6z_711081_2a_42_tables_without_primary_key_constraints.html
+     7620  09-15-2025 14:30   00058_edb360_1a_6z_711081_2b_43_tablespace_usage.html
+     5695  09-15-2025 14:30   00059_edb360_1a_6z_711081_2b_44_data_files.html
+     3485  09-15-2025 14:30   00060_edb360_1a_6z_711081_2b_45_kernel_io_taking_long.html
+     9759  09-15-2025 14:30   00061_edb360_1a_6z_711081_2b_46_log_writer_io_taking_long.html
+     5702  09-15-2025 14:30   00062_edb360_1a_6z_711081_2b_47_io_taking_long.html
+     6639  09-15-2025 14:30   00063_edb360_1a_6z_711081_2b_48_tablespace_growth_per_day.html
+    20713  09-15-2025 14:30   00064_edb360_1a_6z_711081_2b_49_segment_shrink_recommendations.html
+     4272  09-15-2025 14:30   00065_edb360_1a_6z_711081_2b_50_objects_in_recycle_bin.html
+     3991  09-15-2025 14:30   00066_edb360_1a_6z_711081_2c_51_asm_disk_group.html
+     6222  09-15-2025 14:30   00067_edb360_1a_6z_711081_2c_52_asm_disk.html
+     3103  09-15-2025 14:30   00068_edb360_1a_6z_711081_2d_53_block_corruption.html
+     4756  09-15-2025 14:30   00069_edb360_1a_6z_711081_2d_54_rman_backup_job_details.html
+     3097  09-15-2025 14:30   00070_edb360_1a_6z_711081_2d_55_fast_recovery_area.html
+     4827  09-15-2025 14:30   00071_edb360_1a_6z_711081_2d_56_redo_log.html
+     5402  09-15-2025 14:30   00072_edb360_1a_6z_711081_2d_57_redo_log_files.html
+    13637  09-15-2025 14:30   00073_edb360_1a_6z_711081_2d_58_nologging_objects.html
+    39013  09-15-2025 14:30   00074_edb360_1a_6z_711081_2d_59_log_switch_frequency_for_instance_1.html
+     6230  09-15-2025 14:30   00075_edb360_1a_6z_711081_2d_59_log_switch_frequency_for_instance_1_line_chart.html
+    12675  09-15-2025 14:30   00076_edb360_1a_6z_711081_3a_60_resource_plan_directives.html
+     9052  09-15-2025 14:30   00077_edb360_1a_6z_711081_3a_61_resource_plans.html
+     3091  09-15-2025 14:30   00078_edb360_1a_6z_711081_3a_62_resource_plans_for_pdbs.html
+     3613  09-15-2025 14:30   00079_edb360_1a_6z_711081_3a_63_resource_plan_history.html
+    16898  09-15-2025 14:30   00080_edb360_1a_6z_711081_3c_64_default_values_for_dbmsstats.html
+     5746  09-15-2025 14:30   00081_edb360_1a_6z_711081_3c_65_tables_with_missing_stats.html
+     5171  09-15-2025 14:30   00082_edb360_1a_6z_711081_3c_66_indexes_with_missing_stats.html
+    13736  09-15-2025 14:30   00083_edb360_1a_6z_711081_3c_67_tables_with_stale_stats.html
+    15153  09-15-2025 14:30   00084_edb360_1a_6z_711081_3c_68_indexes_with_stale_stats.html
+     4999  09-15-2025 14:30   00085_edb360_1a_6z_711081_3e_69_cpu_busy_and_idle_times_percent_for_instance_1.html
+     6404  09-15-2025 14:30   00086_edb360_1a_6z_711081_3e_69_cpu_busy_and_idle_times_percent_for_instance_1_line_chart.html
+     4950  09-15-2025 14:30   00087_edb360_1a_6z_711081_3e_70_cpu_user_and_sys_times_percent_for_instance_1.html
+     6352  09-15-2025 14:30   00088_edb360_1a_6z_711081_3e_70_cpu_user_and_sys_times_percent_for_instance_1_line_chart.html
+     5707  09-15-2025 14:30   00089_edb360_1a_6z_711081_3e_71_undo_statistics_for_instance_1.html
+     7121  09-15-2025 14:30   00090_edb360_1a_6z_711081_3e_71_undo_statistics_for_instance_1_line_chart.html
+     5152  09-15-2025 14:30   00091_edb360_1a_6z_711081_3e_72_sql_area_statistics_for_instance_1.html
+     6544  09-15-2025 14:30   00092_edb360_1a_6z_711081_3e_72_sql_area_statistics_for_instance_1_line_chart.html
+      557  09-15-2025 14:30   99810_edb360_1a_6z_711081_chart_setup_driver1.sql
+     4957  09-15-2025 14:30   00093_edb360_1a_6z_711081_3e_73_cpu_rsrc_mgr_wait_time_per_instance.html
+     6306  09-15-2025 14:30   00094_edb360_1a_6z_711081_3e_73_cpu_rsrc_mgr_wait_time_per_instance_line_chart.html
+     4865  09-15-2025 14:30   00095_edb360_1a_6z_711081_3e_74_os_cpu_wait_time_per_instance.html
+     6208  09-15-2025 14:30   00096_edb360_1a_6z_711081_3e_74_os_cpu_wait_time_per_instance_line_chart.html
+     8205  09-15-2025 14:30   00097_edb360_1a_6z_711081_3h_75_sql_ordered_by_physical_reads.html
+     9894  09-15-2025 14:30   00098_edb360_1a_6z_711081_3h_76_sql_ordered_by_physical_reads_time_series.html
+    11266  09-15-2025 14:30   00099_edb360_1a_6z_711081_3h_76_sql_ordered_by_physical_reads_time_series_line_chart.html
+     8217  09-15-2025 14:30   00100_edb360_1a_6z_711081_3h_77_sql_ordered_by_direct_writes.html
+     9942  09-15-2025 14:30   00101_edb360_1a_6z_711081_3h_78_sql_ordered_by_direct_writes_time_series.html
+    11316  09-15-2025 14:30   00102_edb360_1a_6z_711081_3h_78_sql_ordered_by_direct_writes_time_series_line_chart.html
+    12903  09-15-2025 14:30   00103_edb360_1a_6z_711081_3h_79_sql_blocking_sql.html
+     6521  09-15-2025 14:30   00104_edb360_1a_6z_711081_4a_80_sga_statistics_for_instance_1.html
+     8000  09-15-2025 14:30   00105_edb360_1a_6z_711081_4a_80_sga_statistics_for_instance_1_line_chart.html
+     9405  09-15-2025 14:30   00106_edb360_1a_6z_711081_4b_81_pga_statistics_for_instance_1.html
+    10895  09-15-2025 14:30   00107_edb360_1a_6z_711081_4b_81_pga_statistics_for_instance_1_line_chart.html
+     6739  09-15-2025 14:30   00108_edb360_1a_6z_711081_4c_82_memory_statistics_for_instance_1.html
+     8127  09-15-2025 14:30   00109_edb360_1a_6z_711081_4c_82_memory_statistics_for_instance_1_line_chart.html
+      572  09-15-2025 14:30   99850_edb360_1a_6z_711081_chart_setup_driver3.sql
+    10043  09-15-2025 14:30   00110_edb360_1a_6z_711081_4e_83_stm_background_cpu_time_per_instance.html
+    11406  09-15-2025 14:30   00111_edb360_1a_6z_711081_4e_83_stm_background_cpu_time_per_instance_line_chart.html
+      577  09-15-2025 14:30   99870_edb360_1a_6z_711081_chart_setup_driver4.sql
+     7003  09-15-2025 14:30   00112_edb360_1a_6z_711081_4f_84_user_io_wait_latency_histogram.html
+     8565  09-15-2025 14:30   00113_edb360_1a_6z_711081_4f_84_user_io_wait_latency_histogram_line_chart.html
+     7011  09-15-2025 14:30   00114_edb360_1a_6z_711081_4f_85_system_io_wait_latency_histogram.html
+     8575  09-15-2025 14:30   00115_edb360_1a_6z_711081_4f_85_system_io_wait_latency_histogram_line_chart.html
+     4559  09-15-2025 14:30   00116_edb360_1a_6z_711081_4g_86_top_5_wait_events.html
+     6999  09-15-2025 14:30   00117_edb360_1a_6z_711081_4g_87__latency_histogram.html
+     8551  09-15-2025 14:30   00118_edb360_1a_6z_711081_4g_87__latency_histogram_line_chart.html
+     6999  09-15-2025 14:30   00119_edb360_1a_6z_711081_4g_88__latency_histogram.html
+     8551  09-15-2025 14:30   00120_edb360_1a_6z_711081_4g_88__latency_histogram_line_chart.html
+     6999  09-15-2025 14:30   00121_edb360_1a_6z_711081_4g_89__latency_histogram.html
+     8551  09-15-2025 14:30   00122_edb360_1a_6z_711081_4g_89__latency_histogram_line_chart.html
+     6999  09-15-2025 14:30   00123_edb360_1a_6z_711081_4g_90__latency_histogram.html
+     8551  09-15-2025 14:30   00124_edb360_1a_6z_711081_4g_90__latency_histogram_line_chart.html
+     6999  09-15-2025 14:30   00125_edb360_1a_6z_711081_4g_91__latency_histogram.html
+     8551  09-15-2025 14:30   00126_edb360_1a_6z_711081_4g_91__latency_histogram_line_chart.html
+     4559  09-15-2025 14:30   00127_edb360_1a_6z_711081_4i_92_top_5_wait_events.html
+     5023  09-15-2025 14:30   00128_edb360_1a_6z_711081_4i_93__waits_count_and_average_latency.html
+     6665  09-15-2025 14:30   00129_edb360_1a_6z_711081_4i_93__waits_count_and_average_latency_line_chart.html
+     5023  09-15-2025 14:30   00130_edb360_1a_6z_711081_4i_94__waits_count_and_average_latency.html
+     6665  09-15-2025 14:30   00131_edb360_1a_6z_711081_4i_94__waits_count_and_average_latency_line_chart.html
+     5023  09-15-2025 14:30   00132_edb360_1a_6z_711081_4i_95__waits_count_and_average_latency.html
+     6665  09-15-2025 14:30   00133_edb360_1a_6z_711081_4i_95__waits_count_and_average_latency_line_chart.html
+     5023  09-15-2025 14:30   00134_edb360_1a_6z_711081_4i_96__waits_count_and_average_latency.html
+     6665  09-15-2025 14:30   00135_edb360_1a_6z_711081_4i_96__waits_count_and_average_latency_line_chart.html
+     5023  09-15-2025 14:30   00136_edb360_1a_6z_711081_4i_97__waits_count_and_average_latency.html
+     6665  09-15-2025 14:30   00137_edb360_1a_6z_711081_4i_97__waits_count_and_average_latency_line_chart.html
+      572  09-15-2025 14:30   99830_edb360_1a_6z_711081_chart_setup_driver2.sql
+    40641  09-15-2025 14:30   00138_edb360_1a_6z_711081_4l_98_library_cache_hit_ratio.html
+    16695  09-15-2025 14:30   00139_edb360_1a_6z_711081_4l_98_library_cache_hit_ratio_line_chart.html
+    40625  09-15-2025 14:30   00140_edb360_1a_6z_711081_4l_99_row_cache_hit_ratio.html
+    16349  09-15-2025 14:30   00141_edb360_1a_6z_711081_4l_99_row_cache_hit_ratio_line_chart.html
+    40639  09-15-2025 14:30   00142_edb360_1a_6z_711081_4l_100_buffer_cache_hit_ratio.html
+    16783  09-15-2025 14:30   00143_edb360_1a_6z_711081_4l_100_buffer_cache_hit_ratio_line_chart.html
+     5284  09-15-2025 14:30   00144_edb360_1a_6z_711081_4l_101_pga_cache_hit_ratio.html
+     6622  09-15-2025 14:30   00145_edb360_1a_6z_711081_4l_101_pga_cache_hit_ratio_line_chart.html
+    13390  09-15-2025 14:30   00146_edb360_1a_6z_711081_5a_102_aas_per_wait_class_for_instance_1.html
+    15173  09-15-2025 14:30   00147_edb360_1a_6z_711081_5a_102_aas_per_wait_class_for_instance_1_line_chart.html
+      572  09-15-2025 14:30   99840_edb360_1a_6z_711081_chart_setup_driver2.sql
+    11480  09-15-2025 14:30   00148_edb360_1a_6z_711081_5c_103_ash_cpu_per_source.html
+    12836  09-15-2025 14:30   00149_edb360_1a_6z_711081_5c_103_ash_cpu_per_source_line_chart.html
+    12100  09-15-2025 14:30   00150_edb360_1a_6z_711081_5c_103_ash_cpu_per_source_pie_chart.html
+    11483  09-15-2025 14:30   00151_edb360_1a_6z_711081_5c_104_ash__per_source.html
+    12103  09-15-2025 14:30   00152_edb360_1a_6z_711081_5c_104_ash__per_source_pie_chart.html
+    11483  09-15-2025 14:30   00153_edb360_1a_6z_711081_5c_105_ash__per_source.html
+    12103  09-15-2025 14:30   00154_edb360_1a_6z_711081_5c_105_ash__per_source_pie_chart.html
+    11483  09-15-2025 14:30   00155_edb360_1a_6z_711081_5c_106_ash__per_source.html
+    12103  09-15-2025 14:30   00156_edb360_1a_6z_711081_5c_106_ash__per_source_pie_chart.html
+    11483  09-15-2025 14:30   00157_edb360_1a_6z_711081_5c_107_ash__per_source.html
+    12103  09-15-2025 14:30   00158_edb360_1a_6z_711081_5c_107_ash__per_source_pie_chart.html
+    11483  09-15-2025 14:30   00159_edb360_1a_6z_711081_5c_108_ash__per_source.html
+    12103  09-15-2025 14:30   00160_edb360_1a_6z_711081_5c_108_ash__per_source_pie_chart.html
+     6778  09-15-2025 14:30   00161_edb360_1a_6z_711081_5d_109_parallel_operations.html
+     8712  09-15-2025 14:30   00162_edb360_1a_6z_711081_5d_109_parallel_operations_line_chart.html
+     6314  09-15-2025 14:30   00163_edb360_1a_6z_711081_5d_110_workarea_executions.html
+     7972  09-15-2025 14:30   00164_edb360_1a_6z_711081_5d_110_workarea_executions_line_chart.html
+    11764  09-15-2025 14:30   00165_edb360_1a_6z_711081_6b_111_ash_top_timed_events_for_instance_1_for_9_days_of_history.html
+    12898  09-15-2025 14:30   00166_edb360_1a_6z_711081_6b_111_ash_top_timed_events_for_instance_1_for_9_days_of_history_bar_chart.html
+    11528  09-15-2025 14:30   00167_edb360_1a_6z_711081_6c_112_ash_top_sql_for_instance_1_for_9_days_of_history.html
+    12178  09-15-2025 14:30   00168_edb360_1a_6z_711081_6c_112_ash_top_sql_for_instance_1_for_9_days_of_history_pie_chart.html
+    13868  09-15-2025 14:30   00169_edb360_1a_6z_711081_6d_113_ash_top_sql_for_instance_1_for_9_days_of_history.html
+    15663  09-15-2025 14:30   00170_edb360_1a_6z_711081_6d_113_ash_top_sql_for_instance_1_for_9_days_of_history_line_chart.html
+---------                     -------
+  6185749                     178 files

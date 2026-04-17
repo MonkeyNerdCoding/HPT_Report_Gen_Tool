@@ -1,0 +1,49 @@
+placeholders:
+  - placeholder: "<tbs_usage>"
+    source_key: "tablespace_usage"
+    content_type: "table"
+
+  - placeholder: "<data_file>"
+    source_key: "data_files"
+    content_type: "table"
+
+  - placeholder: "<no_pk_table>"
+    source_key: "tables_without_primary_key_constraints"
+    content_type: "table"
+
+  - placeholder: "<no_index_table>"
+    source_key: "tables_without_indexes"
+    content_type: "table"
+
+  - placeholder: "<invalid_obj>"
+    source_key: "invalid_objects"
+    content_type: "table"
+
+  - placeholder: "<db_job>"
+    source_key: "jobs"
+    content_type: "table"
+
+  - placeholder: "<sche_job>"
+    source_key: "scheduler_jobs"
+    content_type: "table"
+
+  - placeholder: "<table_stats>"
+    source_key: "tables_with_stale_stats"
+    content_type: "table"
+
+  - placeholder: "<index_stats>"
+    source_key: "indexes_with_stale_stats"
+    content_type: "table"
+
+  - placeholder: "<buffer_chart>"
+    source_key: "buffer_cache_hit_ratio"
+    content_type: "chart"
+    chart_variant: "line"
+    width_inches: 6.0
+
+  - placeholder: "<library_chart>"
+    source_key: "library_cache_hit_ratio"
+    content_type: "chart"
+    chart_variant: "line"
+    width_inches: 6.0
+

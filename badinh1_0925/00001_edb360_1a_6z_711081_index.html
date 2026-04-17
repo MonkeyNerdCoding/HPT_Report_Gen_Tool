@@ -1,0 +1,656 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title></title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+</head>
+<body>
+<h1><em>HPT Tuning</em>: Report on an Oracle database 19.0.0.0.0 </h1>
+
+<pre>
+License:T. This report covers the time interval between 2025-09-06T14:29:57 and 2025-09-15T14:29:57. Days:9. Timestamp:2025-09-15T14:29:58.
+</pre>
+
+<table><tr class="main">
+<td class="c">1/7</td>
+<td class="c">2/7</td>
+<td class="c">3/7</td>
+<td class="c">4/7</td>
+<td class="c">5/7</td>
+<td class="c">6/7</td>
+<td class="c">7/7</td>
+</tr><tr class="main"><td>
+<a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="201" width="313" /></a>
+<br />
+<h2>1a. Database Configuration</h2>
+<ol start="1">
+<li title="DUAL">System Under Observation
+<a href="00009_edb360_1a_6z_711081_1a_1_system_under_observation.html">html</a>
+<small><em> (12) </em></small>
+</li>
+<li title="V$DATABASE">Identification
+<a href="00010_edb360_1a_6z_711081_1a_2_identification.html">html</a>
+<small><em> (1) </em></small>
+</li>
+<li title="DBA_PDBS">Pluggable Databases
+<a href="00011_edb360_1a_6z_711081_1a_3_pluggable_databases.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_PDB_SAVED_STATES">Pluggable Databases Saved States
+<a href="00012_edb360_1a_6z_711081_1a_4_pluggable_databases_saved_states.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_REGISTRY_SQLPATCH">Registry SQL Patch
+<a href="00013_edb360_1a_6z_711081_1a_5_registry_sql_patch.html">html</a>
+<small><em> (1) </em></small>
+</li>
+<li title="DBA_REGISTRY_HISTORY">Registry History
+<a href="00014_edb360_1a_6z_711081_1a_6_registry_history.html">html</a>
+<small><em> (2) </em></small>
+</li>
+<li title="DBA_DB_LINKS">Database Links
+<a href="00015_edb360_1a_6z_711081_1a_7_database_links.html">html</a>
+<small><em> (3) </em></small>
+</li>
+<li title="GV$PARAMETER">All Parameters
+<a href="00016_edb360_1a_6z_711081_1a_8_all_parameters.html">html</a>
+<small><em> (459) </em></small>
+</li>
+<li title="PDB_SPFILE$">PDB Parameter File
+<a href="00017_edb360_1a_6z_711081_1a_9_pdb_parameter_file.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="GV$SYSTEM_PARAMETER2">Memory Configuration
+<a href="00018_edb360_1a_6z_711081_1a_10_memory_configuration.html">html</a>
+<small><em> (19) </em></small>
+</li>
+</ol>
+<h2>1b. Security</h2>
+<ol start="11">
+<li title="DBA_PROFILES">Profiles
+<a href="00019_edb360_1a_6z_711081_1b_11_profiles.html">html</a>
+<small><em> (51) </em></small>
+</li>
+<li title="DBA_USERS_WITH_DEFPWD">Users with default password
+<a href="00020_edb360_1a_6z_711081_1b_12_users_with_default_password.html">html</a>
+<small><em> (4) </em></small>
+</li>
+<li title="DBA_TAB_PRIVS">Package to PUBLIC
+<a href="00021_edb360_1a_6z_711081_1b_13_package_to_public.html">html</a>
+<small><em> (6) </em></small>
+</li>
+<li title="DBA_ROLE_PRIVS">Users With Sensitive Roles Granted
+<a href="00022_edb360_1a_6z_711081_1b_14_users_with_sensitive_roles_granted.html">html</a>
+<small><em> (4) </em></small>
+</li>
+<li title="DBA_SEGMENTS">Users With Objects in Tablespace SYSTEM, SYSAUX
+<a href="00023_edb360_1a_6z_711081_1b_15_users_with_objects_in_tablespace_system_sysaux.html">html</a>
+<small><em> (108) </em></small>
+</li>
+</ol>
+<h2>1d. Memory</h2>
+<ol start="16">
+<li title="DBA_HIST_MEMORY_RESIZE_OPS">Memory Resize Operations Hist
+<a href="00024_edb360_1a_6z_711081_1d_16_memory_resize_operations_hist.html">html</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>1e. Resources (as per AWR and MEM)</h2>
+<ol start="17">
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">CPU Demand Series (Percentile) for Instance 1
+<a href="00025_edb360_1a_6z_711081_1e_17_cpu_demand_series_percentile_for_instance_1.html">html</a>
+<a href="00026_edb360_1a_6z_711081_1e_17_cpu_demand_series_percentile_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">Active sessions (Percentile) for Instance 1
+<a href="00027_edb360_1a_6z_711081_1e_18_active_sessions_percentile_for_instance_1.html">html</a>
+<a href="00028_edb360_1a_6z_711081_1e_18_active_sessions_percentile_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_TBSPC_SPACE_USAGE">Tablespace Size Series
+<a href="00029_edb360_1a_6z_711081_1e_19_tablespace_size_series.html">html</a>
+<a href="00030_edb360_1a_6z_711081_1e_19_tablespace_size_series_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_SYSSTAT">Reads (per second) Series for Instance 1
+<a href="00031_edb360_1a_6z_711081_1e_20_reads_per_second_series_for_instance_1.html">html</a>
+<a href="00032_edb360_1a_6z_711081_1e_20_reads_per_second_series_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_SYSSTAT">R-MBPS Series for Instance 1
+<a href="00033_edb360_1a_6z_711081_1e_21_rmbps_series_for_instance_1.html">html</a>
+<a href="00034_edb360_1a_6z_711081_1e_21_rmbps_series_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_SYSSTAT">Writes (per second) Series for Instance 1
+<a href="00035_edb360_1a_6z_711081_1e_22_writes_per_second_series_for_instance_1.html">html</a>
+<a href="00036_edb360_1a_6z_711081_1e_22_writes_per_second_series_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_SYSSTAT">W-MBPS Series for Instance 1
+<a href="00037_edb360_1a_6z_711081_1e_23_wmbps_series_for_instance_1.html">html</a>
+<a href="00038_edb360_1a_6z_711081_1e_23_wmbps_series_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+
+</td><td>
+
+<h2>2a. Database Administration</h2>
+<ol start="24">
+<li title="DBA_OBJECTS">Invalid Objects
+<a href="00039_edb360_1a_6z_711081_2a_24_invalid_objects.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_CONSTRAINTS">Non-indexed FK Constraints
+<a href="00040_edb360_1a_6z_711081_2a_25_nonindexed_fk_constraints.html">html</a>
+<small><em> (37) </em></small>
+</li>
+<li title="DBA_INDEXES">Redundant Indexes(2)
+<a href="00041_edb360_1a_6z_711081_2a_26_redundant_indexes2.html">html</a>
+<small><em> (5) </em></small>
+</li>
+<li title="DBA_JOBS">Jobs
+<a href="00042_edb360_1a_6z_711081_2a_27_jobs.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_SCHEDULER_JOBS">Scheduler Jobs
+<a href="00043_edb360_1a_6z_711081_2a_28_scheduler_jobs.html">html</a>
+<small><em> (22) </em></small>
+</li>
+<li title="CDB_SCHEDULER_JOBS">Scheduler Jobs PDBs
+<a href="00044_edb360_1a_6z_711081_2a_29_scheduler_jobs_pdbs.html">html</a>
+<small><em> (22) </em></small>
+</li>
+<li title="DBA_SCHEDULER_WINDOWS">Scheduler Windows
+<a href="00045_edb360_1a_6z_711081_2a_30_scheduler_windows.html">html</a>
+<small><em> (9) </em></small>
+</li>
+<li title="CDB_SCHEDULER_WINDOWS">Scheduler Windows PDBs
+<a href="00046_edb360_1a_6z_711081_2a_31_scheduler_windows_pdbs.html">html</a>
+<small><em> (9) </em></small>
+</li>
+<li title="DBA_SCHEDULER_WINGROUP_MEMBERS">Scheduler Window Group Members
+<a href="00047_edb360_1a_6z_711081_2a_32_scheduler_window_group_members.html">html</a>
+<small><em> (28) </em></small>
+</li>
+<li title="CDB_SCHEDULER_WINGROUP_MEMBERS">Scheduler Window Group Members PDBs
+<a href="00048_edb360_1a_6z_711081_2a_33_scheduler_window_group_members_pdbs.html">html</a>
+<small><em> (28) </em></small>
+</li>
+<li title="DBA_AUTOTASK_CLIENT">Automated Maintenance Tasks
+<a href="00049_edb360_1a_6z_711081_2a_34_automated_maintenance_tasks.html">html</a>
+<small><em> (3) </em></small>
+</li>
+<li title="CDB_AUTOTASK_CLIENT">Automated Maintenance Tasks PDBs
+<a href="00050_edb360_1a_6z_711081_2a_35_automated_maintenance_tasks_pdbs.html">html</a>
+<small><em> (3) </em></small>
+</li>
+<li title="DBA_AUTOTASK_CLIENT_HISTORY">Automated Maintenance Tasks History
+<a href="00051_edb360_1a_6z_711081_2a_36_automated_maintenance_tasks_history.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_SCHEDULER_JOB_RUN_DETAILS">Scheduler jobs run details
+<a href="00052_edb360_1a_6z_711081_2a_37_scheduler_jobs_run_details.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="CDB_AUTOTASK_CLIENT_HISTORY">Automated Maintenance Tasks History PDBs
+<a href="00053_edb360_1a_6z_711081_2a_38_automated_maintenance_tasks_history_pdbs.html">html</a>
+<small><em> (90) </em></small>
+</li>
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">Top SQL by TEMP space usage
+<a href="00054_edb360_1a_6z_711081_2a_39_top_sql_by_temp_space_usage.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">Top SQL by PGA allocated memory
+<a href="00055_edb360_1a_6z_711081_2a_40_top_sql_by_pga_allocated_memory.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_TABLES">Tables without indexes
+<a href="00056_edb360_1a_6z_711081_2a_41_tables_without_indexes.html">html</a>
+<small><em> (7) </em></small>
+</li>
+<li title="DBA_TABLES">Tables without primary key constraints
+<a href="00057_edb360_1a_6z_711081_2a_42_tables_without_primary_key_constraints.html">html</a>
+<small><em> (15) </em></small>
+</li>
+</ol>
+<h2>2b. Storage</h2>
+<ol start="43">
+<li title="DBA_SEGMENTS">Tablespace Usage
+<a href="00058_edb360_1a_6z_711081_2b_43_tablespace_usage.html">html</a>
+<small><em> (6) </em></small>
+</li>
+<li title="DBA_DATA_FILES">Data Files
+<a href="00059_edb360_1a_6z_711081_2b_44_data_files.html">html</a>
+<small><em> (6) </em></small>
+</li>
+<li title="V$KERNEL_IO_OUTLIER">Kernel I/O taking long
+<a href="00060_edb360_1a_6z_711081_2b_45_kernel_io_taking_long.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="V$LGWRIO_OUTLIER">Log Writer I/O taking long
+<a href="00061_edb360_1a_6z_711081_2b_46_log_writer_io_taking_long.html">html</a>
+<small><em> (13) </em></small>
+</li>
+<li title="V$IO_OUTLIER">I/O taking long
+<a href="00062_edb360_1a_6z_711081_2b_47_io_taking_long.html">html</a>
+<small><em> (4) </em></small>
+</li>
+<li title="V$DATAFILE">Tablespace Growth per Day
+<a href="00063_edb360_1a_6z_711081_2b_48_tablespace_growth_per_day.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBMS_SPACE">Segment Shrink Recommendations
+<a href="00064_edb360_1a_6z_711081_2b_49_segment_shrink_recommendations.html">html</a>
+<small><em> (2) </em></small>
+</li>
+<li title="DBA_RECYCLEBIN">Objects in Recycle Bin
+<a href="00065_edb360_1a_6z_711081_2b_50_objects_in_recycle_bin.html">html</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>2c. Automatic Storage Management (ASM)</h2>
+<ol start="51">
+<li title="V$ASM_DISKGROUP">ASM Disk Group
+<a href="00066_edb360_1a_6z_711081_2c_51_asm_disk_group.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="V$ASM_DISK">ASM Disk
+<a href="00067_edb360_1a_6z_711081_2c_52_asm_disk.html">html</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>2d. Backup and Recovery</h2>
+<ol start="53">
+<li title="V$DATABASE_BLOCK_CORRUPTION">Block Corruption
+<a href="00068_edb360_1a_6z_711081_2d_53_block_corruption.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="V$RMAN_BACKUP_JOB_DETAILS">RMAN Backup Job Details
+<a href="00069_edb360_1a_6z_711081_2d_54_rman_backup_job_details.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="V$RECOVERY_FILE_DEST">Fast Recovery Area
+<a href="00070_edb360_1a_6z_711081_2d_55_fast_recovery_area.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="V$LOG">REDO LOG
+<a href="00071_edb360_1a_6z_711081_2d_56_redo_log.html">html</a>
+<small><em> (5) </em></small>
+</li>
+<li title="V$LOGFILE">REDO LOG Files
+<a href="00072_edb360_1a_6z_711081_2d_57_redo_log_files.html">html</a>
+<small><em> (10) </em></small>
+</li>
+<li title="DBA_TABLESPACES">NOLOGGING Objects
+<a href="00073_edb360_1a_6z_711081_2d_58_nologging_objects.html">html</a>
+<small><em> (33) </em></small>
+</li>
+<li title="GV$LOG_HISTORY">Log switch frequency for Instance 1
+<a href="00074_edb360_1a_6z_711081_2d_59_log_switch_frequency_for_instance_1.html">html</a>
+<a href="00075_edb360_1a_6z_711081_2d_59_log_switch_frequency_for_instance_1_line_chart.html">line</a>
+<small><em> (205) </em></small>
+</li>
+</ol>
+
+</td><td>
+
+<h2>3a. Database Resource Management (DBRM)</h2>
+<ol start="60">
+<li title="DBA_RSRC_PLAN_DIRECTIVES">Resource Plan Directives
+<a href="00076_edb360_1a_6z_711081_3a_60_resource_plan_directives.html">html</a>
+<small><em> (47) </em></small>
+</li>
+<li title="DBA_RSRC_PLANS">Resource Plans
+<a href="00077_edb360_1a_6z_711081_3a_61_resource_plans.html">html</a>
+<small><em> (11) </em></small>
+</li>
+<li title="DBA_CDB_RSRC_PLANS">Resource Plans for PDBs
+<a href="00078_edb360_1a_6z_711081_3a_62_resource_plans_for_pdbs.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_RSRC_PLAN">Resource Plan History
+<a href="00079_edb360_1a_6z_711081_3a_63_resource_plan_history.html">html</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>3c. Cost-based Optimizer (CBO) Statistics</h2>
+<ol start="64">
+<li title="SYS.OPTSTAT_HIST_CONTROL$">Default Values for DBMS_STATS
+<a href="00080_edb360_1a_6z_711081_3c_64_default_values_for_dbmsstats.html">html</a>
+<small><em> (45) </em></small>
+</li>
+<li title="DBA_TAB_STATISTICS">Tables with Missing Stats
+<a href="00081_edb360_1a_6z_711081_3c_65_tables_with_missing_stats.html">html</a>
+<small><em> (1) </em></small>
+</li>
+<li title="DBA_IND_STATISTICS">Indexes with Missing Stats
+<a href="00082_edb360_1a_6z_711081_3c_66_indexes_with_missing_stats.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_TAB_STATISTICS">Tables with Stale Stats
+<a href="00083_edb360_1a_6z_711081_3c_67_tables_with_stale_stats.html">html</a>
+<small><em> (48) </em></small>
+</li>
+<li title="DBA_IND_STATISTICS">Indexes with Stale Stats
+<a href="00084_edb360_1a_6z_711081_3c_68_indexes_with_stale_stats.html">html</a>
+<small><em> (51) </em></small>
+</li>
+</ol>
+<h2>3e. Operating System (OS) Statistics History</h2>
+<ol start="69">
+<li title="DBA_HIST_OSSTAT">CPU Busy and Idle Times Percent for Instance 1
+<a href="00085_edb360_1a_6z_711081_3e_69_cpu_busy_and_idle_times_percent_for_instance_1.html">html</a>
+<a href="00086_edb360_1a_6z_711081_3e_69_cpu_busy_and_idle_times_percent_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_OSSTAT">CPU User and Sys Times Percent for Instance 1
+<a href="00087_edb360_1a_6z_711081_3e_70_cpu_user_and_sys_times_percent_for_instance_1.html">html</a>
+<a href="00088_edb360_1a_6z_711081_3e_70_cpu_user_and_sys_times_percent_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_UNDOSTAT">Undo statistics for Instance 1
+<a href="00089_edb360_1a_6z_711081_3e_71_undo_statistics_for_instance_1.html">html</a>
+<a href="00090_edb360_1a_6z_711081_3e_71_undo_statistics_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_LIBRARYCACHE">SQL area statistics for Instance 1
+<a href="00091_edb360_1a_6z_711081_3e_72_sql_area_statistics_for_instance_1.html">html</a>
+<a href="00092_edb360_1a_6z_711081_3e_72_sql_area_statistics_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_OSSTAT">CPU RSRC MGR Wait Time per Instance
+<a href="00093_edb360_1a_6z_711081_3e_73_cpu_rsrc_mgr_wait_time_per_instance.html">html</a>
+<a href="00094_edb360_1a_6z_711081_3e_73_cpu_rsrc_mgr_wait_time_per_instance_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_OSSTAT">OS CPU Wait Time per Instance
+<a href="00095_edb360_1a_6z_711081_3e_74_os_cpu_wait_time_per_instance.html">html</a>
+<a href="00096_edb360_1a_6z_711081_3e_74_os_cpu_wait_time_per_instance_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>3h. Sessions</h2>
+<ol start="75">
+<li title="DBA_HIST_SQLSTAT">SQL ordered by physical reads
+<a href="00097_edb360_1a_6z_711081_3h_75_sql_ordered_by_physical_reads.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_SQLSTAT">SQL ordered by physical reads - Time Series
+<a href="00098_edb360_1a_6z_711081_3h_76_sql_ordered_by_physical_reads_time_series.html">html</a>
+<a href="00099_edb360_1a_6z_711081_3h_76_sql_ordered_by_physical_reads_time_series_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_SQLSTAT">SQL ordered by direct writes
+<a href="00100_edb360_1a_6z_711081_3h_77_sql_ordered_by_direct_writes.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_SQLSTAT">SQL ordered by direct writes - Time Series
+<a href="00101_edb360_1a_6z_711081_3h_78_sql_ordered_by_direct_writes_time_series.html">html</a>
+<a href="00102_edb360_1a_6z_711081_3h_78_sql_ordered_by_direct_writes_time_series_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">SQL blocking SQL
+<a href="00103_edb360_1a_6z_711081_3h_79_sql_blocking_sql.html">html</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+
+</td><td>
+
+<h2>4a. System Global Area (SGA) Statistics History</h2>
+<ol start="80">
+<li title="DBA_HIST_SGASTAT">SGA Statistics for Instance 1
+<a href="00104_edb360_1a_6z_711081_4a_80_sga_statistics_for_instance_1.html">html</a>
+<a href="00105_edb360_1a_6z_711081_4a_80_sga_statistics_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>4b. Program Global Area (PGA) Statistics History</h2>
+<ol start="81">
+<li title="DBA_HIST_PGASTAT">PGA Statistics for Instance 1
+<a href="00106_edb360_1a_6z_711081_4b_81_pga_statistics_for_instance_1.html">html</a>
+<a href="00107_edb360_1a_6z_711081_4b_81_pga_statistics_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>4c. Memory Statistics History</h2>
+<ol start="82">
+<li title="DBA_HIST_OSSTAT">Memory Statistics for Instance 1
+<a href="00108_edb360_1a_6z_711081_4c_82_memory_statistics_for_instance_1.html">html</a>
+<a href="00109_edb360_1a_6z_711081_4c_82_memory_statistics_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>4e. System Time Model Components</h2>
+<ol start="83">
+<li title="DBA_HIST_SYS_TIME_MODEL">STM: background cpu time per Instance
+<a href="00110_edb360_1a_6z_711081_4e_83_stm_background_cpu_time_per_instance.html">html</a>
+<a href="00111_edb360_1a_6z_711081_4e_83_stm_background_cpu_time_per_instance_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>4f. Wait Times and Latency per Class</h2>
+<ol start="84">
+<li title="DBA_HIST_EVENT_HISTOGRAM">User I/O Wait Latency Histogram
+<a href="00112_edb360_1a_6z_711081_4f_84_user_io_wait_latency_histogram.html">html</a>
+<a href="00113_edb360_1a_6z_711081_4f_84_user_io_wait_latency_histogram_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_EVENT_HISTOGRAM">System I/O Wait Latency Histogram
+<a href="00114_edb360_1a_6z_711081_4f_85_system_io_wait_latency_histogram.html">html</a>
+<a href="00115_edb360_1a_6z_711081_4f_85_system_io_wait_latency_histogram_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>4g. Latency Histogram for Top 5 Wait Events</h2>
+<ol start="86">
+<li title="DBA_HIST_EVENT_HISTOGRAM">Top 5 Wait Events
+<a href="00116_edb360_1a_6z_711081_4g_86_top_5_wait_events.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_EVENT_HISTOGRAM"> "" Latency Histogram
+<a href="00117_edb360_1a_6z_711081_4g_87__latency_histogram.html">html</a>
+<a href="00118_edb360_1a_6z_711081_4g_87__latency_histogram_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_EVENT_HISTOGRAM"> "" Latency Histogram
+<a href="00119_edb360_1a_6z_711081_4g_88__latency_histogram.html">html</a>
+<a href="00120_edb360_1a_6z_711081_4g_88__latency_histogram_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_EVENT_HISTOGRAM"> "" Latency Histogram
+<a href="00121_edb360_1a_6z_711081_4g_89__latency_histogram.html">html</a>
+<a href="00122_edb360_1a_6z_711081_4g_89__latency_histogram_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_EVENT_HISTOGRAM"> "" Latency Histogram
+<a href="00123_edb360_1a_6z_711081_4g_90__latency_histogram.html">html</a>
+<a href="00124_edb360_1a_6z_711081_4g_90__latency_histogram_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_EVENT_HISTOGRAM"> "" Latency Histogram
+<a href="00125_edb360_1a_6z_711081_4g_91__latency_histogram.html">html</a>
+<a href="00126_edb360_1a_6z_711081_4g_91__latency_histogram_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>4i. Waits Count v.s. Average Latency for Top 5 Wait Events</h2>
+<ol start="92">
+<li title="DBA_HIST_EVENT_HISTOGRAM">Top 5 Wait Events
+<a href="00127_edb360_1a_6z_711081_4i_92_top_5_wait_events.html">html</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_EVENT_HISTOGRAM"> "" Waits Count and Average Latency
+<a href="00128_edb360_1a_6z_711081_4i_93__waits_count_and_average_latency.html">html</a>
+<a href="00129_edb360_1a_6z_711081_4i_93__waits_count_and_average_latency_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_EVENT_HISTOGRAM"> "" Waits Count and Average Latency
+<a href="00130_edb360_1a_6z_711081_4i_94__waits_count_and_average_latency.html">html</a>
+<a href="00131_edb360_1a_6z_711081_4i_94__waits_count_and_average_latency_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_EVENT_HISTOGRAM"> "" Waits Count and Average Latency
+<a href="00132_edb360_1a_6z_711081_4i_95__waits_count_and_average_latency.html">html</a>
+<a href="00133_edb360_1a_6z_711081_4i_95__waits_count_and_average_latency_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_EVENT_HISTOGRAM"> "" Waits Count and Average Latency
+<a href="00134_edb360_1a_6z_711081_4i_96__waits_count_and_average_latency.html">html</a>
+<a href="00135_edb360_1a_6z_711081_4i_96__waits_count_and_average_latency_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_EVENT_HISTOGRAM"> "" Waits Count and Average Latency
+<a href="00136_edb360_1a_6z_711081_4i_97__waits_count_and_average_latency.html">html</a>
+<a href="00137_edb360_1a_6z_711081_4i_97__waits_count_and_average_latency_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>4l. System Metric Summary per Snap Interval</h2>
+<ol start="98">
+<li title="DBA_HIST_SYSMETRIC_SUMMARY">Library Cache Hit Ratio
+<a href="00138_edb360_1a_6z_711081_4l_98_library_cache_hit_ratio.html">html</a>
+<a href="00139_edb360_1a_6z_711081_4l_98_library_cache_hit_ratio_line_chart.html">line</a>
+<small><em> (206) </em></small>
+</li>
+<li title="DBA_HIST_SYSMETRIC_SUMMARY">Row Cache Hit Ratio
+<a href="00140_edb360_1a_6z_711081_4l_99_row_cache_hit_ratio.html">html</a>
+<a href="00141_edb360_1a_6z_711081_4l_99_row_cache_hit_ratio_line_chart.html">line</a>
+<small><em> (206) </em></small>
+</li>
+<li title="DBA_HIST_SYSMETRIC_SUMMARY">Buffer Cache Hit Ratio
+<a href="00142_edb360_1a_6z_711081_4l_100_buffer_cache_hit_ratio.html">html</a>
+<a href="00143_edb360_1a_6z_711081_4l_100_buffer_cache_hit_ratio_line_chart.html">line</a>
+<small><em> (206) </em></small>
+</li>
+<li title="DBA_HIST_SYSMETRIC_SUMMARY">PGA Cache Hit Ratio
+<a href="00144_edb360_1a_6z_711081_4l_101_pga_cache_hit_ratio.html">html</a>
+<a href="00145_edb360_1a_6z_711081_4l_101_pga_cache_hit_ratio_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+
+</td><td>
+
+<h2>5a. Active Session History (ASH)</h2>
+<ol start="102">
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">AAS per Wait Class for Instance 1
+<a href="00146_edb360_1a_6z_711081_5a_102_aas_per_wait_class_for_instance_1.html">html</a>
+<a href="00147_edb360_1a_6z_711081_5a_102_aas_per_wait_class_for_instance_1_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>5c. Active Session History (ASH) on CPU and Top 5 Wait Events</h2>
+<ol start="103">
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">ASH CPU per Source
+<a href="00148_edb360_1a_6z_711081_5c_103_ash_cpu_per_source.html">html</a>
+<a href="00149_edb360_1a_6z_711081_5c_103_ash_cpu_per_source_line_chart.html">line</a>
+<a href="00150_edb360_1a_6z_711081_5c_103_ash_cpu_per_source_pie_chart.html">pie</a>
+<small><em> (1) </em></small>
+</li>
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">ASH  "" per Source
+<a href="00151_edb360_1a_6z_711081_5c_104_ash__per_source.html">html</a>
+<a href="00152_edb360_1a_6z_711081_5c_104_ash__per_source_pie_chart.html">pie</a>
+<small><em> (1) </em></small>
+</li>
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">ASH  "" per Source
+<a href="00153_edb360_1a_6z_711081_5c_105_ash__per_source.html">html</a>
+<a href="00154_edb360_1a_6z_711081_5c_105_ash__per_source_pie_chart.html">pie</a>
+<small><em> (1) </em></small>
+</li>
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">ASH  "" per Source
+<a href="00155_edb360_1a_6z_711081_5c_106_ash__per_source.html">html</a>
+<a href="00156_edb360_1a_6z_711081_5c_106_ash__per_source_pie_chart.html">pie</a>
+<small><em> (1) </em></small>
+</li>
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">ASH  "" per Source
+<a href="00157_edb360_1a_6z_711081_5c_107_ash__per_source.html">html</a>
+<a href="00158_edb360_1a_6z_711081_5c_107_ash__per_source_pie_chart.html">pie</a>
+<small><em> (1) </em></small>
+</li>
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">ASH  "" per Source
+<a href="00159_edb360_1a_6z_711081_5c_108_ash__per_source.html">html</a>
+<a href="00160_edb360_1a_6z_711081_5c_108_ash__per_source_pie_chart.html">pie</a>
+<small><em> (1) </em></small>
+</li>
+</ol>
+<h2>5d. System Statistics per Snap Interval</h2>
+<ol start="109">
+<li title="DBA_HIST_SYSSTAT">Parallel Operations
+<a href="00161_edb360_1a_6z_711081_5d_109_parallel_operations.html">html</a>
+<a href="00162_edb360_1a_6z_711081_5d_109_parallel_operations_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+<li title="DBA_HIST_SYSSTAT">Workarea Executions
+<a href="00163_edb360_1a_6z_711081_5d_110_workarea_executions.html">html</a>
+<a href="00164_edb360_1a_6z_711081_5d_110_workarea_executions_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+
+</td><td>
+
+<h2>6b. Active Session History (ASH) - Top Timed Events</h2>
+<ol start="111">
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">ASH Top Timed Events for Instance 1 for 9 days of history
+<a href="00165_edb360_1a_6z_711081_6b_111_ash_top_timed_events_for_instance_1_for_9_days_of_history.html">html</a>
+<a href="00166_edb360_1a_6z_711081_6b_111_ash_top_timed_events_for_instance_1_for_9_days_of_history_bar_chart.html">bar</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+<h2>6c. Active Session History (ASH) - Top SQL</h2>
+<ol start="112">
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">ASH Top SQL for Instance 1 for 9 days of history
+<a href="00167_edb360_1a_6z_711081_6c_112_ash_top_sql_for_instance_1_for_9_days_of_history.html">html</a>
+<a href="00168_edb360_1a_6z_711081_6c_112_ash_top_sql_for_instance_1_for_9_days_of_history_pie_chart.html">pie</a>
+<small><em> (1) </em></small>
+</li>
+</ol>
+<h2>6d. Active Session History (ASH) - Top SQL - Time Series</h2>
+<ol start="113">
+<li title="DBA_HIST_ACTIVE_SESS_HISTORY">ASH Top SQL for Instance 1 for 9 days of history
+<a href="00169_edb360_1a_6z_711081_6d_113_ash_top_sql_for_instance_1_for_9_days_of_history.html">html</a>
+<a href="00170_edb360_1a_6z_711081_6d_113_ash_top_sql_for_instance_1_for_9_days_of_history_line_chart.html">line</a>
+<small><em> (0) </em></small>
+</li>
+</ol>
+
+</td><td>
+
+
+</td></tr></table>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:58 Tool execution hours:    0.018. </font>
+</body>
+</html>

@@ -1,0 +1,1548 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>Default Values for DBMS_STATS</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<script type="text/javascript" src="sorttable.js"></script>
+
+<!-- 00080_edb360_1a_6z_711081_3c_64_default_values_for_dbmsstats.html $ -->
+</head>
+<body>
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 3c.64. Default Values for DBMS_STATS <em>(SYS.OPTSTAT_HIST_CONTROL$)</em>  </h1>
+
+<br />
+
+
+
+<p>
+<table class="sortable">
+<tr>
+<th scope="col">
+#
+</th>
+<th scope="col">
+SNAME
+</th>
+<th scope="col">
+SVAL1
+</th>
+<th scope="col">
+SVAL2
+</th>
+<th scope="col">
+SPARE1
+</th>
+<th scope="col">
+SPARE2
+</th>
+<th scope="col">
+SPARE3
+</th>
+<th scope="col">
+SPARE4
+</th>
+<th scope="col">
+SPARE5
+</th>
+<th scope="col">
+SPARE6
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+SKIP_TIME
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2025-08-15T09:46:08.798935+07:00
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+STATS_RETENTION
+</td>
+<td align="right">
+                  31
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+MON_MODS_ALL_UPD_TIME
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td>
+SNAPSHOT_UPD_TIME
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2025-09-15T14:02:29.050815+07:00
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+5
+</td>
+<td>
+TRACE
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+0
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+6
+</td>
+<td>
+DEBUG
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+0
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+7
+</td>
+<td>
+SYS_FLAGS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T22:00:02.291660+07:00
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+1
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+8
+</td>
+<td>
+SPD_RETENTION_WEEKS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+53
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+9
+</td>
+<td>
+CASCADE
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+DBMS_STATS.AUTO_CASCADE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+10
+</td>
+<td>
+ESTIMATE_PERCENT
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+DBMS_STATS.AUTO_SAMPLE_SIZE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+11
+</td>
+<td>
+DEGREE
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+NULL
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+12
+</td>
+<td>
+METHOD_OPT
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+FOR ALL COLUMNS SIZE AUTO
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+13
+</td>
+<td>
+NO_INVALIDATE
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+DBMS_STATS.AUTO_INVALIDATE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+14
+</td>
+<td>
+GRANULARITY
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+AUTO
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+15
+</td>
+<td>
+PUBLISH
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+TRUE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+16
+</td>
+<td>
+STALE_PERCENT
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+10
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+17
+</td>
+<td>
+APPROXIMATE_NDV
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+TRUE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+18
+</td>
+<td>
+APPROXIMATE_NDV_ALGORITHM
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+REPEAT OR HYPERLOGLOG
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+19
+</td>
+<td>
+ANDV_ALGO_INTERNAL_OBSERVE
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+20
+</td>
+<td>
+INCREMENTAL
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+21
+</td>
+<td>
+INCREMENTAL_INTERNAL_CONTROL
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+TRUE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+22
+</td>
+<td>
+AUTOSTATS_TARGET
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+AUTO
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+23
+</td>
+<td>
+CONCURRENT
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+OFF
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+24
+</td>
+<td>
+JOB_OVERHEAD_PERC
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+1
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+25
+</td>
+<td>
+JOB_OVERHEAD
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+-1
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+26
+</td>
+<td>
+GLOBAL_TEMP_TABLE_STATS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+SESSION
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+27
+</td>
+<td>
+ENABLE_TOP_FREQ_HISTOGRAMS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+3
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+28
+</td>
+<td>
+ENABLE_HYBRID_HISTOGRAMS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+3
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+29
+</td>
+<td>
+TABLE_CACHED_BLOCKS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+1
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+30
+</td>
+<td>
+INCREMENTAL_LEVEL
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+PARTITION
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+31
+</td>
+<td>
+INCREMENTAL_STALENESS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+ALLOW_MIXED_FORMAT
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+32
+</td>
+<td>
+OPTIONS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+GATHER
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+33
+</td>
+<td>
+GATHER_AUTO
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+AFTER_LOAD
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+34
+</td>
+<td>
+STAT_CATEGORY
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+OBJECT_STATS, REALTIME_STATS
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+35
+</td>
+<td>
+SCAN_RATE
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+0
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+2025-09-15T14:17:30.220175+07:00
+</td>
+</tr>
+<tr>
+<td>
+36
+</td>
+<td>
+GATHER_SCAN_RATE
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+HADOOP_ONLY
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+37
+</td>
+<td>
+PREFERENCE_OVERRIDES_PARAMETER
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+38
+</td>
+<td>
+AUTO_STAT_EXTENSIONS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+OFF
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+39
+</td>
+<td>
+WAIT_TIME_TO_UPDATE_STATS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+15
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+40
+</td>
+<td>
+ROOT_TRIGGER_PDB
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+41
+</td>
+<td>
+COORDINATOR_TRIGGER_SHARD
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+42
+</td>
+<td>
+MAINTAIN_STATISTICS_STATUS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+43
+</td>
+<td>
+AUTO_TASK_STATUS
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+OFF
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+44
+</td>
+<td>
+AUTO_TASK_MAX_RUN_TIME
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+3600
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+45
+</td>
+<td>
+AUTO_TASK_INTERVAL
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+2024-01-10T20:21:07.741895+07:00
+</td>
+<td align="right">
+                   1
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td>
+900
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+</table>
+<p>
+
+
+
+<br />
+#: click on a column heading to sort on it
+
+<pre>
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNAME                                              VARCHAR2(30)
+ SVAL1                                              NUMBER
+ SVAL2                                              TIMESTAMP(6) WITH TIME ZONE
+ SPARE1                                             NUMBER
+ SPARE2                                             NUMBER
+ SPARE3                                             NUMBER
+ SPARE4                                             VARCHAR2(1000)
+ SPARE5                                             VARCHAR2(1000)
+ SPARE6                                             TIMESTAMP(6) WITH TIME ZONE
+
+SELECT * FROM sys.optstat_hist_control$;
+
+45 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:32  </font>
+</body>
+</html>

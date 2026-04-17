@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>CPU RSRC MGR Wait Time per Instance</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<!-- 00094_edb360_1a_6z_711081_3e_73_cpu_rsrc_mgr_wait_time_per_instance_line_chart.html $ -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]})
+google.setOnLoadCallback(drawChart)
+function drawChart() {
+var data = google.visualization.arrayToDataTable([
+['Date', 'Inst 1']
+]);
+
+var options = {
+chartArea:{left:90, top:75, width:'65%', height:'70%'},
+backgroundColor: {fill: 'white', stroke: '#336699', strokeWidth: 1},
+explorer: {actions: ['dragToZoom', 'rightClickToReset'], maxZoomIn: 0.01},
+title: '3e.73. CPU RSRC MGR Wait Time per Instance',
+titleTextStyle: {fontSize: 18, bold: false},
+focusTarget: 'category',
+legend: {position: 'right', textStyle: {fontSize: 14}},
+tooltip: {textStyle: {fontSize: 14}},
+hAxis: {title: '19.0.0.0.0 cores:12 threads:24', gridlines: {count: -1}, titleTextStyle: {fontSize: 16, bold: false}},
+series: { 0: { }, 1: { },  2: { },  3: { },  4: { },  5: { },  6: { }, 7: {},
+8: { }, 9: { }, 10: { }, 11: { }, 12: { }, 13: { }, 14: { }
+},
+vAxis: {title: 'Time (centi-secs)',  gridlines: {count: -1}, titleTextStyle: {fontSize: 16, bold: false}}
+}
+
+var chart = new google.visualization.LineChart(document.getElementById('linechart'))
+chart.draw(data, options)
+}
+</script>
+</head>
+<body>
+
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 3e.73. CPU RSRC MGR Wait Time per Instance <em>(DBA_HIST_OSSTAT)</em>  </h1>
+
+<br />
+
+
+<br />
+
+<div id="linechart" class="google-chart"></div>
+
+<br />
+<font class="n">Notes:<br />1) drag to zoom, and right click to reset<br />2) up to 9 days of awr history were considered</font>
+<font class="n"><br />3) for CPU Threads equivalence divide CS value by 100 (to get seconds), then divide result by number of seconds on interval.</font>
+<pre>
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNAP_ID                                   NOT NULL NUMBER
+ DBID                                      NOT NULL NUMBER
+ INSTANCE_NUMBER                           NOT NULL NUMBER
+ STAT_ID                                   NOT NULL NUMBER
+ STAT_NAME                                 NOT NULL VARCHAR2(64)
+ VALUE                                              NUMBER
+ CON_DBID                                           NUMBER
+ CON_ID                                             NUMBER
+
+WITH
+seed AS (
+SELECT /*+  MATERIALIZE NO_MERGE  */ /* 3e.73 */
+       o.snap_id,
+       o.instance_number,
+       o.value - LAG(o.value) OVER (PARTITION BY o.dbid, o.instance_number, o.stat_id ORDER BY o.snap_id) value,
+       s.begin_interval_time,
+       s.end_interval_time
+  FROM dba_hist_osstat o,
+       dba_hist_snapshot s
+ WHERE o.stat_name = 'RSRC_MGR_CPU_WAIT_TIME'
+   AND o.snap_id BETWEEN 14504 AND 14709
+   AND o.dbid = 2417711081
+   AND s.snap_id         = o.snap_id
+   AND s.dbid            = o.dbid
+   AND s.instance_number = o.instance_number
+   AND (CAST(s.end_interval_time AS DATE) - CAST(s.begin_interval_time AS DATE)) * 24 * 60 &gt; 1 -- ignore snaps closer than 1m appart
+)
+SELECT snap_id,
+       TO_CHAR(MIN(begin_interval_time), 'YYYY-MM-DD HH24:MI:SS') begin_time,
+       TO_CHAR(MIN(end_interval_time), 'YYYY-MM-DD HH24:MI:SS') end_time,
+       SUM(CASE instance_number WHEN 1 THEN value ELSE 0 END) inst_01,
+       SUM(CASE instance_number WHEN 2 THEN value ELSE 0 END) inst_02,
+       SUM(CASE instance_number WHEN 3 THEN value ELSE 0 END) inst_03,
+       SUM(CASE instance_number WHEN 4 THEN value ELSE 0 END) inst_04,
+       SUM(CASE instance_number WHEN 5 THEN value ELSE 0 END) inst_05,
+       SUM(CASE instance_number WHEN 6 THEN value ELSE 0 END) inst_06,
+       SUM(CASE instance_number WHEN 7 THEN value ELSE 0 END) inst_07,
+       SUM(CASE instance_number WHEN 8 THEN value ELSE 0 END) inst_08,
+       0 dummy_09,
+       0 dummy_10,
+       0 dummy_11,
+       0 dummy_12,
+       0 dummy_13,
+       0 dummy_14,
+       0 dummy_15
+  FROM seed
+ WHERE value &gt;= 0
+ GROUP BY
+       snap_id
+ ORDER BY
+       snap_id;
+
+0 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:44  </font>
+</body>
+</html>

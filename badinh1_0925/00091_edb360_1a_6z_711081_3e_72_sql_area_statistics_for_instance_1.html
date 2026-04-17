@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>SQL area statistics for Instance 1</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<script type="text/javascript" src="sorttable.js"></script>
+
+<!-- 00091_edb360_1a_6z_711081_3e_72_sql_area_statistics_for_instance_1.html $ -->
+</head>
+<body>
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 3e.72. SQL area statistics for Instance 1 <em>(DBA_HIST_LIBRARYCACHE)</em>  </h1>
+
+<br />
+Memory is accounted as power of two (binary) while storage and network traffic as power of ten (decimal). <br />
+
+
+
+
+
+<br />
+#: click on a column heading to sort on it
+
+<pre>
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNAP_ID                                   NOT NULL NUMBER
+ DBID                                      NOT NULL NUMBER
+ INSTANCE_NUMBER                           NOT NULL NUMBER
+ NAMESPACE                                 NOT NULL VARCHAR2(15)
+ GETS                                               NUMBER
+ GETHITS                                            NUMBER
+ PINS                                               NUMBER
+ PINHITS                                            NUMBER
+ RELOADS                                            NUMBER
+ INVALIDATIONS                                      NUMBER
+ DLM_LOCK_REQUESTS                                  NUMBER
+ DLM_PIN_REQUESTS                                   NUMBER
+ DLM_PIN_RELEASES                                   NUMBER
+ DLM_INVALIDATION_REQUESTS                          NUMBER
+ DLM_INVALIDATIONS                                  NUMBER
+ CON_DBID                                           NUMBER
+ CON_ID                                             NUMBER
+
+WITH
+manual_pivot AS (
+SELECT /*+  MATERIALIZE NO_MERGE  */ /* 3e.72 */
+       snap_id,
+       dbid,
+       instance_number,
+       SUM(PINS) PINS,
+       SUM(PINHITS) PINHITS,
+       SUM(RELOADS) RELOADS,
+       SUM(INVALIDATIONS) INVALIDATIONS
+  FROM dba_hist_LIBRARYCACHE
+ WHERE snap_id BETWEEN 14504 AND 14709
+ AND dbid = 2417711081
+ AND instance_number = 1
+ AND namespace='SQL AREA'
+ GROUP BY
+       snap_id,
+       dbid,
+       instance_number
+)
+SELECT u.snap_id,
+       TO_CHAR(MIN(s.begin_interval_time), 'YYYY-MM-DD HH24:MI:SS') begin_time,
+       TO_CHAR(MIN(s.end_interval_time), 'YYYY-MM-DD HH24:MI:SS') end_time,
+       SUM(u.PINS) PINS,
+       SUM(u.PINHITS) PINHITS,
+       SUM(u.RELOADS) RELOADS,
+       SUM(u.INVALIDATIONS) INVALIDATIONS,
+       0 dummy_05,
+       0 dummy_06,
+       0 dummy_07,
+       0 dummy_08,
+       0 dummy_09,
+       0 dummy_10,
+       0 dummy_11,
+       0 dummy_12,
+       0 dummy_13,
+       0 dummy_14,
+       0 dummy_15
+  FROM manual_pivot u,
+       dba_hist_snapshot s
+ WHERE s.snap_id         = u.snap_id
+   AND s.dbid            = u.dbid
+   AND s.instance_number = u.instance_number
+   AND (CAST(s.end_interval_time AS DATE) - CAST(s.begin_interval_time AS DATE)) * 24 * 60 &gt; 1 -- ignore snaps closer than 1m appart
+ GROUP BY
+       u.snap_id
+ ORDER BY
+       u.snap_id;
+
+0 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:44  </font>
+</body>
+</html>
