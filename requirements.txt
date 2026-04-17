@@ -1,6 +1,8 @@
 beautifulsoup4
 customtkinter
 matplotlib
+openpyxl
+pandas
 pillow
 python-docx
 PyYAML

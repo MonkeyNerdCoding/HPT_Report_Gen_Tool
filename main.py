@@ -2,7 +2,7 @@
 
 import argparse
 
-from app_logic import generate_report_to_file
+from app_logic import DEFAULT_SQL_MAPPING, generate_report_to_file, run_sql_pipeline
 from config import DEFAULT_CHART_OUTPUT_DIR, DEFAULT_INPUT, DEFAULT_MAPPING, DEFAULT_OUTPUT, DEFAULT_TEMPLATE
 
 
@@ -10,10 +10,26 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Generate a Word report from Oracle Health Check / EDB360 HTML output."
     )
+    parser.add_argument(
+        "--mode",
+        choices=["oracleHC", "sqlHealcheck"],
+        default="oracleHC",
+        help="Pipeline mode to run.",
+    )
     parser.add_argument("--input", default=str(DEFAULT_INPUT), help="HTML file or folder of HTML files.")
     parser.add_argument("--template", default=str(DEFAULT_TEMPLATE), help="Word template .docx path.")
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="Output .docx path.")
+    parser.add_argument(
+        "--output-root",
+        default=None,
+        help="SQLHealcheck output folder for merged_healthcheck_info.xlsx and final_healthcheck_report.docx.",
+    )
     parser.add_argument("--mapping", default=str(DEFAULT_MAPPING), help="YAML mapping file path.")
+    parser.add_argument(
+        "--sql-mapping",
+        default=str(DEFAULT_SQL_MAPPING),
+        help="SQLHealcheck YAML mapping file path. Empty mapping enables auto-placeholders.",
+    )
     parser.add_argument(
         "--chart-output-dir",
         default=str(DEFAULT_CHART_OUTPUT_DIR),
@@ -29,6 +45,15 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
+    if args.mode == "sqlHealcheck":
+        run_sql_pipeline(
+            input_root=args.input,
+            template_file=args.template,
+            output_root=args.output_root,
+            mapping_file=args.sql_mapping,
+        )
+        return
+
     generate_report_to_file(
         html_input=args.input,
         word_file=args.template,

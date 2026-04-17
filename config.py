@@ -33,7 +33,7 @@ def load_mapping_rules(mapping_path: str | Path) -> list[MappingRule]:
                 required=item.get("required", False),
                 on_missing=item.get("on_missing", "leave"),
                 width_inches=item.get("width_inches"),
+                table_header_vertical=item.get("table_header_vertical", False),
             )
         )
     return rules
-

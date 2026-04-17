@@ -8,10 +8,13 @@ from extraction.extract_html import extract_content_from_input
 from mapping.content_registry import ContentRegistry
 from mapping.mapper import resolve_mappings
 from models import GenerationReport
+from rpwithchart import render_excel_report
 from rendering.word_renderer import render_report
+from sql_healthcheck.merge_sql import merge_sql_root_healthcheck
 
 
 LogCallback = Callable[[str], None]
+DEFAULT_SQL_MAPPING = Path(__file__).resolve().parent / "mapping" / "sql_healthcheck_mapping.yaml"
 
 
 def generate_report(
@@ -89,6 +92,49 @@ def generate_report_to_file(
     return str(output_path)
 
 
+def run_sql_pipeline(
+    input_root: str | Path,
+    template_file: str | Path,
+    output_root: str | Path | None = None,
+    mapping_file: str | Path | None = DEFAULT_SQL_MAPPING,
+    log_callback: LogCallback | None = None,
+) -> list[str]:
+    """Run SQLHealcheck CSV files -> merged Excel -> Word report."""
+    input_path = _validate_sql_input_root(input_root)
+    template_path = _validate_word_file(template_file)
+    output_root_path = _validate_or_create_output_root(output_root or input_path)
+    mapping_path = Path(mapping_file) if mapping_file else None
+    log = _make_logger(log_callback)
+
+    excel_file = output_root_path / "merged_healthcheck_info.xlsx"
+    report_file = output_root_path / "final_healthcheck_report.docx"
+
+    log("Running SQLHealcheck pipeline...")
+    log(f"SQL root folder: {input_path}")
+    log(f"Template: {template_path}")
+    log(f"Selected output folder: {output_root_path}")
+    log(f"Merged Excel output: {excel_file}")
+    log(f"Word report output: {report_file}")
+
+    merged_excel = merge_sql_root_healthcheck(input_path, excel_file, log_callback=log_callback)
+    if not merged_excel:
+        raise ValueError(f"No SQLHealcheck files were generated from: {input_path}")
+
+    generated_report = render_excel_report(
+        excel_path=merged_excel,
+        template_path=template_path,
+        output_path=report_file,
+        mapping_path=mapping_path,
+        log_callback=log_callback,
+    )
+
+    log("")
+    log("SQLHealcheck completed.")
+    log(f"Merged Excel file: {merged_excel}")
+    log(f"Word report: {generated_report}")
+    return [str(merged_excel), str(generated_report)]
+
+
 def _make_logger(log_callback: LogCallback | None) -> LogCallback:
     def log(message: str) -> None:
         print(message)
@@ -126,6 +172,34 @@ def _validate_word_file(path_value: str | Path) -> Path:
         raise ValueError(f"Word file path is not a file: {path}")
     if path.suffix.lower() != ".docx":
         raise ValueError(f"Word file must be a .docx file: {path}")
+    return path
+
+
+def _validate_sql_input_root(path_value: str | Path) -> Path:
+    path = Path(path_value)
+    if not path.exists():
+        raise FileNotFoundError(f"SQL root folder does not exist: {path}")
+    if not path.is_dir():
+        raise NotADirectoryError(f"SQL input must be a root folder: {path}")
+    if not _has_sql_healthcheck_input(path):
+        raise ValueError(f"Selected SQL root folder must contain CSV files or DB subfolders with CSV files: {path}")
+    return path
+
+
+def _has_sql_healthcheck_input(path: Path) -> bool:
+    if any(child.is_file() and child.suffix.lower() == ".csv" for child in path.iterdir()):
+        return True
+    return any(
+        child.is_dir() and any(csv_file.is_file() for csv_file in child.glob("*.csv"))
+        for child in path.iterdir()
+    )
+
+
+def _validate_or_create_output_root(path_value: str | Path) -> Path:
+    path = Path(path_value)
+    path.mkdir(parents=True, exist_ok=True)
+    if not path.is_dir():
+        raise NotADirectoryError(f"Output root is not a folder: {path}")
     return path
 
 

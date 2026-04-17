@@ -84,6 +84,7 @@ class MappingRule:
     required: bool = False
     on_missing: str = "leave"
     width_inches: float | None = None
+    table_header_vertical: bool = False
 
 
 @dataclass
@@ -116,4 +117,3 @@ class GenerationReport:
         print(f"  Warnings: {len(self.warnings)}")
         for item in self.warnings:
             print(f"    ! {item}")
-

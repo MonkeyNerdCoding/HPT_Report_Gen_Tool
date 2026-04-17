@@ -1,0 +1,5 @@
+placeholders:
+  - placeholder: "<fileio>"
+    source_key: "fileio"
+    content_type: "table"
+    table_header_vertical: true
