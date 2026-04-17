@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>Workarea Executions</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<!-- 00164_edb360_1a_6z_711081_5d_110_workarea_executions_line_chart.html $ -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]})
+google.setOnLoadCallback(drawChart)
+function drawChart() {
+var data = google.visualization.arrayToDataTable([
+['Date', 'workarea executions - multipass', 'workarea executions - onepass', 'workarea executions - optimal']
+]);
+
+var options = {
+chartArea:{left:90, top:75, width:'65%', height:'70%'},
+backgroundColor: {fill: 'white', stroke: '#336699', strokeWidth: 1},
+explorer: {actions: ['dragToZoom', 'rightClickToReset'], maxZoomIn: 0.01},
+title: '5d.110. Workarea Executions',
+titleTextStyle: {fontSize: 18, bold: false},
+focusTarget: 'category',
+legend: {position: 'right', textStyle: {fontSize: 14}},
+tooltip: {textStyle: {fontSize: 14}},
+hAxis: {title: '19.0.0.0.0 cores:12 threads:24', gridlines: {count: -1}, titleTextStyle: {fontSize: 16, bold: false}},
+series: { 0: { color :'#34CF27'}, 1: { color :'#0252D7'},  2: { color :'#1E96DD'},  3: { color :'#CEC3B5'},  4: { color :'#EA6A05'},  5: { color :'#871C12'},  6: { color :'#C42A05'}, 7: {color :'#75763E'},
+8: { color :'#594611'}, 9: { color :'#989779'}, 10: { color :'#C6BAA5'}, 11: { color :'#9FFA9D'}, 12: { color :'#F571A0'}, 13: { color :'#000000'}, 14: { color :'#ff0000'}
+},
+vAxis: {title: 'Executions',  gridlines: {count: -1}, titleTextStyle: {fontSize: 16, bold: false}}
+}
+
+var chart = new google.visualization.LineChart(document.getElementById('linechart'))
+chart.draw(data, options)
+}
+</script>
+</head>
+<body>
+
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 5d.110. Workarea Executions <em>(DBA_HIST_SYSSTAT)</em>  </h1>
+
+<br />
+
+
+<br />
+
+<div id="linechart" class="google-chart"></div>
+
+<br />
+<font class="n">Notes:<br />1) drag to zoom, and right click to reset<br />2) up to 9 days of awr history were considered</font>
+<font class="n"><br />3) </font>
+<pre>
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNAP_ID                                   NOT NULL NUMBER
+ DBID                                      NOT NULL NUMBER
+ INSTANCE_NUMBER                           NOT NULL NUMBER
+ STAT_ID                                   NOT NULL NUMBER
+ STAT_NAME                                 NOT NULL VARCHAR2(64)
+ VALUE                                              NUMBER
+ CON_DBID                                           NUMBER
+ CON_ID                                             NUMBER
+
+WITH
+selected_stat_name AS (
+SELECT /*+  MATERIALIZE NO_MERGE   DYNAMIC_SAMPLING(4)  */ /* 5d.109 */
+       h.snap_id,
+       h.instance_number,
+       s.begin_interval_time,
+       s.end_interval_time,
+       (s.startup_time - LAG(s.startup_time) OVER (PARTITION BY h.dbid, h.instance_number, h.stat_id ORDER BY h.snap_id)) startup_time_interval,
+       h.stat_name,
+       (h.value - LAG(h.value) OVER (PARTITION BY h.dbid, h.instance_number, h.stat_id ORDER BY h.snap_id)) value
+       --h.value
+  FROM dba_hist_sysstat h,
+       dba_hist_snapshot s
+ WHERE h.snap_id BETWEEN 14504 AND 14709
+   AND h.dbid = 2417711081
+   AND h.stat_name IN ('workarea executions - multipass', 'workarea executions - onepass', 'workarea executions - optimal', '@stat_name_04@', '@stat_name_05@', '@stat_name_06@', '@stat_name_07@', '@stat_name_08@', '@stat_name_09@', '@stat_name_10@', '@stat_name_11@', '@stat_name_12@', '@stat_name_13@', '@stat_name_14@', '@stat_name_15@')
+   AND s.snap_id = h.snap_id
+   AND s.dbid = h.dbid
+   AND s.instance_number = h.instance_number
+   AND s.end_interval_time - s.begin_interval_time &gt; TO_DSINTERVAL('+00 00:01:00.000000') -- exclude snaps less than 1m appart
+),
+stat_name_per_snap AS (
+SELECT /*+  MATERIALIZE NO_MERGE  */ /* 5d.109 */
+       snap_id,
+       MIN(begin_interval_time) begin_interval_time,
+       MIN(end_interval_time) end_interval_time,
+       stat_name,
+       SUM(value) value
+  FROM selected_stat_name
+ WHERE startup_time_interval = TO_DSINTERVAL('+00 00:00:00.000000') -- include only snaps from same startup
+   AND value &gt;= 0
+ GROUP BY
+       snap_id,
+       stat_name
+)
+SELECT /*+  NO_MERGE  */ /* 5d.109 */
+       snap_id,
+       TO_CHAR(MIN(begin_interval_time), 'YYYY-MM-DD HH24:MI:SS') begin_time,
+       TO_CHAR(MIN(end_interval_time), 'YYYY-MM-DD HH24:MI:SS') end_time,
+       SUM(CASE stat_name WHEN 'workarea executions - multipass' THEN value ELSE 0 END) "multipass",
+       SUM(CASE stat_name WHEN 'workarea executions - onepass' THEN value ELSE 0 END) "onepass",
+       SUM(CASE stat_name WHEN 'workarea executions - optimal' THEN value ELSE 0 END) "optimal",
+       SUM(CASE stat_name WHEN '@stat_name_04@' THEN value ELSE 0 END) dummy_04,
+       SUM(CASE stat_name WHEN '@stat_name_05@' THEN value ELSE 0 END) dummy_05,
+       SUM(CASE stat_name WHEN '@stat_name_06@' THEN value ELSE 0 END) dummy_06,
+       SUM(CASE stat_name WHEN '@stat_name_07@' THEN value ELSE 0 END) dummy_07,
+       SUM(CASE stat_name WHEN '@stat_name_08@' THEN value ELSE 0 END) dummy_08,
+       SUM(CASE stat_name WHEN '@stat_name_09@' THEN value ELSE 0 END) dummy_09,
+       SUM(CASE stat_name WHEN '@stat_name_10@' THEN value ELSE 0 END) dummy_10,
+       SUM(CASE stat_name WHEN '@stat_name_11@' THEN value ELSE 0 END) dummy_11,
+       SUM(CASE stat_name WHEN '@stat_name_12@' THEN value ELSE 0 END) dummy_12,
+       SUM(CASE stat_name WHEN '@stat_name_13@' THEN value ELSE 0 END) dummy_13,
+       SUM(CASE stat_name WHEN '@stat_name_14@' THEN value ELSE 0 END) dummy_14,
+       SUM(CASE stat_name WHEN '@stat_name_15@' THEN value ELSE 0 END) dummy_15
+  FROM stat_name_per_snap
+ GROUP BY
+       snap_id
+ ORDER BY
+       snap_id;
+
+0 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:56  </font>
+</body>
+</html>

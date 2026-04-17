@@ -1,0 +1,863 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>Scheduler Jobs</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<script type="text/javascript" src="sorttable.js"></script>
+
+<!-- 00043_edb360_1a_6z_711081_2a_28_scheduler_jobs.html $ -->
+</head>
+<body>
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 2a.28. Scheduler Jobs <em>(DBA_SCHEDULER_JOBS)</em>  </h1>
+
+<br />
+
+
+
+<p>
+<table class="sortable">
+<tr>
+<th scope="col">
+#
+</th>
+<th scope="col">
+OWNER
+</th>
+<th scope="col">
+JOB_NAME
+</th>
+<th scope="col">
+PROGRAM_NAME
+</th>
+<th scope="col">
+JOB_ACTION
+</th>
+<th scope="col">
+REPEAT_INTERVAL
+</th>
+<th scope="col">
+ENABL
+</th>
+<th scope="col">
+FAILURE_COUNT
+</th>
+<th scope="col">
+LAST_START_DATE
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+ORACLE_OCM
+</td>
+<td>
+MGMT_CONFIG_JOB
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+ORACLE_OCM.MGMT_CONFIG.collect_config
+</td>
+<td>
+freq=daily;byhour=01;byminute=01;bysecond=01
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T01:01:02.018832+07:00
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+ORACLE_OCM
+</td>
+<td>
+MGMT_STATS_CONFIG_JOB
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+ORACLE_OCM.MGMT_CONFIG.collect_stats
+</td>
+<td>
+freq=monthly;interval=1;bymonthday=1;byhour=01;byminute=01;bysecond=01
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-01T01:01:01.712413+07:00
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+SYS
+</td>
+<td>
+BSLN_MAINTAIN_STATS_JOB
+</td>
+<td>
+BSLN_MAINTAIN_STATS_PROG
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-14T00:00:00.422011+07:00
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td>
+SYS
+</td>
+<td>
+CLEANUP_NON_EXIST_OBJ
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+declare
+                  myinterval number;
+                begin
+                  myinterval := dbms_pdb.cleanup_task(1);
+                  if myinterval &lt;&gt; 0 then
+                    next_date := systimestamp +
+                      numtodsinterval(myinterval, 'second');
+                  end if;
+                end;
+</td>
+<td>
+FREQ = HOURLY; INTERVAL = 12
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T08:50:37.137349+07:00
+</td>
+</tr>
+<tr>
+<td>
+5
+</td>
+<td>
+SYS
+</td>
+<td>
+CLEANUP_ONLINE_IND_BUILD
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+declare
+                  myinterval number;
+                begin
+                  myinterval := dbms_pdb.cleanup_task(2);
+                  if myinterval &lt;&gt; 0 then
+                    next_date := systimestamp +
+                      numtodsinterval(myinterval, 'second');
+                  end if;
+                end;
+</td>
+<td>
+FREQ = HOURLY; INTERVAL = 1
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T14:20:24.319187+07:00
+</td>
+</tr>
+<tr>
+<td>
+6
+</td>
+<td>
+SYS
+</td>
+<td>
+CLEANUP_ONLINE_PMO
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+declare
+                  myinterval number;
+                begin
+                  myinterval := dbms_pdb.cleanup_task(6);
+                  if myinterval &lt;&gt; 0 then
+                    next_date := systimestamp +
+                      numtodsinterval(myinterval, 'second');
+                  end if;
+                end;
+</td>
+<td>
+FREQ = HOURLY; INTERVAL = 1
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T14:21:05.898906+07:00
+</td>
+</tr>
+<tr>
+<td>
+7
+</td>
+<td>
+SYS
+</td>
+<td>
+CLEANUP_TAB_IOT_PMO
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+declare
+                  myinterval number;
+                begin
+                  myinterval := dbms_pdb.cleanup_task(3);
+                  if myinterval &lt;&gt; 0 then
+                    next_date := systimestamp +
+                      numtodsinterval(myinterval, 'second');
+                  end if;
+                end;
+</td>
+<td>
+FREQ = HOURLY; INTERVAL = 1
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T14:20:34.298590+07:00
+</td>
+</tr>
+<tr>
+<td>
+8
+</td>
+<td>
+SYS
+</td>
+<td>
+CLEANUP_TRANSIENT_PKG
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+declare
+                  myinterval number;
+                begin
+                  myinterval := dbms_pdb.cleanup_task(5);
+                  if myinterval &lt;&gt; 0 then
+                    next_date := systimestamp +
+                      numtodsinterval(myinterval, 'second');
+                  end if;
+                end;
+</td>
+<td>
+FREQ = HOURLY; INTERVAL = 2
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T14:20:55.102539+07:00
+</td>
+</tr>
+<tr>
+<td>
+9
+</td>
+<td>
+SYS
+</td>
+<td>
+CLEANUP_TRANSIENT_TYPE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+declare
+                  myinterval number;
+                begin
+                  myinterval := dbms_pdb.cleanup_task(4);
+                  if myinterval &lt;&gt; 0 then
+                    next_date := systimestamp +
+                      numtodsinterval(myinterval, 'second');
+                  end if;
+                end;
+</td>
+<td>
+FREQ = HOURLY; INTERVAL = 2
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T08:50:37.353307+07:00
+</td>
+</tr>
+<tr>
+<td>
+10
+</td>
+<td>
+SYS
+</td>
+<td>
+DRA_REEVALUATE_OPEN_FAILURES
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+dbms_ir.reevaluateopenfailures
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-14T06:00:00.505553+07:00
+</td>
+</tr>
+<tr>
+<td>
+11
+</td>
+<td>
+SYS
+</td>
+<td>
+FGR$AUTOPURGE_JOB
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+sys.dbms_file_group.purge_file_group(NULL);
+</td>
+<td>
+freq=daily;byhour=0;byminute=0;bysecond=0
+</td>
+<td>
+FALSE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+12
+</td>
+<td>
+SYS
+</td>
+<td>
+FILE_SIZE_UPD
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+declare
+                  myinterval number;
+                begin
+                  myinterval := dbms_pdb.cleanup_task(7);
+                  if myinterval &lt;&gt; 0 then
+                    next_date := systimestamp +
+                      numtodsinterval(myinterval, 'second');
+                  end if;
+                end;
+</td>
+<td>
+FREQ = MINUTELY; INTERVAL = 5
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-01-09T20:47:26.083058+07:00
+</td>
+</tr>
+<tr>
+<td>
+13
+</td>
+<td>
+SYS
+</td>
+<td>
+FILE_WATCHER
+</td>
+<td>
+FILE_WATCHER_PROGRAM
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+14
+</td>
+<td>
+SYS
+</td>
+<td>
+HM_CREATE_OFFLINE_DICTIONARY
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+dbms_hm.create_offline_dictionary
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+15
+</td>
+<td>
+SYS
+</td>
+<td>
+LOAD_OPATCH_INVENTORY
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+BEGIN dbms_qopatch.opatch_inv_refresh_job(); END;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+16
+</td>
+<td>
+SYS
+</td>
+<td>
+ORA$AUTOTASK_CLEAN
+</td>
+<td>
+ORA$AGE_AUTOTASK_DATA
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T03:00:00.787684+07:00
+</td>
+</tr>
+<tr>
+<td>
+17
+</td>
+<td>
+SYS
+</td>
+<td>
+ORA$PREPLUGIN_BACKUP_JOB
+</td>
+<td>
+ORA$PREPLUGIN_BACKUP_PRG
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+18
+</td>
+<td>
+SYS
+</td>
+<td>
+PMO_DEFERRED_GIDX_MAINT_JOB
+</td>
+<td>
+PMO_DEFERRED_GIDX_MAINT
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T02:00:01.604738+07:00
+</td>
+</tr>
+<tr>
+<td>
+19
+</td>
+<td>
+SYS
+</td>
+<td>
+PURGE_LOG
+</td>
+<td>
+PURGE_LOG_PROG
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T03:00:01.000519+07:00
+</td>
+</tr>
+<tr>
+<td>
+20
+</td>
+<td>
+SYS
+</td>
+<td>
+RSE$CLEAN_RECOVERABLE_SCRIPT
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+sys.dbms_streams_auto_int.clean_recoverable_script;
+</td>
+<td>
+freq=daily;byhour=0;byminute=0;bysecond=0
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T00:00:00.796209+07:00
+</td>
+</tr>
+<tr>
+<td>
+21
+</td>
+<td>
+SYS
+</td>
+<td>
+SM$CLEAN_AUTO_SPLIT_MERGE
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+sys.dbms_streams_auto_int.clean_auto_split_merge;
+</td>
+<td>
+freq=daily;byhour=0;byminute=0;bysecond=0
+</td>
+<td>
+TRUE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+2025-09-15T00:00:00.993719+07:00
+</td>
+</tr>
+<tr>
+<td>
+22
+</td>
+<td>
+SYS
+</td>
+<td>
+XMLDB_NFS_CLEANUP_JOB
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+xdb.dbms_xdbutil_int.cleanup_expired_nfsclients
+</td>
+<td>
+Freq=minutely;interval=5
+</td>
+<td>
+FALSE
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+</table>
+<p>
+
+
+
+<br />
+#: click on a column heading to sort on it
+
+<pre>
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ OWNER                                              VARCHAR2(128)
+ JOB_NAME                                           VARCHAR2(128)
+ JOB_SUBNAME                                        VARCHAR2(128)
+ JOB_STYLE                                          VARCHAR2(17)
+ JOB_CREATOR                                        VARCHAR2(128)
+ CLIENT_ID                                          VARCHAR2(65)
+ GLOBAL_UID                                         VARCHAR2(33)
+ PROGRAM_OWNER                                      VARCHAR2(4000)
+ PROGRAM_NAME                                       VARCHAR2(4000)
+ JOB_TYPE                                           VARCHAR2(16)
+ JOB_ACTION                                         VARCHAR2(4000)
+ NUMBER_OF_ARGUMENTS                                NUMBER
+ SCHEDULE_OWNER                                     VARCHAR2(4000)
+ SCHEDULE_NAME                                      VARCHAR2(4000)
+ SCHEDULE_TYPE                                      VARCHAR2(12)
+ START_DATE                                         TIMESTAMP(6) WITH TIME ZONE
+ REPEAT_INTERVAL                                    VARCHAR2(4000)
+ EVENT_QUEUE_OWNER                                  VARCHAR2(128)
+ EVENT_QUEUE_NAME                                   VARCHAR2(128)
+ EVENT_QUEUE_AGENT                                  VARCHAR2(523)
+ EVENT_CONDITION                                    VARCHAR2(4000)
+ EVENT_RULE                                         VARCHAR2(261)
+ FILE_WATCHER_OWNER                                 VARCHAR2(1044)
+ FILE_WATCHER_NAME                                  VARCHAR2(1044)
+ END_DATE                                           TIMESTAMP(6) WITH TIME ZONE
+ JOB_CLASS                                          VARCHAR2(128)
+ ENABLED                                            VARCHAR2(5)
+ AUTO_DROP                                          VARCHAR2(5)
+ RESTART_ON_RECOVERY                                VARCHAR2(5)
+ RESTART_ON_FAILURE                                 VARCHAR2(5)
+ STATE                                              VARCHAR2(15)
+ JOB_PRIORITY                                       NUMBER
+ RUN_COUNT                                          NUMBER
+ UPTIME_RUN_COUNT                                   NUMBER
+ MAX_RUNS                                           NUMBER
+ FAILURE_COUNT                                      NUMBER
+ UPTIME_FAILURE_COUNT                               NUMBER
+ MAX_FAILURES                                       NUMBER
+ RETRY_COUNT                                        NUMBER
+ LAST_START_DATE                                    TIMESTAMP(6) WITH TIME ZONE
+ LAST_RUN_DURATION                                  INTERVAL DAY(9) TO SECOND(6)
+ NEXT_RUN_DATE                                      TIMESTAMP(6) WITH TIME ZONE
+ SCHEDULE_LIMIT                                     INTERVAL DAY(3) TO SECOND(0)
+ MAX_RUN_DURATION                                   INTERVAL DAY(3) TO SECOND(0)
+ LOGGING_LEVEL                                      VARCHAR2(11)
+ STORE_OUTPUT                                       VARCHAR2(5)
+ STOP_ON_WINDOW_CLOSE                               VARCHAR2(5)
+ INSTANCE_STICKINESS                                VARCHAR2(5)
+ RAISE_EVENTS                                       VARCHAR2(4000)
+ SYSTEM                                             VARCHAR2(5)
+ JOB_WEIGHT                                         NUMBER
+ NLS_ENV                                            VARCHAR2(4000)
+ SOURCE                                             VARCHAR2(128)
+ NUMBER_OF_DESTINATIONS                             NUMBER
+ DESTINATION_OWNER                                  VARCHAR2(1044)
+ DESTINATION                                        VARCHAR2(1044)
+ CREDENTIAL_OWNER                                   VARCHAR2(128)
+ CREDENTIAL_NAME                                    VARCHAR2(128)
+ INSTANCE_ID                                        NUMBER
+ DEFERRED_DROP                                      VARCHAR2(5)
+ ALLOW_RUNS_IN_RESTRICTED_MODE                      VARCHAR2(5)
+ COMMENTS                                           VARCHAR2(4000)
+ FLAGS                                              NUMBER
+ RESTARTABLE                                        VARCHAR2(5)
+ HAS_CONSTRAINTS                                    VARCHAR2(5)
+ CONNECT_CREDENTIAL_OWNER                           VARCHAR2(128)
+ CONNECT_CREDENTIAL_NAME                            VARCHAR2(128)
+ FAIL_ON_SCRIPT_ERROR                               VARCHAR2(5)
+
+SELECT /*+  NO_MERGE  */ /* 2a.28 */
+OWNER ,JOB_NAME ,PROGRAM_NAME ,JOB_ACTION ,REPEAT_INTERVAL ,ENABLED ,FAILURE_COUNT ,LAST_START_DATE
+  FROM dba_scheduler_jobs
+ ORDER BY
+       owner,
+       job_name;
+
+22 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:15  </font>
+</body>
+</html>

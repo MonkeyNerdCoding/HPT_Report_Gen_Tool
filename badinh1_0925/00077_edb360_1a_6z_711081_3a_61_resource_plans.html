@@ -1,0 +1,575 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>Resource Plans</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<script type="text/javascript" src="sorttable.js"></script>
+
+<!-- 00077_edb360_1a_6z_711081_3a_61_resource_plans.html $ -->
+</head>
+<body>
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 3a.61. Resource Plans <em>(DBA_RSRC_PLANS)</em>  </h1>
+
+<br />
+
+
+
+<p>
+<table class="sortable">
+<tr>
+<th scope="col">
+#
+</th>
+<th scope="col">
+PLAN_ID
+</th>
+<th scope="col">
+PLAN
+</th>
+<th scope="col">
+NUM_PLAN_DIRECTIVES
+</th>
+<th scope="col">
+CPU_METHOD
+</th>
+<th scope="col">
+MGMT_METHOD
+</th>
+<th scope="col">
+ACTIVE_SESS_POOL_MTH
+</th>
+<th scope="col">
+PARALLEL_DEGREE_LIMIT_MTH
+</th>
+<th scope="col">
+QUEUEING_MTH
+</th>
+<th scope="col">
+SUB
+</th>
+<th scope="col">
+COMMENTS
+</th>
+<th scope="col">
+STATUS
+</th>
+<th scope="col">
+MAN
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td align="right">
+               19624
+</td>
+<td>
+MIXED_WORKLOAD_PLAN
+</td>
+<td align="right">
+                   5
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+ACTIVE_SESS_POOL_ABSOLUTE
+</td>
+<td>
+PARALLEL_DEGREE_LIMIT_ABSOLUTE
+</td>
+<td>
+FIFO_TIMEOUT
+</td>
+<td>
+NO
+</td>
+<td>
+Example plan for a mixed workload that prioritizes interactive operations over batch operations
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+NO
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td align="right">
+               19625
+</td>
+<td>
+DEFAULT_MAINTENANCE_PLAN
+</td>
+<td align="right">
+                   3
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+ACTIVE_SESS_POOL_ABSOLUTE
+</td>
+<td>
+PARALLEL_DEGREE_LIMIT_ABSOLUTE
+</td>
+<td>
+FIFO_TIMEOUT
+</td>
+<td>
+NO
+</td>
+<td>
+Default plan for maintenance windows that prioritizes SYS_GROUP operations, leaving 5% for automated maintenance operations and 20% for other tasks.
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+YES
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td align="right">
+               19626
+</td>
+<td>
+DEFAULT_PLAN
+</td>
+<td align="right">
+                   3
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+ACTIVE_SESS_POOL_ABSOLUTE
+</td>
+<td>
+PARALLEL_DEGREE_LIMIT_ABSOLUTE
+</td>
+<td>
+FIFO_TIMEOUT
+</td>
+<td>
+NO
+</td>
+<td>
+Default, basic, pre-defined plan that prioritizes SYS_GROUP operations and allocates minimal resources for automated maintenance and diagnostics operations.
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+YES
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td align="right">
+               19627
+</td>
+<td>
+INTERNAL_QUIESCE
+</td>
+<td align="right">
+                   2
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+ACTIVE_SESS_POOL_ABSOLUTE
+</td>
+<td>
+PARALLEL_DEGREE_LIMIT_ABSOLUTE
+</td>
+<td>
+FIFO_TIMEOUT
+</td>
+<td>
+NO
+</td>
+<td>
+Plan for quiescing the database.  This plan cannot be activated  directly.  To activate, use the quiesce command.
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+YES
+</td>
+</tr>
+<tr>
+<td>
+5
+</td>
+<td align="right">
+               19628
+</td>
+<td>
+INTERNAL_PLAN
+</td>
+<td align="right">
+                   3
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+ACTIVE_SESS_POOL_ABSOLUTE
+</td>
+<td>
+PARALLEL_DEGREE_LIMIT_ABSOLUTE
+</td>
+<td>
+FIFO_TIMEOUT
+</td>
+<td>
+NO
+</td>
+<td>
+Internally-used plan for disabling the resource manager.
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+YES
+</td>
+</tr>
+<tr>
+<td>
+6
+</td>
+<td align="right">
+               19629
+</td>
+<td>
+DSS_PLAN
+</td>
+<td align="right">
+                   7
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+ACTIVE_SESS_POOL_ABSOLUTE
+</td>
+<td>
+PARALLEL_DEGREE_LIMIT_ABSOLUTE
+</td>
+<td>
+FIFO_TIMEOUT
+</td>
+<td>
+NO
+</td>
+<td>
+Example plan for DSS workloads that prioritizes DSS queries over ETL.
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+NO
+</td>
+</tr>
+<tr>
+<td>
+7
+</td>
+<td align="right">
+               19630
+</td>
+<td>
+ETL_CRITICAL_PLAN
+</td>
+<td align="right">
+                   7
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+ACTIVE_SESS_POOL_ABSOLUTE
+</td>
+<td>
+PARALLEL_DEGREE_LIMIT_ABSOLUTE
+</td>
+<td>
+FIFO_TIMEOUT
+</td>
+<td>
+NO
+</td>
+<td>
+Example plan for DSS workloads that prioritizes ETL and critical DSS queries.
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+NO
+</td>
+</tr>
+<tr>
+<td>
+8
+</td>
+<td align="right">
+               19631
+</td>
+<td>
+ORA$AUTOTASK_PLAN
+</td>
+<td align="right">
+                   1
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+ACTIVE_SESS_POOL_ABSOLUTE
+</td>
+<td>
+PARALLEL_DEGREE_LIMIT_ABSOLUTE
+</td>
+<td>
+FIFO_TIMEOUT
+</td>
+<td>
+YES
+</td>
+<td>
+Plan for global maintenance in a consolidated database. This plan is for internal use only. It cannot be modified.
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+YES
+</td>
+</tr>
+<tr>
+<td>
+9
+</td>
+<td align="right">
+               19632
+</td>
+<td>
+ORA$ROOT_PLAN
+</td>
+<td align="right">
+                   2
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+ACTIVE_SESS_POOL_ABSOLUTE
+</td>
+<td>
+PARALLEL_DEGREE_LIMIT_ABSOLUTE
+</td>
+<td>
+FIFO_TIMEOUT
+</td>
+<td>
+NO
+</td>
+<td>
+Plan for administration tasks in the ROOT of a consolidated database. This plan is for internal use only. It cannot be modified.
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+YES
+</td>
+</tr>
+<tr>
+<td>
+10
+</td>
+<td align="right">
+               19633
+</td>
+<td>
+ORA$QOS_PLAN
+</td>
+<td align="right">
+                   7
+</td>
+<td>
+RATIO
+</td>
+<td>
+RATIO
+</td>
+<td>
+ACTIVE_SESS_POOL_ABSOLUTE
+</td>
+<td>
+PARALLEL_DEGREE_LIMIT_ABSOLUTE
+</td>
+<td>
+FIFO_TIMEOUT
+</td>
+<td>
+NO
+</td>
+<td>
+Plan for QOS Management that provides a fixed set of allocations to the consumer groups that QOS uses to manage workload resource allocation.
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+YES
+</td>
+</tr>
+<tr>
+<td>
+11
+</td>
+<td align="right">
+               19634
+</td>
+<td>
+APPQOS_PLAN
+</td>
+<td align="right">
+                   7
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+EMPHASIS
+</td>
+<td>
+ACTIVE_SESS_POOL_ABSOLUTE
+</td>
+<td>
+PARALLEL_DEGREE_LIMIT_ABSOLUTE
+</td>
+<td>
+FIFO_TIMEOUT
+</td>
+<td>
+NO
+</td>
+<td>
+Plan for Application QOS Management that provides a fixed set of allocations to the consumer groups that Application QOS uses to manage workload resource allocation.
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+YES
+</td>
+</tr>
+</table>
+<p>
+
+
+
+<br />
+#: click on a column heading to sort on it
+
+<pre>
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PLAN_ID                                   NOT NULL NUMBER
+ PLAN                                               VARCHAR2(128)
+ NUM_PLAN_DIRECTIVES                                NUMBER
+ CPU_METHOD                                         VARCHAR2(128)
+ MGMT_METHOD                                        VARCHAR2(128)
+ ACTIVE_SESS_POOL_MTH                               VARCHAR2(128)
+ PARALLEL_DEGREE_LIMIT_MTH                          VARCHAR2(128)
+ QUEUEING_MTH                                       VARCHAR2(128)
+ SUB_PLAN                                           VARCHAR2(3)
+ COMMENTS                                           VARCHAR2(2000)
+ STATUS                                             VARCHAR2(128)
+ MANDATORY                                          VARCHAR2(3)
+
+SELECT /*+  NO_MERGE  */ /* 3a.61 */
+       *
+  FROM dba_rsrc_plans
+ ORDER BY
+       1, 2;
+
+11 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:32  </font>
+</body>
+</html>

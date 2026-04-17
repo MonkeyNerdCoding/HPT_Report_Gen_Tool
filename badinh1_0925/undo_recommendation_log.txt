@@ -1,0 +1,7 @@
+DECLARE
+       *
+ERROR at line 1:
+ORA-01841: (full) year must be between -4713 and +9999, and not be 0 
+ORA-06512: at line 2 
+
+

@@ -1,0 +1,349 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>Scheduler Windows</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<script type="text/javascript" src="sorttable.js"></script>
+
+<!-- 00045_edb360_1a_6z_711081_2a_30_scheduler_windows.html $ -->
+</head>
+<body>
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 2a.30. Scheduler Windows <em>(DBA_SCHEDULER_WINDOWS)</em>  </h1>
+
+<br />
+
+
+
+<p>
+<table class="sortable">
+<tr>
+<th scope="col">
+#
+</th>
+<th scope="col">
+WINDOW_NAME
+</th>
+<th scope="col">
+RESOURCE_PLAN
+</th>
+<th scope="col">
+REPEAT_INTERVAL
+</th>
+<th scope="col">
+DURATION
+</th>
+<th scope="col">
+NEXT_START_DATE
+</th>
+<th scope="col">
+LAST_START_DATE
+</th>
+<th scope="col">
+ENABL
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+FRIDAY_WINDOW
+</td>
+<td>
+DEFAULT_MAINTENANCE_PLAN
+</td>
+<td>
+freq=daily;byday=FRI;byhour=22;byminute=0; bysecond=0
+</td>
+<td>
++000 04:00:00
+</td>
+<td>
+2025-09-19T22:00:00.000000+07:00
+</td>
+<td>
+2025-09-12T22:00:00.003065+07:00
+</td>
+<td>
+TRUE
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+MONDAY_WINDOW
+</td>
+<td>
+DEFAULT_MAINTENANCE_PLAN
+</td>
+<td>
+freq=daily;byday=MON;byhour=22;byminute=0; bysecond=0
+</td>
+<td>
++000 04:00:00
+</td>
+<td>
+2025-09-15T22:00:00.000000+07:00
+</td>
+<td>
+2025-09-08T22:00:00.006114+07:00
+</td>
+<td>
+TRUE
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+SATURDAY_WINDOW
+</td>
+<td>
+DEFAULT_MAINTENANCE_PLAN
+</td>
+<td>
+freq=daily;byday=SAT;byhour=6;byminute=0; bysecond=0
+</td>
+<td>
++000 20:00:00
+</td>
+<td>
+2025-09-20T06:00:00.000000+07:00
+</td>
+<td>
+2025-09-13T06:00:00.004090+07:00
+</td>
+<td>
+TRUE
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td>
+SUNDAY_WINDOW
+</td>
+<td>
+DEFAULT_MAINTENANCE_PLAN
+</td>
+<td>
+freq=daily;byday=SUN;byhour=6;byminute=0; bysecond=0
+</td>
+<td>
++000 20:00:00
+</td>
+<td>
+2025-09-21T06:00:00.000000+07:00
+</td>
+<td>
+2025-09-14T06:00:00.047048+07:00
+</td>
+<td>
+TRUE
+</td>
+</tr>
+<tr>
+<td>
+5
+</td>
+<td>
+THURSDAY_WINDOW
+</td>
+<td>
+DEFAULT_MAINTENANCE_PLAN
+</td>
+<td>
+freq=daily;byday=THU;byhour=22;byminute=0; bysecond=0
+</td>
+<td>
++000 04:00:00
+</td>
+<td>
+2025-09-18T22:00:00.000000+07:00
+</td>
+<td>
+2025-09-11T22:00:00.166185+07:00
+</td>
+<td>
+TRUE
+</td>
+</tr>
+<tr>
+<td>
+6
+</td>
+<td>
+TUESDAY_WINDOW
+</td>
+<td>
+DEFAULT_MAINTENANCE_PLAN
+</td>
+<td>
+freq=daily;byday=TUE;byhour=22;byminute=0; bysecond=0
+</td>
+<td>
++000 04:00:00
+</td>
+<td>
+2025-09-16T22:00:00.000000+07:00
+</td>
+<td>
+2025-09-09T22:00:00.078998+07:00
+</td>
+<td>
+TRUE
+</td>
+</tr>
+<tr>
+<td>
+7
+</td>
+<td>
+WEDNESDAY_WINDOW
+</td>
+<td>
+DEFAULT_MAINTENANCE_PLAN
+</td>
+<td>
+freq=daily;byday=WED;byhour=22;byminute=0; bysecond=0
+</td>
+<td>
++000 04:00:00
+</td>
+<td>
+2025-09-17T22:00:00.000000+07:00
+</td>
+<td>
+2025-09-10T22:00:00.000186+07:00
+</td>
+<td>
+TRUE
+</td>
+</tr>
+<tr>
+<td>
+8
+</td>
+<td>
+WEEKEND_WINDOW
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+freq=daily;byday=SAT;byhour=0;byminute=0;bysecond=0
+</td>
+<td>
++002 00:00:00
+</td>
+<td>
+2024-01-13T00:00:00.000000+07:00
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+</tr>
+<tr>
+<td>
+9
+</td>
+<td>
+WEEKNIGHT_WINDOW
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+freq=daily;byday=MON,TUE,WED,THU,FRI;byhour=22;byminute=0; bysecond=0
+</td>
+<td>
++000 08:00:00
+</td>
+<td>
+2024-01-10T22:00:00.000000+07:00
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+FALSE
+</td>
+</tr>
+</table>
+<p>
+
+
+
+<br />
+#: click on a column heading to sort on it
+
+<pre>
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ OWNER                                     NOT NULL VARCHAR2(128)
+ WINDOW_NAME                               NOT NULL VARCHAR2(128)
+ RESOURCE_PLAN                                      VARCHAR2(128)
+ SCHEDULE_OWNER                                     VARCHAR2(4000)
+ SCHEDULE_NAME                                      VARCHAR2(4000)
+ SCHEDULE_TYPE                                      VARCHAR2(8)
+ START_DATE                                         TIMESTAMP(6) WITH TIME ZONE
+ REPEAT_INTERVAL                                    VARCHAR2(4000)
+ END_DATE                                           TIMESTAMP(6) WITH TIME ZONE
+ DURATION                                           INTERVAL DAY(3) TO SECOND(0)
+ WINDOW_PRIORITY                                    VARCHAR2(4)
+ NEXT_START_DATE                                    TIMESTAMP(6) WITH TIME ZONE
+ LAST_START_DATE                                    TIMESTAMP(6) WITH TIME ZONE
+ ENABLED                                            VARCHAR2(5)
+ ACTIVE                                             VARCHAR2(5)
+ MANUAL_OPEN_TIME                                   TIMESTAMP(6) WITH TIME ZONE
+ MANUAL_DURATION                                    INTERVAL DAY(3) TO SECOND(0)
+ COMMENTS                                           VARCHAR2(4000)
+
+SELECT /*+  NO_MERGE  */ /* 2a.30 */
+       WINDOW_NAME,RESOURCE_PLAN,REPEAT_INTERVAL,DURATION,NEXT_START_DATE,LAST_START_DATE,ENABLED
+  FROM dba_scheduler_windows
+ ORDER BY
+       window_name;
+
+9 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:16  </font>
+</body>
+</html>

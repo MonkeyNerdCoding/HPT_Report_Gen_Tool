@@ -1,0 +1,356 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>Row Cache Hit Ratio</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<!-- 00141_edb360_1a_6z_711081_4l_99_row_cache_hit_ratio_line_chart.html $ -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+google.load("visualization", "1", {packages:["corechart"]})
+google.setOnLoadCallback(drawChart)
+function drawChart() {
+var data = google.visualization.arrayToDataTable([
+['Date', 'Inst 1']
+, [new Date(2025,8,07,01,00,29), 99.5616874374914]
+, [new Date(2025,8,07,02,00,34), 99.9672651980268]
+, [new Date(2025,8,07,03,00,39), 99.9739769914449]
+, [new Date(2025,8,07,04,00,44), 99.8040848685808]
+, [new Date(2025,8,07,05,00,49), 99.9787414965986]
+, [new Date(2025,8,07,06,00,55), 99.9313464280412]
+, [new Date(2025,8,07,07,00,00), 99.9280154871711]
+, [new Date(2025,8,07,08,00,05), 99.9548096559247]
+, [new Date(2025,8,07,09,00,10), 99.9747132318295]
+, [new Date(2025,8,07,10,00,16), 99.8875526409111]
+, [new Date(2025,8,07,11,00,21), 99.8245409405277]
+, [new Date(2025,8,07,12,00,26), 99.9624480557811]
+, [new Date(2025,8,07,13,00,31), 99.9826944237403]
+, [new Date(2025,8,07,14,00,36), 99.9970271386512]
+, [new Date(2025,8,07,15,00,42), 99.7822847252711]
+, [new Date(2025,8,07,16,00,47), 99.9604247462648]
+, [new Date(2025,8,07,17,00,52), 99.9970045382288]
+, [new Date(2025,8,07,18,00,57), 99.9974648626226]
+, [new Date(2025,8,07,19,00,03), 99.9133171444291]
+, [new Date(2025,8,07,20,00,09), 99.993769952368]
+, [new Date(2025,8,07,21,00,14), 99.9706228541975]
+, [new Date(2025,8,07,22,00,19), 99.9929074190289]
+, [new Date(2025,8,07,23,00,24), 99.9401804268303]
+, [new Date(2025,8,08,00,00,29), 99.9824086397093]
+, [new Date(2025,8,08,01,00,34), 99.5456774907152]
+, [new Date(2025,8,08,02,00,39), 99.9558519500422]
+, [new Date(2025,8,08,03,00,44), 99.9919149207431]
+, [new Date(2025,8,08,04,00,49), 99.8403744488616]
+, [new Date(2025,8,08,05,00,54), 99.9915824915825]
+, [new Date(2025,8,08,06,01,00), 99.9712315452867]
+, [new Date(2025,8,08,07,00,05), 99.9980153217164]
+, [new Date(2025,8,08,08,00,10), 99.9986203090508]
+, [new Date(2025,8,08,09,00,15), 100]
+, [new Date(2025,8,08,10,00,21), 99.9779012489791]
+, [new Date(2025,8,08,11,00,26), 100]
+, [new Date(2025,8,08,12,00,32), 100]
+, [new Date(2025,8,08,13,00,38), 100]
+, [new Date(2025,8,08,14,00,43), 100]
+, [new Date(2025,8,08,15,00,48), 100]
+, [new Date(2025,8,08,16,00,53), 100]
+, [new Date(2025,8,08,17,00,58), 100]
+, [new Date(2025,8,08,18,00,03), 100]
+, [new Date(2025,8,08,19,00,08), 100]
+, [new Date(2025,8,08,20,00,13), 100]
+, [new Date(2025,8,08,21,00,19), 100]
+, [new Date(2025,8,08,22,00,25), 99.9991332986653]
+, [new Date(2025,8,08,23,00,30), 99.6066974835692]
+, [new Date(2025,8,09,00,00,36), 99.9192325404578]
+, [new Date(2025,8,09,01,00,42), 99.7308929997582]
+, [new Date(2025,8,09,02,00,48), 99.9137694325479]
+, [new Date(2025,8,09,03,00,54), 99.9883923253303]
+, [new Date(2025,8,09,04,00,59), 99.7097279823097]
+, [new Date(2025,8,09,05,00,04), 99.9774612333213]
+, [new Date(2025,8,09,06,00,09), 99.953560107667]
+, [new Date(2025,8,09,07,00,14), 99.9885153032748]
+, [new Date(2025,8,09,08,00,19), 99.9434367076263]
+, [new Date(2025,8,09,09,00,25), 99.9843799243842]
+, [new Date(2025,8,09,10,00,30), 99.9250982034882]
+, [new Date(2025,8,09,11,00,35), 99.9964336661912]
+, [new Date(2025,8,09,12,00,41), 99.998717948718]
+, [new Date(2025,8,09,13,00,46), 100]
+, [new Date(2025,8,09,14,00,51), 99.9985994397759]
+, [new Date(2025,8,09,15,00,56), 100]
+, [new Date(2025,8,09,16,00,01), 100]
+, [new Date(2025,8,09,17,00,06), 100]
+, [new Date(2025,8,09,18,00,12), 100]
+, [new Date(2025,8,09,19,00,17), 100]
+, [new Date(2025,8,09,20,00,23), 100]
+, [new Date(2025,8,09,21,00,29), 100]
+, [new Date(2025,8,09,22,00,35), 100]
+, [new Date(2025,8,09,23,00,41), 99.8732461153554]
+, [new Date(2025,8,10,00,00,46), 99.968513311638]
+, [new Date(2025,8,10,01,00,52), 99.8055483589062]
+, [new Date(2025,8,10,02,00,58), 99.9560040370106]
+, [new Date(2025,8,10,03,00,03), 99.9666059560036]
+, [new Date(2025,8,10,04,00,09), 99.879741497547]
+, [new Date(2025,8,10,05,00,14), 99.9549007114792]
+, [new Date(2025,8,10,06,00,19), 99.962795586633]
+, [new Date(2025,8,10,07,00,24), 100]
+, [new Date(2025,8,10,08,00,30), 100]
+, [new Date(2025,8,10,09,00,36), 99.9916874480465]
+, [new Date(2025,8,10,10,00,42), 99.8940739436324]
+, [new Date(2025,8,10,11,00,47), 99.9980087614496]
+, [new Date(2025,8,10,12,00,53), 100]
+, [new Date(2025,8,10,13,00,58), 100]
+, [new Date(2025,8,10,14,00,03), 99.9993491108855]
+, [new Date(2025,8,10,15,00,08), 100]
+, [new Date(2025,8,10,16,00,13), 100]
+, [new Date(2025,8,10,17,00,18), 100]
+, [new Date(2025,8,10,18,00,24), 100]
+, [new Date(2025,8,10,19,00,29), 100]
+, [new Date(2025,8,10,20,00,34), 100]
+, [new Date(2025,8,10,21,00,40), 100]
+, [new Date(2025,8,10,22,00,46), 99.9991848047607]
+, [new Date(2025,8,10,23,00,51), 99.9170064125894]
+, [new Date(2025,8,11,00,00,57), 99.9702384545824]
+, [new Date(2025,8,11,01,00,03), 99.7847346706474]
+, [new Date(2025,8,11,02,00,09), 99.9705081193551]
+, [new Date(2025,8,11,03,00,14), 99.72864589854]
+, [new Date(2025,8,11,04,00,19), 99.8508870397348]
+, [new Date(2025,8,11,05,00,24), 100]
+, [new Date(2025,8,11,06,00,29), 99.7865898899329]
+, [new Date(2025,8,11,07,00,34), 99.9842902027992]
+, [new Date(2025,8,11,08,00,40), 99.993807500337]
+, [new Date(2025,8,11,09,00,46), 99.9984438219732]
+, [new Date(2025,8,11,10,00,51), 99.9900040738948]
+, [new Date(2025,8,11,11,00,57), 100]
+, [new Date(2025,8,11,12,00,03), 100]
+, [new Date(2025,8,11,13,00,09), 100]
+, [new Date(2025,8,11,14,00,14), 100]
+, [new Date(2025,8,11,15,00,20), 100]
+, [new Date(2025,8,11,16,00,26), 100]
+, [new Date(2025,8,11,17,00,32), 99.9991578238167]
+, [new Date(2025,8,11,18,00,37), 100]
+, [new Date(2025,8,11,19,00,43), 99.9997161671208]
+, [new Date(2025,8,11,20,00,49), 100]
+, [new Date(2025,8,11,21,00,55), 100]
+, [new Date(2025,8,11,22,01,00), 99.8260318514104]
+, [new Date(2025,8,11,23,00,06), 99.9714459059141]
+, [new Date(2025,8,12,00,00,12), 99.9638883549768]
+, [new Date(2025,8,12,01,00,18), 99.8105026316546]
+, [new Date(2025,8,12,02,00,23), 99.9738145291784]
+, [new Date(2025,8,12,03,00,29), 99.9948364911084]
+, [new Date(2025,8,12,04,00,34), 99.8472060761063]
+, [new Date(2025,8,12,05,00,39), 100]
+, [new Date(2025,8,12,06,00,45), 99.941069239447]
+, [new Date(2025,8,12,07,00,50), 100]
+, [new Date(2025,8,12,08,00,55), 99.996342355523]
+, [new Date(2025,8,12,09,00,00), 100]
+, [new Date(2025,8,12,10,00,05), 99.9993244156195]
+, [new Date(2025,8,12,11,00,10), 100]
+, [new Date(2025,8,12,12,00,16), 100]
+, [new Date(2025,8,12,13,00,21), 100]
+, [new Date(2025,8,12,14,00,26), 99.9996621393338]
+, [new Date(2025,8,12,15,00,31), 100]
+, [new Date(2025,8,12,16,00,37), 99.9989212513484]
+, [new Date(2025,8,12,17,00,42), 100]
+, [new Date(2025,8,12,18,00,47), 100]
+, [new Date(2025,8,12,19,00,52), 100]
+, [new Date(2025,8,12,20,00,57), 100]
+, [new Date(2025,8,12,21,00,03), 100]
+, [new Date(2025,8,12,22,00,08), 99.9992823824901]
+, [new Date(2025,8,12,23,00,13), 99.8802599361659]
+, [new Date(2025,8,13,00,00,18), 99.978921836333]
+, [new Date(2025,8,13,01,00,24), 99.8086165609548]
+, [new Date(2025,8,13,02,00,29), 99.9696510034198]
+, [new Date(2025,8,13,03,00,35), 99.9725027756091]
+, [new Date(2025,8,13,04,00,40), 99.726829382963]
+, [new Date(2025,8,13,05,00,45), 99.9819420621307]
+, [new Date(2025,8,13,06,00,51), 99.9790336927414]
+, [new Date(2025,8,13,07,00,56), 99.8755756642029]
+, [new Date(2025,8,13,08,00,01), 99.9557308064645]
+, [new Date(2025,8,13,09,00,06), 99.9715156267899]
+, [new Date(2025,8,13,10,00,11), 99.9293941408091]
+, [new Date(2025,8,13,11,00,17), 99.7827031782467]
+, [new Date(2025,8,13,12,00,23), 99.9731269183554]
+, [new Date(2025,8,13,13,00,29), 99.9834806731937]
+, [new Date(2025,8,13,14,00,34), 99.9619182219012]
+, [new Date(2025,8,13,15,00,40), 99.9506084564526]
+, [new Date(2025,8,13,16,00,46), 99.958330216274]
+, [new Date(2025,8,13,17,00,52), 99.9900293447308]
+, [new Date(2025,8,13,18,00,57), 99.9963990960651]
+, [new Date(2025,8,13,19,00,03), 99.8528538311368]
+, [new Date(2025,8,13,20,00,08), 99.9751275751542]
+, [new Date(2025,8,13,21,00,14), 99.9993014808606]
+, [new Date(2025,8,13,22,00,19), 99.9722834980325]
+, [new Date(2025,8,13,23,00,24), 99.8787417656681]
+, [new Date(2025,8,14,00,00,29), 99.983350224286]
+, [new Date(2025,8,14,01,00,35), 99.2683855579038]
+, [new Date(2025,8,14,02,00,40), 99.9471420723434]
+, [new Date(2025,8,14,03,00,45), 99.6116187489564]
+, [new Date(2025,8,14,04,00,50), 99.5426926712557]
+, [new Date(2025,8,14,05,00,55), 99.9808868501529]
+, [new Date(2025,8,14,06,01,00), 99.8583796960288]
+, [new Date(2025,8,14,07,00,05), 99.9243611733954]
+, [new Date(2025,8,14,08,00,10), 99.9599741484041]
+, [new Date(2025,8,14,09,00,16), 99.9708266865292]
+, [new Date(2025,8,14,10,00,22), 99.9486521267346]
+, [new Date(2025,8,14,11,00,27), 99.840313237455]
+, [new Date(2025,8,14,12,00,33), 99.9733864412495]
+, [new Date(2025,8,14,13,00,39), 99.9938837920489]
+, [new Date(2025,8,14,14,00,44), 99.9970174596051]
+, [new Date(2025,8,14,15,00,49), 99.9072450870083]
+, [new Date(2025,8,14,16,00,55), 99.9831133050336]
+, [new Date(2025,8,14,17,01,00), 99.9912213996014]
+, [new Date(2025,8,14,18,00,05), 99.9992423266633]
+, [new Date(2025,8,14,19,00,10), 99.9064889220697]
+, [new Date(2025,8,14,20,00,15), 99.9893614879579]
+, [new Date(2025,8,14,21,00,21), 99.9985191059171]
+, [new Date(2025,8,14,22,00,26), 99.9931645648883]
+, [new Date(2025,8,14,23,00,31), 99.9377943263694]
+, [new Date(2025,8,15,00,00,37), 99.9628160318089]
+, [new Date(2025,8,15,01,00,42), 99.0833223496901]
+, [new Date(2025,8,15,02,00,47), 99.9451941898747]
+, [new Date(2025,8,15,03,00,52), 99.9657794048688]
+, [new Date(2025,8,15,04,00,57), 99.5205984732776]
+, [new Date(2025,8,15,05,00,02), 99.9604159919393]
+, [new Date(2025,8,15,06,00,07), 99.9289133306975]
+, [new Date(2025,8,15,07,00,12), 100]
+, [new Date(2025,8,15,08,00,17), 100]
+, [new Date(2025,8,15,09,00,22), 99.9984695439241]
+, [new Date(2025,8,15,10,00,27), 99.9688941281509]
+, [new Date(2025,8,15,11,00,32), 100]
+, [new Date(2025,8,15,12,00,38), 100]
+, [new Date(2025,8,15,13,00,43), 100]
+, [new Date(2025,8,15,14,00,49), 100]
+]);
+
+var options = {
+chartArea:{left:90, top:75, width:'65%', height:'70%'},
+backgroundColor: {fill: 'white', stroke: '#336699', strokeWidth: 1},
+explorer: {actions: ['dragToZoom', 'rightClickToReset'], maxZoomIn: 0.01},
+title: '4l.99. Row Cache Hit Ratio',
+titleTextStyle: {fontSize: 18, bold: false},
+focusTarget: 'category',
+legend: {position: 'right', textStyle: {fontSize: 14}},
+tooltip: {textStyle: {fontSize: 14}},
+hAxis: {title: '19.0.0.0.0 cores:12 threads:24', gridlines: {count: -1}, titleTextStyle: {fontSize: 16, bold: false}},
+series: { 0: { }, 1: { },  2: { },  3: { },  4: { },  5: { },  6: { }, 7: {},
+8: { }, 9: { }, 10: { }, 11: { }, 12: { }, 13: { }, 14: { }
+},
+vAxis: {title: 'Row Cache Hit Ratio %',  gridlines: {count: -1}, titleTextStyle: {fontSize: 16, bold: false}}
+}
+
+var chart = new google.visualization.LineChart(document.getElementById('linechart'))
+chart.draw(data, options)
+}
+</script>
+</head>
+<body>
+
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 4l.99. Row Cache Hit Ratio <em>(DBA_HIST_SYSMETRIC_SUMMARY)</em>  </h1>
+
+<br />
+
+
+<br />
+
+<div id="linechart" class="google-chart"></div>
+
+<br />
+<font class="n">Notes:<br />1) drag to zoom, and right click to reset<br />2) up to 9 days of awr history were considered</font>
+<font class="n"><br />3) </font>
+<pre>
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNAP_ID                                   NOT NULL NUMBER
+ DBID                                      NOT NULL NUMBER
+ INSTANCE_NUMBER                           NOT NULL NUMBER
+ BEGIN_TIME                                NOT NULL DATE
+ END_TIME                                  NOT NULL DATE
+ INTSIZE                                   NOT NULL NUMBER
+ GROUP_ID                                  NOT NULL NUMBER
+ METRIC_ID                                 NOT NULL NUMBER
+ METRIC_NAME                               NOT NULL VARCHAR2(64)
+ METRIC_UNIT                               NOT NULL VARCHAR2(64)
+ NUM_INTERVAL                              NOT NULL NUMBER
+ MINVAL                                    NOT NULL NUMBER
+ MAXVAL                                    NOT NULL NUMBER
+ AVERAGE                                   NOT NULL NUMBER
+ STANDARD_DEVIATION                        NOT NULL NUMBER
+ SUM_SQUARES                                        NUMBER
+ CON_DBID                                           NUMBER
+ CON_ID                                             NUMBER
+
+WITH
+seed AS (
+SELECT /*+  MATERIALIZE NO_MERGE  */
+       o.snap_id,
+       o.instance_number,
+       o.average value,
+       s.begin_interval_time,
+       s.end_interval_time
+  FROM dba_hist_sysmetric_summary o,
+       dba_hist_snapshot s
+ WHERE o.metric_name = 'Row Cache Hit Ratio'
+   AND o.snap_id BETWEEN 14504 AND 14709
+   AND o.dbid = 2417711081
+   AND s.snap_id         = o.snap_id
+   AND s.dbid            = o.dbid
+   AND s.instance_number = o.instance_number
+   AND (CAST(s.end_interval_time AS DATE) - CAST(s.begin_interval_time AS DATE)) * 24 * 60 &gt; 1 -- ignore snaps closer than 1m appart
+)
+SELECT snap_id,
+       TO_CHAR(MIN(begin_interval_time), 'YYYY-MM-DD HH24:MI:SS') begin_time,
+       TO_CHAR(MIN(end_interval_time), 'YYYY-MM-DD HH24:MI:SS') end_time,
+       SUM(CASE instance_number WHEN 1 THEN value ELSE 0 END) inst_01,
+       SUM(CASE instance_number WHEN 2 THEN value ELSE 0 END) inst_02,
+       SUM(CASE instance_number WHEN 3 THEN value ELSE 0 END) inst_03,
+       SUM(CASE instance_number WHEN 4 THEN value ELSE 0 END) inst_04,
+       SUM(CASE instance_number WHEN 5 THEN value ELSE 0 END) inst_05,
+       SUM(CASE instance_number WHEN 6 THEN value ELSE 0 END) inst_06,
+       SUM(CASE instance_number WHEN 7 THEN value ELSE 0 END) inst_07,
+       SUM(CASE instance_number WHEN 8 THEN value ELSE 0 END) inst_08,
+       0 dummy_09,
+       0 dummy_10,
+       0 dummy_11,
+       0 dummy_12,
+       0 dummy_13,
+       0 dummy_14,
+       0 dummy_15
+  FROM seed
+ WHERE value &gt;= 0
+ GROUP BY
+       snap_id
+ ORDER BY
+       snap_id;
+
+206 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:53  </font>
+</body>
+</html>

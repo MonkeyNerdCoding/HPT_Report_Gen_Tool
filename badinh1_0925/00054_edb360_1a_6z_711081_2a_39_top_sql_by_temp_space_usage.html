@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>Top SQL by TEMP space usage</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<script type="text/javascript" src="sorttable.js"></script>
+
+<!-- 00054_edb360_1a_6z_711081_2a_39_top_sql_by_temp_space_usage.html $ -->
+</head>
+<body>
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 2a.39. Top SQL by TEMP space usage <em>(DBA_HIST_ACTIVE_SESS_HISTORY)</em>  </h1>
+
+<br />
+
+
+
+
+
+
+<br />
+#: click on a column heading to sort on it
+
+<pre>
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNAP_ID                                   NOT NULL NUMBER
+ DBID                                      NOT NULL NUMBER
+ INSTANCE_NUMBER                           NOT NULL NUMBER
+ SAMPLE_ID                                 NOT NULL NUMBER
+ SAMPLE_TIME                               NOT NULL TIMESTAMP(3)
+ SAMPLE_TIME_UTC                                    TIMESTAMP(3)
+ USECS_PER_ROW                                      NUMBER
+ SESSION_ID                                NOT NULL NUMBER
+ SESSION_SERIAL#                                    NUMBER
+ SESSION_TYPE                                       VARCHAR2(10)
+ FLAGS                                              NUMBER
+ USER_ID                                            NUMBER
+ SQL_ID                                             VARCHAR2(13)
+ IS_SQLID_CURRENT                                   VARCHAR2(1)
+ SQL_CHILD_NUMBER                                   NUMBER
+ SQL_OPCODE                                         NUMBER
+ SQL_OPNAME                                         VARCHAR2(64)
+ FORCE_MATCHING_SIGNATURE                           NUMBER
+ TOP_LEVEL_SQL_ID                                   VARCHAR2(13)
+ TOP_LEVEL_SQL_OPCODE                               NUMBER
+ SQL_PLAN_HASH_VALUE                                NUMBER
+ SQL_FULL_PLAN_HASH_VALUE                           NUMBER
+ SQL_ADAPTIVE_PLAN_RESOLVED                         NUMBER
+ SQL_PLAN_LINE_ID                                   NUMBER
+ SQL_PLAN_OPERATION                                 VARCHAR2(64)
+ SQL_PLAN_OPTIONS                                   VARCHAR2(64)
+ SQL_EXEC_ID                                        NUMBER
+ SQL_EXEC_START                                     DATE
+ PLSQL_ENTRY_OBJECT_ID                              NUMBER
+ PLSQL_ENTRY_SUBPROGRAM_ID                          NUMBER
+ PLSQL_OBJECT_ID                                    NUMBER
+ PLSQL_SUBPROGRAM_ID                                NUMBER
+ QC_INSTANCE_ID                                     NUMBER
+ QC_SESSION_ID                                      NUMBER
+ QC_SESSION_SERIAL#                                 NUMBER
+ PX_FLAGS                                           NUMBER
+ EVENT                                              VARCHAR2(64)
+ EVENT_ID                                           NUMBER
+ SEQ#                                               NUMBER
+ P1TEXT                                             VARCHAR2(64)
+ P1                                                 NUMBER
+ P2TEXT                                             VARCHAR2(64)
+ P2                                                 NUMBER
+ P3TEXT                                             VARCHAR2(64)
+ P3                                                 NUMBER
+ WAIT_CLASS                                         VARCHAR2(64)
+ WAIT_CLASS_ID                                      NUMBER
+ WAIT_TIME                                          NUMBER
+ SESSION_STATE                                      VARCHAR2(7)
+ TIME_WAITED                                        NUMBER
+ BLOCKING_SESSION_STATUS                            VARCHAR2(11)
+ BLOCKING_SESSION                                   NUMBER
+ BLOCKING_SESSION_SERIAL#                           NUMBER
+ BLOCKING_INST_ID                                   NUMBER
+ BLOCKING_HANGCHAIN_INFO                            VARCHAR2(1)
+ CURRENT_OBJ#                                       NUMBER
+ CURRENT_FILE#                                      NUMBER
+ CURRENT_BLOCK#                                     NUMBER
+ CURRENT_ROW#                                       NUMBER
+ TOP_LEVEL_CALL#                                    NUMBER
+ TOP_LEVEL_CALL_NAME                                VARCHAR2(64)
+ CONSUMER_GROUP_ID                                  NUMBER
+ XID                                                RAW(8)
+ REMOTE_INSTANCE#                                   NUMBER
+ TIME_MODEL                                         NUMBER
+ IN_CONNECTION_MGMT                                 VARCHAR2(1)
+ IN_PARSE                                           VARCHAR2(1)
+ IN_HARD_PARSE                                      VARCHAR2(1)
+ IN_SQL_EXECUTION                                   VARCHAR2(1)
+ IN_PLSQL_EXECUTION                                 VARCHAR2(1)
+ IN_PLSQL_RPC                                       VARCHAR2(1)
+ IN_PLSQL_COMPILATION                               VARCHAR2(1)
+ IN_JAVA_EXECUTION                                  VARCHAR2(1)
+ IN_BIND                                            VARCHAR2(1)
+ IN_CURSOR_CLOSE                                    VARCHAR2(1)
+ IN_SEQUENCE_LOAD                                   VARCHAR2(1)
+ IN_INMEMORY_QUERY                                  VARCHAR2(1)
+ IN_INMEMORY_POPULATE                               VARCHAR2(1)
+ IN_INMEMORY_PREPOPULATE                            VARCHAR2(1)
+ IN_INMEMORY_REPOPULATE                             VARCHAR2(1)
+ IN_INMEMORY_TREPOPULATE                            VARCHAR2(1)
+ IN_TABLESPACE_ENCRYPTION                           VARCHAR2(1)
+ CAPTURE_OVERHEAD                                   VARCHAR2(1)
+ REPLAY_OVERHEAD                                    VARCHAR2(1)
+ IS_CAPTURED                                        VARCHAR2(1)
+ IS_REPLAYED                                        VARCHAR2(1)
+ IS_REPLAY_SYNC_TOKEN_HOLDER                        VARCHAR2(1)
+ SERVICE_HASH                                       NUMBER
+ PROGRAM                                            VARCHAR2(64)
+ MODULE                                             VARCHAR2(64)
+ ACTION                                             VARCHAR2(64)
+ CLIENT_ID                                          VARCHAR2(64)
+ MACHINE                                            VARCHAR2(64)
+ PORT                                               NUMBER
+ ECID                                               VARCHAR2(64)
+ DBREPLAY_FILE_ID                                   NUMBER
+ DBREPLAY_CALL_COUNTER                              NUMBER
+ TM_DELTA_TIME                                      NUMBER
+ TM_DELTA_CPU_TIME                                  NUMBER
+ TM_DELTA_DB_TIME                                   NUMBER
+ DELTA_TIME                                         NUMBER
+ DELTA_READ_IO_REQUESTS                             NUMBER
+ DELTA_WRITE_IO_REQUESTS                            NUMBER
+ DELTA_READ_IO_BYTES                                NUMBER
+ DELTA_WRITE_IO_BYTES                               NUMBER
+ DELTA_INTERCONNECT_IO_BYTES                        NUMBER
+ PGA_ALLOCATED                                      NUMBER
+ TEMP_SPACE_ALLOCATED                               NUMBER
+ DBOP_NAME                                          VARCHAR2(64)
+ DBOP_EXEC_ID                                       NUMBER
+ CON_DBID                                           NUMBER
+ CON_ID                                             NUMBER
+
+select * from (SELECT /*+  MATERIALIZE NO_MERGE   DYNAMIC_SAMPLING(4)   FULL(h.ash) FULL(h.evt) FULL(h.sn) USE_HASH(h.sn h.ash h.evt)   FULL(h.INT$DBA_HIST_ACT_SESS_HISTORY.sn) FULL(h.INT$DBA_HIST_ACT_SESS_HISTORY.ash) FULL(h.INT$DBA_HIST_ACT_SESS_HISTORY.evt)   USE_HASH(h.INT$DBA_HIST_ACT_SESS_HISTORY.sn h.INT$DBA_HIST_ACT_SESS_HISTORY.ash h.INT$DBA_HIST_ACT_SESS_HISTORY.evt)  */
+       /* 2a.39 */
+       h.sql_id,
+       ROUND(MAX(h.temp_space_allocated)/POWER(10,6),1) max_temp_space_mb,
+       DBMS_LOB.SUBSTR(s.sql_text, 1000) sql_text
+  FROM dba_hist_active_sess_history h,
+       dba_hist_sqltext s
+ WHERE h.sql_id IS NOT NULL
+   AND h.snap_id BETWEEN 14504 AND 14709
+   AND h.dbid = 2417711081
+   AND s.sql_id(+) = h.sql_id AND s.dbid(+) = 2417711081
+   AND s.con_id(+) = h.con_id
+ GROUP BY
+       h.sql_id,
+       DBMS_LOB.SUBSTR(s.sql_text, 1000)
+ ORDER BY
+       2 DESC NULLS LAST, 1) where rownum &lt;= 10;
+
+0 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:21  </font>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>Segment Shrink Recommendations</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<script type="text/javascript" src="sorttable.js"></script>
+
+<!-- 00064_edb360_1a_6z_711081_2b_49_segment_shrink_recommendations.html $ -->
+</head>
+<body>
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 2b.49. Segment Shrink Recommendations <em>(DBMS_SPACE)</em>  </h1>
+
+<br />
+
+
+
+<p>
+<table class="sortable">
+<tr>
+<th scope="col">
+#
+</th>
+<th scope="col">
+TABLESPACE_NAME
+</th>
+<th scope="col">
+SEGMENT_OWNER
+</th>
+<th scope="col">
+SEGMENT_NAME
+</th>
+<th scope="col">
+SEGMENT_TYPE
+</th>
+<th scope="col">
+PARTITION_NAME
+</th>
+<th scope="col">
+ALLOCATED_SPACE
+</th>
+<th scope="col">
+USED_SPACE
+</th>
+<th scope="col">
+RECLAIMABLE_SPACE
+</th>
+<th scope="col">
+CHAIN_ROWEXCESS
+</th>
+<th scope="col">
+IOREQPM
+</th>
+<th scope="col">
+IOWAITPM
+</th>
+<th scope="col">
+IOWAITPR
+</th>
+<th scope="col">
+RECOMMENDATIONS
+</th>
+<th scope="col">
+C1
+</th>
+<th scope="col">
+C2
+</th>
+<th scope="col">
+C3
+</th>
+<th scope="col">
+TASK_ID
+</th>
+<th scope="col">
+MESG_ID
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+OSTORE
+</td>
+<td>
+LMSTSDB
+</td>
+<td>
+IDX_STM_PLU_01
+</td>
+<td>
+INDEX
+</td>
+<td>
+&nbsp;
+</td>
+<td align="right">
+            51380224
+</td>
+<td align="right">
+            26151507
+</td>
+<td align="right">
+            25228717
+</td>
+<td align="right">
+                   0
+</td>
+<td align="right">
+                   0
+</td>
+<td align="right">
+                   0
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+Perform shrink, estimated savings is 25228717 bytes.
+</td>
+<td>
+alter index &quot;LMSTSDB&quot;.&quot;IDX_STM_PLU_01&quot; shrink space
+</td>
+<td>
+alter index &quot;LMSTSDB&quot;.&quot;IDX_STM_PLU_01&quot; shrink space COMPACT
+</td>
+<td>
+&nbsp;
+</td>
+<td align="right">
+                1526
+</td>
+<td align="right">
+                  36
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+OSTORE
+</td>
+<td>
+LMSTSDB
+</td>
+<td>
+STL_POS_TRAN_DATA
+</td>
+<td>
+TABLE
+</td>
+<td>
+&nbsp;
+</td>
+<td align="right">
+            75497472
+</td>
+<td align="right">
+            59586315
+</td>
+<td align="right">
+            15911157
+</td>
+<td align="right">
+                   0
+</td>
+<td align="right">
+                   0
+</td>
+<td align="right">
+                   0
+</td>
+<td align="right">
+                   0
+</td>
+<td>
+Enable row movement of the table LMSTSDB.STL_POS_TRAN_DATA and perform shrink, estimated savings is 15911157 bytes.
+</td>
+<td>
+alter table &quot;LMSTSDB&quot;.&quot;STL_POS_TRAN_DATA&quot; shrink space
+</td>
+<td>
+alter table &quot;LMSTSDB&quot;.&quot;STL_POS_TRAN_DATA&quot; shrink space COMPACT
+</td>
+<td>
+alter table &quot;LMSTSDB&quot;.&quot;STL_POS_TRAN_DATA&quot; enable row movement
+</td>
+<td align="right">
+                1529
+</td>
+<td align="right">
+                  36
+</td>
+</tr>
+</table>
+<p>
+
+
+
+<br />
+#: click on a column heading to sort on it
+
+<pre>
+FUNCTION ASA_RECOMMENDATIONS RETURNS ASA_RECO_ROW_TB
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ ALL_RUNS                       VARCHAR2                IN     DEFAULT
+ SHOW_MANUAL                    VARCHAR2                IN     DEFAULT
+ SHOW_FINDINGS                  VARCHAR2                IN     DEFAULT
+PROCEDURE AUTO_SPACE_ADVISOR_JOB_PROC
+PROCEDURE CREATE_INDEX_COST
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ DDL                            VARCHAR2                IN
+ USED_BYTES                     NUMBER                  OUT
+ ALLOC_BYTES                    NUMBER                  OUT
+ PLAN_TABLE                     VARCHAR2                IN     DEFAULT
+PROCEDURE CREATE_TABLE_COST
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ TABLESPACE_NAME                VARCHAR2                IN
+ AVG_ROW_SIZE                   NUMBER                  IN
+ ROW_COUNT                      NUMBER                  IN
+ PCT_FREE                       NUMBER                  IN
+ USED_BYTES                     NUMBER                  OUT
+ ALLOC_BYTES                    NUMBER                  OUT
+PROCEDURE CREATE_TABLE_COST
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ TABLESPACE_NAME                VARCHAR2                IN
+ COLINFOS                       CREATE_TABLE_COST_COLUMNS IN
+ ROW_COUNT                      NUMBER                  IN
+ PCT_FREE                       NUMBER                  IN
+ USED_BYTES                     NUMBER                  OUT
+ ALLOC_BYTES                    NUMBER                  OUT
+FUNCTION DBFS_DF RETURNS NUMBER
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ USERID                         NUMBER                  IN
+ NTBS                           NUMBER                  IN
+ INTS_LIST                      TABLESPACE_LIST         IN
+PROCEDURE FREE_BLOCKS
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ SEGMENT_OWNER                  VARCHAR2                IN
+ SEGMENT_NAME                   VARCHAR2                IN
+ SEGMENT_TYPE                   VARCHAR2                IN
+ FREELIST_GROUP_ID              NUMBER                  IN
+ FREE_BLKS                      NUMBER                  OUT
+ SCAN_LIMIT                     NUMBER                  IN     DEFAULT
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+PROCEDURE GET_COMPRESSION_RATIO
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ SCRATCHTBSNAME                 VARCHAR2                IN
+ OWNNAME                        VARCHAR2                IN
+ OBJNAME                        VARCHAR2                IN
+ SUBOBJNAME                     VARCHAR2                IN
+ COMPTYPE                       NUMBER                  IN
+ BLKCNT_CMP                     BINARY_INTEGER          OUT
+ BLKCNT_UNCMP                   BINARY_INTEGER          OUT
+ ROW_CMP                        BINARY_INTEGER          OUT
+ ROW_UNCMP                      BINARY_INTEGER          OUT
+ CMP_RATIO                      NUMBER                  OUT
+ COMPTYPE_STR                   VARCHAR2                OUT
+PROCEDURE ISDATAFILEDROPPABLE_NAME
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ FILENAME                       VARCHAR2                IN
+ VALUE                          NUMBER                  OUT
+FUNCTION OBJECT_DEPENDENT_SEGMENTS RETURNS DEPENDENT_SEGMENTS_TABLE
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ OBJOWNER                       VARCHAR2                IN
+ OBJNAME                        VARCHAR2                IN
+ PARTNAME                       VARCHAR2                IN
+ OBJTYPE                        NUMBER                  IN
+FUNCTION OBJECT_GROWTH_TREND RETURNS OBJECT_GROWTH_TREND_TABLE
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ OBJECT_OWNER                   VARCHAR2                IN
+ OBJECT_NAME                    VARCHAR2                IN
+ OBJECT_TYPE                    VARCHAR2                IN
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+ START_TIME                     TIMESTAMP               IN     DEFAULT
+ END_TIME                       TIMESTAMP               IN     DEFAULT
+ INTERVAL                       INTERVAL DAY TO SECOND  IN     DEFAULT
+ SKIP_INTERPOLATED              VARCHAR2                IN     DEFAULT
+ TIMEOUT_SECONDS                NUMBER                  IN     DEFAULT
+ SINGLE_DATAPOINT_FLAG          VARCHAR2                IN     DEFAULT
+FUNCTION OBJECT_GROWTH_TREND_CUR RETURNS REF CURSOR
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ OBJECT_OWNER                   VARCHAR2                IN
+ OBJECT_NAME                    VARCHAR2                IN
+ OBJECT_TYPE                    VARCHAR2                IN
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+ START_TIME                     TIMESTAMP               IN     DEFAULT
+ END_TIME                       TIMESTAMP               IN     DEFAULT
+ INTERVAL                       INTERVAL DAY TO SECOND  IN     DEFAULT
+ SKIP_INTERPOLATED              VARCHAR2                IN     DEFAULT
+ TIMEOUT_SECONDS                NUMBER                  IN     DEFAULT
+FUNCTION OBJECT_GROWTH_TREND_CURTAB RETURNS OBJECT_GROWTH_TREND_TABLE
+FUNCTION OBJECT_GROWTH_TREND_I_TO_S RETURNS NUMBER
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ INTERV                         INTERVAL DAY TO SECOND  IN
+FUNCTION OBJECT_GROWTH_TREND_SWRF RETURNS OBJECT_GROWTH_SWRF_TABLE
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ OBJECT_OWNER                   VARCHAR2                IN
+ OBJECT_NAME                    VARCHAR2                IN
+ OBJECT_TYPE                    VARCHAR2                IN
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+FUNCTION OBJECT_GROWTH_TREND_S_TO_I RETURNS INTERVAL DAY TO SECOND
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ SECSIN                         NUMBER                  IN
+PROCEDURE OBJECT_SPACE_USAGE
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ OBJECT_OWNER                   VARCHAR2                IN
+ OBJECT_NAME                    VARCHAR2                IN
+ OBJECT_TYPE                    VARCHAR2                IN
+ SAMPLE_CONTROL                 NUMBER                  IN
+ SPACE_USED                     NUMBER                  OUT
+ SPACE_ALLOCATED                NUMBER                  OUT
+ CHAIN_PCENT                    NUMBER                  OUT
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+ PRESERVE_RESULT                BOOLEAN                 IN     DEFAULT
+ TIMEOUT_SECONDS                NUMBER                  IN     DEFAULT
+FUNCTION OBJECT_SPACE_USAGE_TBF RETURNS OBJECT_SPACE_USAGE_TABLE
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ OBJECT_OWNER                   VARCHAR2                IN
+ OBJECT_NAME                    VARCHAR2                IN
+ OBJECT_TYPE                    VARCHAR2                IN
+ SAMPLE_CONTROL                 NUMBER                  IN
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+ PRESERVE_RESULT                VARCHAR2                IN     DEFAULT
+ TIMEOUT_SECONDS                NUMBER                  IN     DEFAULT
+PROCEDURE PARSE_SPACE_ADV_INFO
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ INFO                           VARCHAR2                IN
+ USED_SPACE                     VARCHAR2                OUT
+ ALLOCATED_SPACE                VARCHAR2                OUT
+ RECLAIMABLE_SPACE              VARCHAR2                OUT
+PROCEDURE SPACE_USAGE
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ SEGMENT_OWNER                  VARCHAR2                IN
+ SEGMENT_NAME                   VARCHAR2                IN
+ SEGMENT_TYPE                   VARCHAR2                IN
+ UNFORMATTED_BLOCKS             NUMBER                  OUT
+ UNFORMATTED_BYTES              NUMBER                  OUT
+ FS1_BLOCKS                     NUMBER                  OUT
+ FS1_BYTES                      NUMBER                  OUT
+ FS2_BLOCKS                     NUMBER                  OUT
+ FS2_BYTES                      NUMBER                  OUT
+ FS3_BLOCKS                     NUMBER                  OUT
+ FS3_BYTES                      NUMBER                  OUT
+ FS4_BLOCKS                     NUMBER                  OUT
+ FS4_BYTES                      NUMBER                  OUT
+ FULL_BLOCKS                    NUMBER                  OUT
+ FULL_BYTES                     NUMBER                  OUT
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+PROCEDURE SPACE_USAGE
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ SEGMENT_OWNER                  VARCHAR2                IN
+ SEGMENT_NAME                   VARCHAR2                IN
+ SEGMENT_TYPE                   VARCHAR2                IN
+ SEGMENT_SIZE_BLOCKS            NUMBER                  OUT
+ SEGMENT_SIZE_BYTES             NUMBER                  OUT
+ USED_BLOCKS                    NUMBER                  OUT
+ USED_BYTES                     NUMBER                  OUT
+ EXPIRED_BLOCKS                 NUMBER                  OUT
+ EXPIRED_BYTES                  NUMBER                  OUT
+ UNEXPIRED_BLOCKS               NUMBER                  OUT
+ UNEXPIRED_BYTES                NUMBER                  OUT
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+PROCEDURE SPACE_USAGE
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ SEGMENT_OWNER                  VARCHAR2                IN
+ SEGMENT_NAME                   VARCHAR2                IN
+ SEGMENT_TYPE                   VARCHAR2                IN
+ SUOPTION                       NUMBER                  IN
+ SEGMENT_SIZE_BLOCKS            NUMBER                  OUT
+ SEGMENT_SIZE_BYTES             NUMBER                  OUT
+ USED_BLOCKS                    NUMBER                  OUT
+ USED_BYTES                     NUMBER                  OUT
+ EXPIRED_BLOCKS                 NUMBER                  OUT
+ EXPIRED_BYTES                  NUMBER                  OUT
+ UNEXPIRED_BLOCKS               NUMBER                  OUT
+ UNEXPIRED_BYTES                NUMBER                  OUT
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+PROCEDURE SPACE_USAGE
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ SEGMENT_OWNER                  VARCHAR2                IN
+ SEGMENT_NAME                   VARCHAR2                IN
+ SEGMENT_TYPE                   VARCHAR2                IN
+ UNFORMATTED_BLOCKS             NUMBER                  OUT
+ UNFORMATTED_BYTES              NUMBER                  OUT
+ FS1_BLOCKS                     NUMBER                  OUT
+ FS1_BYTES                      NUMBER                  OUT
+ FS2_BLOCKS                     NUMBER                  OUT
+ FS2_BYTES                      NUMBER                  OUT
+ FS3_BLOCKS                     NUMBER                  OUT
+ FS3_BYTES                      NUMBER                  OUT
+ FS4_BLOCKS                     NUMBER                  OUT
+ FS4_BYTES                      NUMBER                  OUT
+ FS5_BLOCKS                     NUMBER                  OUT
+ FS5_BYTES                      NUMBER                  OUT
+ FULL_BLOCKS                    NUMBER                  OUT
+ FULL_BYTES                     NUMBER                  OUT
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+PROCEDURE UNUSED_SPACE
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ SEGMENT_OWNER                  VARCHAR2                IN
+ SEGMENT_NAME                   VARCHAR2                IN
+ SEGMENT_TYPE                   VARCHAR2                IN
+ TOTAL_BLOCKS                   NUMBER                  OUT
+ TOTAL_BYTES                    NUMBER                  OUT
+ UNUSED_BLOCKS                  NUMBER                  OUT
+ UNUSED_BYTES                   NUMBER                  OUT
+ LAST_USED_EXTENT_FILE_ID       NUMBER                  OUT
+ LAST_USED_EXTENT_BLOCK_ID      NUMBER                  OUT
+ LAST_USED_BLOCK                NUMBER                  OUT
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+FUNCTION VERIFY_SHRINK_CANDIDATE RETURNS BOOLEAN
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ SEGMENT_OWNER                  VARCHAR2                IN
+ SEGMENT_NAME                   VARCHAR2                IN
+ SEGMENT_TYPE                   VARCHAR2                IN
+ SHRINK_TARGET_BYTES            NUMBER                  IN
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+FUNCTION VERIFY_SHRINK_CANDIDATE_TBF RETURNS VERIFY_SHRINK_TABLE
+ Argument Name                  Type                    In/Out Default?
+ ------------------------------ ----------------------- ------ --------
+ SEGMENT_OWNER                  VARCHAR2                IN
+ SEGMENT_NAME                   VARCHAR2                IN
+ SEGMENT_TYPE                   VARCHAR2                IN
+ SHRINK_TARGET_BYTES            NUMBER                  IN
+ PARTITION_NAME                 VARCHAR2                IN     DEFAULT
+
+-- incarnation from health_check_4.4 (Jon Adams and Jack Agustin)
+SELECT /*+  NO_MERGE  */ /* 2b.49 */
+       *
+FROM TABLE(dbms_space.asa_recommendations())
+Where segment_owner not in ('ANONYMOUS','APEX_030200','APEX_040000','APEX_SSO','APPQOSSYS','CTXSYS','DBSNMP','DIP','EXFSYS','FLOWS_FILES','MDSYS','OLAPSYS','ORACLE_OCM','ORDDATA','ORDPLUGINS','ORDSYS','OUTLN','OWBSYS') and
+   segment_owner not in ('SI_INFORMTN_SCHEMA','SQLTXADMIN','SQLTXPLAIN','SYS','SYSMAN','SYSTEM','TRCANLZR','WMSYS','XDB','XS$NULL','PERFSTAT','STDBYPERF','MGDSYS','OJVMSYS')
+order by reclaimable_space desc;
+
+2 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:28  </font>
+</body>
+</html>

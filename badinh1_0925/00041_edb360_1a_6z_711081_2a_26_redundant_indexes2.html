@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>Redundant Indexes(2)</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<script type="text/javascript" src="sorttable.js"></script>
+
+<!-- 00041_edb360_1a_6z_711081_2a_26_redundant_indexes2.html $ -->
+</head>
+<body>
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 2a.26. Redundant Indexes(2) <em>(DBA_INDEXES)</em>  </h1>
+
+<br />
+Considers descending indexes (function-based), visibility of redundant indexes, and whether there are extended statistics.<br />
+
+
+<p>
+<table class="sortable">
+<tr>
+<th scope="col">
+#
+</th>
+<th scope="col">
+TABLE_OWNER
+</th>
+<th scope="col">
+TABLE_NAME
+</th>
+<th scope="col">
+SUPERSET_INDEX
+</th>
+<th scope="col">
+REDUNDANT_INDEX
+</th>
+<th scope="col">
+C
+</th>
+<th scope="col">
+CONSTRAINT_NAME
+</th>
+<th scope="col">
+VISIBILIT
+</th>
+<th scope="col">
+EXTENSION_NAME
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+LMSTSDB
+</td>
+<td>
+SCMDLG
+</td>
+<td>
+IDX_SCMDLG_3 (MD_SEND_FLAG,TM_NO)
+</td>
+<td>
+IDX_SCMDLG_2 (MD_SEND_FLAG)
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+VISIBLE
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+LMSTSDB
+</td>
+<td>
+SCMDLG_BACK
+</td>
+<td>
+IDX_SCMDLG_BACK_3 (MD_SEND_FLAG,TM_NO)
+</td>
+<td>
+IDX_SCMDLG_BACK_2 (MD_SEND_FLAG)
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+VISIBLE
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+LMSTSDB
+</td>
+<td>
+SCMELG
+</td>
+<td>
+IDX_SCMELG_2 (SALE_DATE,EJ_SEND_FLAG,DB_SEQ_NO)
+</td>
+<td>
+IDX_SCMELG_3 (SALE_DATE,EJ_SEND_FLAG)
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+VISIBLE
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td>
+LMSTSDB
+</td>
+<td>
+SCMELG_BACK
+</td>
+<td>
+IDX_SCMELG_BACK_2 (SALE_DATE,EJ_SEND_FLAG,DB_SEQ_NO)
+</td>
+<td>
+IDX_SCMELG_BACK_3 (SALE_DATE,EJ_SEND_FLAG)
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+&nbsp;
+</td>
+<td>
+VISIBLE
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+<tr>
+<td>
+5
+</td>
+<td>
+LMSTSDB
+</td>
+<td>
+S_PLUMST
+</td>
+<td>
+IDX_S_PLUMST_1 (PLU_CODE,STATUS_GBN)
+</td>
+<td>
+SYS_C006902 (PLU_CODE)
+</td>
+<td>
+P
+</td>
+<td>
+SYS_C006902
+</td>
+<td>
+VISIBLE
+</td>
+<td>
+&nbsp;
+</td>
+</tr>
+</table>
+<p>
+
+
+
+<br />
+#: click on a column heading to sort on it
+
+<pre>
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ OWNER                                     NOT NULL VARCHAR2(128)
+ INDEX_NAME                                NOT NULL VARCHAR2(128)
+ INDEX_TYPE                                         VARCHAR2(27)
+ TABLE_OWNER                               NOT NULL VARCHAR2(128)
+ TABLE_NAME                                NOT NULL VARCHAR2(128)
+ TABLE_TYPE                                         VARCHAR2(11)
+ UNIQUENESS                                         VARCHAR2(9)
+ COMPRESSION                                        VARCHAR2(13)
+ PREFIX_LENGTH                                      NUMBER
+ TABLESPACE_NAME                                    VARCHAR2(30)
+ INI_TRANS                                          NUMBER
+ MAX_TRANS                                          NUMBER
+ INITIAL_EXTENT                                     NUMBER
+ NEXT_EXTENT                                        NUMBER
+ MIN_EXTENTS                                        NUMBER
+ MAX_EXTENTS                                        NUMBER
+ PCT_INCREASE                                       NUMBER
+ PCT_THRESHOLD                                      NUMBER
+ INCLUDE_COLUMN                                     NUMBER
+ FREELISTS                                          NUMBER
+ FREELIST_GROUPS                                    NUMBER
+ PCT_FREE                                           NUMBER
+ LOGGING                                            VARCHAR2(3)
+ BLEVEL                                             NUMBER
+ LEAF_BLOCKS                                        NUMBER
+ DISTINCT_KEYS                                      NUMBER
+ AVG_LEAF_BLOCKS_PER_KEY                            NUMBER
+ AVG_DATA_BLOCKS_PER_KEY                            NUMBER
+ CLUSTERING_FACTOR                                  NUMBER
+ STATUS                                             VARCHAR2(8)
+ NUM_ROWS                                           NUMBER
+ SAMPLE_SIZE                                        NUMBER
+ LAST_ANALYZED                                      DATE
+ DEGREE                                             VARCHAR2(40)
+ INSTANCES                                          VARCHAR2(40)
+ PARTITIONED                                        VARCHAR2(3)
+ TEMPORARY                                          VARCHAR2(1)
+ GENERATED                                          VARCHAR2(1)
+ SECONDARY                                          VARCHAR2(1)
+ BUFFER_POOL                                        VARCHAR2(7)
+ FLASH_CACHE                                        VARCHAR2(7)
+ CELL_FLASH_CACHE                                   VARCHAR2(7)
+ USER_STATS                                         VARCHAR2(3)
+ DURATION                                           VARCHAR2(15)
+ PCT_DIRECT_ACCESS                                  NUMBER
+ ITYP_OWNER                                         VARCHAR2(128)
+ ITYP_NAME                                          VARCHAR2(128)
+ PARAMETERS                                         VARCHAR2(1000)
+ GLOBAL_STATS                                       VARCHAR2(3)
+ DOMIDX_STATUS                                      VARCHAR2(12)
+ DOMIDX_OPSTATUS                                    VARCHAR2(6)
+ FUNCIDX_STATUS                                     VARCHAR2(8)
+ JOIN_INDEX                                         VARCHAR2(3)
+ IOT_REDUNDANT_PKEY_ELIM                            VARCHAR2(3)
+ DROPPED                                            VARCHAR2(3)
+ VISIBILITY                                         VARCHAR2(9)
+ DOMIDX_MANAGEMENT                                  VARCHAR2(14)
+ SEGMENT_CREATED                                    VARCHAR2(3)
+ ORPHANED_ENTRIES                                   VARCHAR2(3)
+ INDEXING                                           VARCHAR2(7)
+ AUTO                                               VARCHAR2(3)
+ CONSTRAINT_INDEX                                   VARCHAR2(3)
+
+-- requested by David Kurtz
+WITH f AS ( /*function expressions*/
+SELECT /*+  MATERIALIZE NO_MERGE  */ /* 2a.26 */
+       owner, table_name, extension, extension_name
+FROM   dba_stat_extensions
+where  creator = 'SYSTEM' /*exclude extended stats*/
+), ic AS ( /*list indexed columns getting expressions from stat_extensions*/
+SELECT /*+  MATERIALIZE NO_MERGE  */ /* 2a.26 */
+       i.table_owner, i.table_name,
+       i.owner index_owner, i.index_name,
+       i.index_type, i.uniqueness, i.visibility,
+       c.column_position,
+       CASE WHEN f.extension IS NULL THEN c.column_name
+            ELSE CAST(SUBSTR(REPLACE(SUBSTR(f.extension,2,LENGTH(f.extension)-2),'"',''),1,128) AS VARCHAR2(128))
+       END column_name
+  FROM dba_indexes i
+     , dba_ind_columns c
+       LEFT OUTER JOIN f
+       ON f.owner = c.table_owner
+       AND f.table_name = c.table_name
+       AND f.extension_name = c.column_name
+ WHERE c.table_owner NOT IN ('ANONYMOUS','APEX_030200','APEX_040000','APEX_SSO','APPQOSSYS','CTXSYS','DBSNMP','DIP','EXFSYS','FLOWS_FILES','MDSYS','OLAPSYS','ORACLE_OCM','ORDDATA','ORDPLUGINS','ORDSYS','OUTLN','OWBSYS')
+   AND c.table_owner NOT IN ('SI_INFORMTN_SCHEMA','SQLTXADMIN','SQLTXPLAIN','SYS','SYSMAN','SYSTEM','TRCANLZR','WMSYS','XDB','XS$NULL','PERFSTAT','STDBYPERF','MGDSYS','OJVMSYS')
+   AND i.table_name = c.table_name
+   AND i.owner = c.index_owner
+   AND i.index_name = c.index_name
+   AND i.index_type like '%NORMAL'
+), i AS ( /*construct column list*/
+SELECT /*+  MATERIALIZE NO_MERGE  */ /* 2a.26 */
+       ic.table_owner, ic.table_name,
+       ic.index_owner, ic.index_name,
+       ic.index_type, ic.uniqueness, ic.visibility,
+       listagg(ic.column_name,',') within group (order by ic.column_position) AS column_list,
+       '('||listagg('"'||ic.column_name||'"',',') within group (order by ic.column_position)||')' AS extension,
+       count(*) num_columns
+FROM ic
+GROUP BY
+       ic.table_owner, ic.table_name,
+       ic.index_owner, ic.index_name,
+       ic.index_type, ic.uniqueness, ic.visibility
+), e AS ( /*extended stats*/
+SELECT /*+  MATERIALIZE NO_MERGE  */ /* 2a.26 */
+       owner, table_name, CAST(SUBSTR(extension,1,128) AS VARCHAR2(128)) extension, extension_name
+FROM   dba_stat_extensions
+where  creator = 'USER' /*extended stats not function based indexes*/
+)
+SELECT r.table_owner, r.table_name,
+       i.index_name||' ('||i.column_list||')' superset_index,
+       r.index_name||' ('||r.column_list||')' redundant_index,
+       c.constraint_type, c.constraint_name,
+       r.visibility, e.extension_name
+  FROM i r
+       LEFT OUTER JOIN e
+         ON  e.owner = r.table_owner
+         AND e.table_name = r.table_name
+         AND e.extension = r.extension
+       LEFT OUTER JOIN dba_constraints c
+         ON c.table_name = r.table_name
+         AND c.index_owner = r.index_owner
+         AND c.index_name = r.index_name
+         AND c.owner = r.table_owner
+         AND c.constraint_type IN('P','U')
+     , i
+ WHERE i.table_owner = r.table_owner
+   AND i.table_name = r.table_name
+   AND i.index_name != r.index_name
+   AND i.column_list LIKE r.column_list||',%'
+   AND i.num_columns &gt; r.num_columns
+ ORDER BY r.table_owner, r.table_name, r.index_name, i.index_name;
+
+5 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:11  </font>
+</body>
+</html>

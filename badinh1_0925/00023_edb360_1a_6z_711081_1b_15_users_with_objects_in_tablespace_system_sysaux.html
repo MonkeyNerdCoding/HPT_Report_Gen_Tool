@@ -1,0 +1,2283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- $Header: 00001_edb360_1a_6z_711081_index v1715 (2017-07-28) hpt.gpdl $ -->
+<!-- edb360_copyright (c) 2017, All rights reserved. -->
+<!-- Version: 1 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="edb360_favicon.ico" type="image/x-icon" />
+<title>Users With Objects in Tablespace SYSTEM, SYSAUX</title>
+
+<style type="text/css">
+body             {font:10pt Arial,Helvetica,Geneva,sans-serif; color:black; background:white;}
+h1               {font-size:16pt; font-weight:bold; color:#336699; border-bottom:1px solid #336699; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;}
+h2               {font-size:14pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+h3               {font-size:12pt; font-weight:bold; color:#336699; margin-top:4pt; margin-bottom:0pt;}
+pre              {font:8pt monospace,Monaco,"Courier New",Courier;}
+a                {color:#663300;}
+table            {font-size:8pt; border-collapse:collapse; empty-cells:show; white-space:nowrap; border:1px solid #336699;}
+li               {font-size:8pt; color:black; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+th               {font-weight:bold; color:white; background:#0066CC; padding-left:4px; padding-right:4px; padding-bottom:2px;}
+tr               {color:black; background:white;}
+tr:hover         {color:white; background:#0066CC;}
+tr.main          {color:black; background:white;}
+tr.main:hover    {color:black; background:white;}
+td               {vertical-align:top; border:1px solid #336699;}
+td.c             {text-align:center;}
+font.n           {font-size:8pt; font-style:italic; color:#336699;}
+font.f           {font-size:8pt; color:#999999; border-top:1px solid #336699; margin-top:30pt;}
+div.google-chart {width:809px; height:500px;}
+</style>
+
+<script type="text/javascript" src="sorttable.js"></script>
+
+<!-- 00023_edb360_1a_6z_711081_1b_15_users_with_objects_in_tablespace_system_sysaux.html $ -->
+</head>
+<body>
+<h1> <a href="http://carlos-sierra.net/edb360-an-oracle-database-360-degree-view/" target="_blank"><img src="edb360_img.jpg" alt="eDB360" height="33" width="52" /></a> 1b.15. Users With Objects in Tablespace SYSTEM, SYSAUX <em>(DBA_SEGMENTS)</em>  </h1>
+
+<br />
+
+
+
+<p>
+<table class="sortable">
+<tr>
+<th scope="col">
+#
+</th>
+<th scope="col">
+User
+</th>
+<th scope="col">
+Segment Name
+</th>
+<th scope="col">
+Type
+</th>
+<th scope="col">
+TABLESPACE
+</th>
+<th scope="col">
+Size (MB)
+</th>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+AUDSYS
+</td>
+<td>
+SYS_LOB0000018565C00097$$
+</td>
+<td>
+LOB PARTITION
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+                .125
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+AUDSYS
+</td>
+<td>
+SYS_LOB0000018565C00030$$
+</td>
+<td>
+LOB PARTITION
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+                .125
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+AUDSYS
+</td>
+<td>
+SYS_LOB0000018565C00031$$
+</td>
+<td>
+LOB PARTITION
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+                .125
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td>
+AUDSYS
+</td>
+<td>
+AUD$UNIFIED
+</td>
+<td>
+TABLE PARTITION
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+5
+</td>
+<td>
+AUDSYS
+</td>
+<td>
+SYS_IL0000018565C00030$$
+</td>
+<td>
+INDEX PARTITION
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+6
+</td>
+<td>
+AUDSYS
+</td>
+<td>
+SYS_IL0000018565C00031$$
+</td>
+<td>
+INDEX PARTITION
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+7
+</td>
+<td>
+AUDSYS
+</td>
+<td>
+SYS_IL0000018565C00097$$
+</td>
+<td>
+INDEX PARTITION
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+8
+</td>
+<td>
+DBSFWUSER
+</td>
+<td>
+EXADIRECT_ACL
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+9
+</td>
+<td>
+DBSFWUSER
+</td>
+<td>
+SYS_C003450
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+10
+</td>
+<td>
+DBSFWUSER
+</td>
+<td>
+IP_ACL
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+11
+</td>
+<td>
+DBSFWUSER
+</td>
+<td>
+SYS_C003452
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+12
+</td>
+<td>
+DBSFWUSER
+</td>
+<td>
+ACL$_OBJ
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+13
+</td>
+<td>
+DBSFWUSER
+</td>
+<td>
+SYS_C003455
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+14
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_LOB0000020923C00002$$
+</td>
+<td>
+LOBSEGMENT
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+                .125
+</td>
+</tr>
+<tr>
+<td>
+15
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_LOB0000020984C00036$$
+</td>
+<td>
+LOBSEGMENT
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+                .125
+</td>
+</tr>
+<tr>
+<td>
+16
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_LOB0000020963C00003$$
+</td>
+<td>
+LOBSEGMENT
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+                .125
+</td>
+</tr>
+<tr>
+<td>
+17
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_LOB0000020963C00004$$
+</td>
+<td>
+LOBSEGMENT
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+                .125
+</td>
+</tr>
+<tr>
+<td>
+18
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_LOB0000020963C00006$$
+</td>
+<td>
+LOBSEGMENT
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+                .125
+</td>
+</tr>
+<tr>
+<td>
+19
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_LOB0000020963C00007$$
+</td>
+<td>
+LOBSEGMENT
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+                .125
+</td>
+</tr>
+<tr>
+<td>
+20
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_LOB0000020953C00005$$
+</td>
+<td>
+LOBSEGMENT
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+                .125
+</td>
+</tr>
+<tr>
+<td>
+21
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_LOB0000020953C00006$$
+</td>
+<td>
+LOBSEGMENT
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+                .125
+</td>
+</tr>
+<tr>
+<td>
+22
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+REGION
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+23
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005469
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+24
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+NUM_UNIQUE
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+25
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+GSM
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+26
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005479
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+27
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+CLOUD
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+28
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005482
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+29
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+GDSCTL_MESSAGES
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+30
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+VNCR
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+31
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+PK_VNCR
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+32
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+VNCR_NAME
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+33
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+DATABASE_POOL
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+34
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005489
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+35
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+DATABASE_POOL_ADMIN
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+36
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005491
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+37
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SHARD_SPACE
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+38
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005495
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+39
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SS_NAME_UNIQUE
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+40
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+BROKER_CONFIGS
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+41
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005499
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+42
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SHARD_GROUP
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+43
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005504
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+44
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SG_NAME_UNIQUE
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+45
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+CONTAINER_DATABASE
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+46
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005518
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+47
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+DATABASE
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+48
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005525
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+49
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+NAME_UNIQUE
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+50
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+FILES
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+51
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005536
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+52
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IL0000020923C00002$$
+</td>
+<td>
+LOBINDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+53
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+CREDENTIAL
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+54
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005539
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+55
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+TABLE_FAMILY
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+56
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005543
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+57
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SHARDKEY_COLUMNS
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+58
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005548
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+59
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SERVICE
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+60
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005552
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+61
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SERVICE_PREFERRED_AVAILABLE
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+62
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+INSTANCES_NT
+</td>
+<td>
+NESTED TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+63
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_FK0000020937N00008$
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+64
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005555
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+65
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+PK_SPA
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+66
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+GSM_REQUESTS
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+67
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+OLD_INSTANCES_NT
+</td>
+<td>
+NESTED TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+68
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_FK0000020942N00014$
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+69
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005562
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+70
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005563
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+71
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+CATALOG_REQUESTS
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+72
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SHSPACE_NT
+</td>
+<td>
+NESTED TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+73
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_FK0000020948N00004$
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+74
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005565
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+75
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+CHUNKS
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+76
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005570
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+77
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IL0000020953C00006$$
+</td>
+<td>
+LOBINDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+78
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IL0000020953C00005$$
+</td>
+<td>
+LOBINDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+79
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+ALL_CHUNKS
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+80
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005573
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+81
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+CHUNK_LOC
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+82
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005577
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+83
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+PARTITION_SET
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+84
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005584
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+85
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IL0000020963C00007$$
+</td>
+<td>
+LOBINDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+86
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IL0000020963C00006$$
+</td>
+<td>
+LOBINDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+87
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IL0000020963C00004$$
+</td>
+<td>
+LOBINDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+88
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IL0000020963C00003$$
+</td>
+<td>
+LOBINDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+89
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+TABLESPACE_SET
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+90
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005588
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+91
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SHARD_TS
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSTEM
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+92
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005592
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSTEM
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+93
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+GLOBAL_TABLE
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+94
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005599
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+95
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+TS_SET_TABLE
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+96
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+DDLID$
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+97
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+VERIFY_HISTORY
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+98
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+CHANGE_LOG_QUEUE_TABLE
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+99
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005608
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+100
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IL0000020984C00036$$
+</td>
+<td>
+LOBINDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+101
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+AQ$_CHANGE_LOG_QUEUE_TABLE_S
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+102
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_C005611
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+103
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IOT_TOP_20993
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+104
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IOT_TOP_20995
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+105
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+AQ$_CHANGE_LOG_QUEUE_TABLE_L
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+106
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IOT_OVER_20998
+</td>
+<td>
+TABLE
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+107
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IOT_TOP_20998
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+<tr>
+<td>
+108
+</td>
+<td>
+GSMADMIN_INTERNAL
+</td>
+<td>
+SYS_IOT_TOP_21001
+</td>
+<td>
+INDEX
+</td>
+<td>
+SYSAUX
+</td>
+<td align="right">
+               .0625
+</td>
+</tr>
+</table>
+<p>
+
+
+
+<br />
+#: click on a column heading to sort on it
+
+<pre>
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ OWNER                                              VARCHAR2(128)
+ SEGMENT_NAME                                       VARCHAR2(128)
+ PARTITION_NAME                                     VARCHAR2(128)
+ SEGMENT_TYPE                                       VARCHAR2(18)
+ SEGMENT_SUBTYPE                                    VARCHAR2(10)
+ TABLESPACE_NAME                                    VARCHAR2(30)
+ HEADER_FILE                                        NUMBER
+ HEADER_BLOCK                                       NUMBER
+ BYTES                                              NUMBER
+ BLOCKS                                             NUMBER
+ EXTENTS                                            NUMBER
+ INITIAL_EXTENT                                     NUMBER
+ NEXT_EXTENT                                        NUMBER
+ MIN_EXTENTS                                        NUMBER
+ MAX_EXTENTS                                        NUMBER
+ MAX_SIZE                                           NUMBER
+ RETENTION                                          VARCHAR2(7)
+ MINRETENTION                                       NUMBER
+ PCT_INCREASE                                       NUMBER
+ FREELISTS                                          NUMBER
+ FREELIST_GROUPS                                    NUMBER
+ RELATIVE_FNO                                       NUMBER
+ BUFFER_POOL                                        VARCHAR2(7)
+ FLASH_CACHE                                        VARCHAR2(7)
+ CELL_FLASH_CACHE                                   VARCHAR2(7)
+ INMEMORY                                           VARCHAR2(8)
+ INMEMORY_PRIORITY                                  VARCHAR2(8)
+ INMEMORY_DISTRIBUTE                                VARCHAR2(15)
+ INMEMORY_DUPLICATE                                 VARCHAR2(13)
+ INMEMORY_COMPRESSION                               VARCHAR2(17)
+ CELLMEMORY                                         VARCHAR2(24)
+
+-- incarnation from health_check_4.4 (Jon Adams and Jack Agustin)
+select owner "User", segment_name "Segment Name", segment_type "Type", tablespace_name "TABLESPACE", bytes/1024/1024 "Size (MB)"
+from dba_segments
+where tablespace_name in ('SYSTEM','SYSAUX') and owner not in ('ANONYMOUS','APEX_030200','APEX_040000','APEX_SSO','APPQOSSYS','CTXSYS','DBSNMP','DIP','EXFSYS','FLOWS_FILES','MDSYS','OLAPSYS','ORACLE_OCM','ORDDATA','ORDPLUGINS','ORDSYS','OUTLN','OWBSYS')
+and owner not in ('SI_INFORMTN_SCHEMA','SQLTXADMIN','SQLTXPLAIN','SYS','SYSMAN','SYSTEM','TRCANLZR','WMSYS','XDB','XS$NULL','PERFSTAT','STDBYPERF','MGDSYS','OJVMSYS')
+order by owner, bytes desc;
+
+108 rows selected.
+</pre>
+
+<br />
+<font class="f">Timestamp: 2025-09-15T14:30:02  </font>
+</body>
+</html>
