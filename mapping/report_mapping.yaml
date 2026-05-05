@@ -46,4 +46,27 @@ placeholders:
     content_type: "chart"
     chart_variant: "line"
     width_inches: 6.0
+  
+  - placeholder: "<SGA_chart>"
+    source_key: "sga_statistics_for_instance_1"
+    content_type: "chart"
+    chart_variant: "line"
+    width_inches: 6.0
 
+  - placeholder: "<PGA_chart>"
+    source_key: "pga_statistics_for_instance_1"
+    content_type: "chart"
+    chart_variant: "line"
+    width_inches: 6.0
+  
+  - placeholder: "<MEMORY_chart>"
+    source_key: "memory_statistics_for_instance_1"
+    content_type: "chart"
+    chart_variant: "line"
+    width_inches: 6.0
+
+  - placeholder: "<log_switch_chart>"
+    source_key: "log_switch_frequency_for_instance_1"
+    content_type: "chart"
+    chart_variant: "line"
+    width_inches: 6.0

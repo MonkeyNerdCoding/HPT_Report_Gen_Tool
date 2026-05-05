@@ -43,8 +43,8 @@ class ReportGeneratorApp(ctk.CTk):
         ctk.set_default_color_theme("blue")
 
         self.title(APP_TITLE)
-        self.geometry("940x720")
-        self.minsize(820, 640)
+        self.geometry("980x820")
+        self.minsize(860, 760)
 
         self.html_folder_var = ctk.StringVar()
         self.word_file_var = ctk.StringVar()
@@ -70,9 +70,9 @@ class ReportGeneratorApp(ctk.CTk):
         self.grid_rowconfigure(0, weight=1)
 
         container = ctk.CTkFrame(self, fg_color="transparent")
-        container.grid(row=0, column=0, sticky="nsew", padx=32, pady=28)
+        container.grid(row=0, column=0, sticky="nsew", padx=28, pady=20)
         container.grid_columnconfigure(0, weight=1)
-        container.grid_rowconfigure(3, weight=1)
+        container.grid_rowconfigure(3, weight=1, minsize=190)
 
         header = ctk.CTkFrame(
             container,
@@ -81,7 +81,7 @@ class ReportGeneratorApp(ctk.CTk):
             border_width=1,
             border_color=BORDER_COLOR,
         )
-        header.grid(row=0, column=0, sticky="ew", pady=(0, 18), ipady=2)
+        header.grid(row=0, column=0, sticky="ew", pady=(0, 12))
         header.grid_columnconfigure(0, weight=1)
         header.grid_columnconfigure(1, weight=0)
 
@@ -91,7 +91,7 @@ class ReportGeneratorApp(ctk.CTk):
             font=ctk.CTkFont(size=11, weight="bold"),
             text_color=PRIMARY_COLOR,
         )
-        eyebrow.grid(row=0, column=0, sticky="w", padx=(22, 18), pady=(18, 0))
+        eyebrow.grid(row=0, column=0, sticky="w", padx=(22, 18), pady=(14, 0))
 
         title = ctk.CTkLabel(
             header,
@@ -99,7 +99,7 @@ class ReportGeneratorApp(ctk.CTk):
             font=ctk.CTkFont(size=28, weight="bold"),
             text_color=TEXT_PRIMARY,
         )
-        title.grid(row=1, column=0, sticky="w", padx=(22, 18), pady=(2, 0))
+        title.grid(row=1, column=0, sticky="w", padx=(22, 18), pady=(0, 0))
 
         subtitle = ctk.CTkLabel(
             header,
@@ -124,12 +124,12 @@ class ReportGeneratorApp(ctk.CTk):
             font=ctk.CTkFont(size=13, weight="bold"),
             command=lambda _value: self._on_mode_changed(),
         )
-        self.mode_selector.grid(row=3, column=0, sticky="w", padx=(22, 18), pady=(16, 18))
+        self.mode_selector.grid(row=3, column=0, sticky="w", padx=(22, 18), pady=(12, 14))
 
         logo_image = self._load_logo_image()
         if logo_image:
             logo_holder = ctk.CTkFrame(header, fg_color=PANEL_ALT, corner_radius=8, border_width=1, border_color=BORDER_COLOR)
-            logo_holder.grid(row=0, column=1, rowspan=4, sticky="e", padx=(20, 22), pady=18)
+            logo_holder.grid(row=0, column=1, rowspan=4, sticky="e", padx=(20, 22), pady=14)
             logo = ctk.CTkLabel(logo_holder, text="", image=logo_image)
             logo.image = logo_image
             logo.grid(row=0, column=0, padx=18, pady=14)
@@ -141,7 +141,7 @@ class ReportGeneratorApp(ctk.CTk):
             border_width=1,
             border_color=BORDER_COLOR,
         )
-        form.grid(row=1, column=0, sticky="ew", pady=(0, 16), ipady=4)
+        form.grid(row=1, column=0, sticky="ew", pady=(0, 12))
         form.grid_columnconfigure(1, weight=1)
 
         form_heading = ctk.CTkLabel(
@@ -150,7 +150,7 @@ class ReportGeneratorApp(ctk.CTk):
             text_color=TEXT_PRIMARY,
             font=ctk.CTkFont(size=15, weight="bold"),
         )
-        form_heading.grid(row=0, column=0, columnspan=3, sticky="w", padx=18, pady=(16, 2))
+        form_heading.grid(row=0, column=0, columnspan=3, sticky="w", padx=18, pady=(12, 2))
 
         form_caption = ctk.CTkLabel(
             form,
@@ -192,13 +192,13 @@ class ReportGeneratorApp(ctk.CTk):
             border_width=1,
             border_color=BORDER_COLOR,
         )
-        actions.grid(row=2, column=0, sticky="ew", pady=(0, 16), ipady=6)
+        actions.grid(row=2, column=0, sticky="ew", pady=(0, 12))
         actions.grid_columnconfigure(0, weight=1)
 
         self.create_button = ctk.CTkButton(
             actions,
             text="Generate Report",
-            height=48,
+            height=42,
             corner_radius=8,
             fg_color=PRIMARY_COLOR,
             hover_color=PRIMARY_HOVER,
@@ -209,10 +209,10 @@ class ReportGeneratorApp(ctk.CTk):
             font=ctk.CTkFont(size=15, weight="bold"),
             command=self._start_generation,
         )
-        self.create_button.grid(row=0, column=0, sticky="ew", padx=16, pady=(12, 6))
+        self.create_button.grid(row=0, column=0, sticky="ew", padx=16, pady=(10, 4))
 
         status_row = ctk.CTkFrame(actions, fg_color="transparent")
-        status_row.grid(row=1, column=0, sticky="ew", padx=16, pady=(6, 10))
+        status_row.grid(row=1, column=0, sticky="ew", padx=16, pady=(4, 10))
         status_row.grid_columnconfigure(1, weight=1)
 
         ctk.CTkLabel(
@@ -280,6 +280,7 @@ class ReportGeneratorApp(ctk.CTk):
 
         self.log_text = ctk.CTkTextbox(
             log_frame,
+            height=150,
             corner_radius=8,
             border_width=1,
             border_color=BORDER_COLOR,
@@ -293,7 +294,7 @@ class ReportGeneratorApp(ctk.CTk):
         self.log_text.configure(state="disabled")
 
         footer = ctk.CTkFrame(container, fg_color="transparent")
-        footer.grid(row=4, column=0, sticky="ew", pady=(14, 0))
+        footer.grid(row=4, column=0, sticky="ew", pady=(8, 0))
         footer.grid_columnconfigure(0, weight=1)
 
         self.open_folder_button = ctk.CTkButton(
