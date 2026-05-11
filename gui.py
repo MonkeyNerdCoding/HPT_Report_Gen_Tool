@@ -56,6 +56,7 @@ class ReportGeneratorApp(ctk.CTk):
         self.last_save_dir: str = ""
         self.events: queue.Queue[tuple[str, object]] = queue.Queue()
         self.logo_warning: str | None = None
+        self.log_count: int = 0
 
         self._build_ui()
         self._load_settings()
@@ -229,16 +230,28 @@ class ReportGeneratorApp(ctk.CTk):
         )
         self.status_label.grid(row=0, column=1, sticky="w")
 
+        progress_frame = ctk.CTkFrame(status_row, fg_color="transparent")
+        progress_frame.grid(row=0, column=2, sticky="ew", padx=(10, 0))
+        progress_frame.grid_columnconfigure(0, weight=1)
+
         self.progress = ctk.CTkProgressBar(
-            status_row,
-            mode="indeterminate",
+            progress_frame,
+            mode="determinate",
             height=10,
             corner_radius=8,
             fg_color="#e8ebf0",
             progress_color=PRIMARY_COLOR,
         )
-        self.progress.grid(row=0, column=2, sticky="e", ipadx=80)
+        self.progress.grid(row=0, column=0, sticky="ew")
         self.progress.set(0)
+
+        self.progress_label = ctk.CTkLabel(
+            progress_frame,
+            text="0%",
+            text_color=TEXT_PRIMARY,
+            font=ctk.CTkFont(size=11, weight="bold"),
+        )
+        self.progress_label.grid(row=0, column=1, sticky="e", padx=(8, 0), ipadx=20)
 
         log_frame = ctk.CTkFrame(
             container,
@@ -475,7 +488,8 @@ class ReportGeneratorApp(ctk.CTk):
         self.open_folder_button.configure(state="disabled")
         self.create_button.configure(state="disabled", text="Processing...")
         self.status_var.set("Processing")
-        self.progress.start()
+        self.log_count = 0
+        self._update_progress_bar(0)
         self._append_log("")
         self._append_log("Starting report generation...")
         self._append_log(f"Output file: {output_file}")
@@ -503,7 +517,8 @@ class ReportGeneratorApp(ctk.CTk):
         self.open_folder_button.configure(state="disabled")
         self.create_button.configure(state="disabled", text="Processing...")
         self.status_var.set("Processing")
-        self.progress.start()
+        self.log_count = 0
+        self._update_progress_bar(0)
         self._append_log("")
         self._append_log("Starting SQLHealcheck generation...")
         self._append_log(f"SQL root folder: {input_folder}")
@@ -573,6 +588,10 @@ class ReportGeneratorApp(ctk.CTk):
 
             if event_type == "log":
                 self._append_log(str(payload))
+                # Update progress bar: increase with each log (capped at 90%)
+                self.log_count += 1
+                progress_value = min(self.log_count * 0.005, 0.90)  # 1 log = 0.5%, max 90%
+                self._update_progress_bar(progress_value)
             elif event_type == "success":
                 self._handle_success(payload)
             elif event_type == "error":
@@ -580,9 +599,14 @@ class ReportGeneratorApp(ctk.CTk):
 
         self.after(100, self._poll_events)
 
+    def _update_progress_bar(self, value: float) -> None:
+        """Update progress bar and label."""
+        self.progress.set(value)
+        percentage = int(value * 100)
+        self.progress_label.configure(text=f"{percentage}%")
+
     def _handle_success(self, result: object) -> None:
-        self.progress.stop()
-        self.progress.set(0)
+        self._update_progress_bar(1.0)  # Set to 100%
         self.create_button.configure(state="normal", text="Generate Report")
         self.status_var.set("Success")
         if isinstance(result, list):
@@ -609,8 +633,7 @@ class ReportGeneratorApp(ctk.CTk):
         messagebox.showinfo(APP_TITLE, f"Report created successfully:\n{output_file}")
 
     def _handle_error(self, details: str) -> None:
-        self.progress.stop()
-        self.progress.set(0)
+        self._update_progress_bar(0)
         self.create_button.configure(state="normal", text="Generate Report")
         self.status_var.set("Failed")
         summary = details.splitlines()[0] if details else "Report generation failed."
