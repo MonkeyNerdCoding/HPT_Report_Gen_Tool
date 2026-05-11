@@ -134,8 +134,9 @@ def render_google_chart_with_matplotlib(
     image_path = chart_output_dir / f"{page.path.stem}.png"
     title = extract_option_text(html, "title") or page.title
     y_label = extract_axis_title(html, "vAxis")
+    x_label = extract_axis_title(html, "hAxis")
 
-    render_line_chart_png(headers, rows, title, y_label, image_path)
+    render_line_chart_png(headers, rows, title, y_label, image_path, x_label=x_label)
 
     keys = set(page.keys)
     keys.add(strip_chart_suffix(page.logical_key))
@@ -191,15 +192,22 @@ def render_line_chart_png(
     title: str,
     y_label: str,
     image_path: Path,
+    x_label: str = "",
 ) -> None:
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
+    import matplotlib.dates as mdates
+    import matplotlib.ticker as mticker
 
     fig, ax = plt.subplots(figsize=(12, 6.75))
 
     x_values = [row[0] for row in rows]
+    import itertools
+    default_colors = ['#1976D2', '#E64A19', '#FB8C00', '#2E7D32', '#8E24AA', '#039BE5']
+    color_cycle = itertools.cycle(default_colors)
     has_plottable_data = False
+    all_y_values: list[float] = []
 
     for series_index, series_name in enumerate(headers[1:]):
         y_values: list[float | None] = []
@@ -215,7 +223,11 @@ def render_line_chart_png(
             continue
 
         xs, ys = zip(*valid_pairs)
-        ax.plot(xs, ys, marker="o", markersize=3, linewidth=2, label=series_name)
+        all_y_values.extend(ys)
+        plot_xs, plot_ys = smooth_line_for_display(list(xs), list(ys))
+        # Use color index based on series position for consistent color mapping
+        series_color = default_colors[series_index % len(default_colors)]
+        ax.plot(plot_xs, plot_ys, marker=None, linewidth=1.8, label=series_name, color=series_color)
         has_plottable_data = True
 
     if not has_plottable_data:
@@ -230,20 +242,90 @@ def render_line_chart_png(
         )
     else:
         ax.grid(True, linestyle="--", alpha=0.5)
-        if len(headers) > 2:
+        if len(headers) > 1:
             ax.legend(loc="best", fontsize=9)
 
     if title:
         ax.set_title(title, fontsize=13, pad=10)
     if y_label:
-        ax.set_ylabel(y_label, fontsize=10)
+        ax.set_ylabel(y_label, fontsize=12, fontstyle="italic" if _is_library_cache_chart(title, y_label) else "normal")
+    if x_label:
+        ax.set_xlabel(x_label, fontsize=11, fontstyle="italic" if _is_library_cache_chart(title, y_label) else "normal")
+
+    if _is_library_cache_chart(title, y_label) and all_y_values:
+        ax.yaxis.set_major_formatter(mticker.StrMethodFormatter("{x:,.0f}"))
+        upper = max(all_y_values)
+        if upper > 0:
+            rounded_upper = _round_axis_upper(upper)
+            ax.set_ylim(bottom=0, top=rounded_upper)
+            ax.yaxis.set_major_locator(mticker.MaxNLocator(nbins=8))
 
     # Handle datetime x-axis formatting
     if x_values and isinstance(x_values[0], datetime):
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%B %d,\n%Y"))
         fig.autofmt_xdate()
 
     plt.savefig(image_path, bbox_inches="tight", dpi=150)
     plt.close(fig)
+
+
+def _is_library_cache_chart(title: str, y_label: str) -> bool:
+    text = f"{title} {y_label}".lower()
+    return "library cache hit ratio" in text
+
+
+def _round_axis_upper(value: float) -> float:
+    if value <= 100:
+        return 100
+    magnitude = 10 ** max(len(str(int(value))) - 2, 0)
+    return ((int(value + magnitude - 1) // magnitude) * magnitude)
+
+
+def smooth_line_for_display(
+    xs: list[object],
+    ys: list[float],
+    points_per_segment: int = 12,
+) -> tuple[list[object], list[float]]:
+    if len(xs) < 4 or len(xs) != len(ys):
+        return xs, ys
+
+    import matplotlib.dates as mdates
+
+    x_is_datetime = isinstance(xs[0], datetime)
+    numeric_xs = [mdates.date2num(x) if isinstance(x, datetime) else float(x) for x in xs]
+    if any(numeric_xs[index] >= numeric_xs[index + 1] for index in range(len(numeric_xs) - 1)):
+        return xs, ys
+
+    smooth_xs: list[float] = []
+    smooth_ys: list[float] = []
+    for index in range(len(xs) - 1):
+        x0 = numeric_xs[max(index - 1, 0)]
+        x1 = numeric_xs[index]
+        x2 = numeric_xs[index + 1]
+        x3 = numeric_xs[min(index + 2, len(xs) - 1)]
+        y0 = ys[max(index - 1, 0)]
+        y1 = ys[index]
+        y2 = ys[index + 1]
+        y3 = ys[min(index + 2, len(ys) - 1)]
+
+        steps = points_per_segment if index < len(xs) - 2 else points_per_segment + 1
+        for step in range(steps):
+            t = step / points_per_segment
+            smooth_xs.append(_catmull_rom_value(x0, x1, x2, x3, t))
+            smooth_ys.append(_catmull_rom_value(y0, y1, y2, y3, t))
+
+    if x_is_datetime:
+        return [mdates.num2date(value).replace(tzinfo=None) for value in smooth_xs], smooth_ys
+    return smooth_xs, smooth_ys
+
+
+def _catmull_rom_value(p0: float, p1: float, p2: float, p3: float, t: float) -> float:
+    return 0.5 * (
+        (2 * p1)
+        + (-p0 + p2) * t
+        + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t * t
+        + (-p0 + 3 * p1 - 3 * p2 + p3) * t * t * t
+    )
 
 
 def parse_date_row(line: str) -> list[object] | None:

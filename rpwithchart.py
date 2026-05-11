@@ -109,21 +109,21 @@ SQL_TABLE_MAPPING = {
 
 
 SQL_CHART_MAPPING = {
-    "<cpu_usage_chart>": {
+    "<cpu_chart>": {
         "sheet": "CPU Usage by Database",
         "title": "Chart 1. CPU Usage by Database",
         "label_col": 1,
         "value_col": 3,
         "top_n": 10,
     },
-    "<io_usage_chart>": {
+    "<io_chart>": {
         "sheet": "IO Usage By Database",
         "title": "Chart 2. IO Usage By Database",
         "label_col": 1,
         "value_col": 3,
         "top_n": 10,
     },
-    "<buffer_usage_chart>": {
+    "<buffer_chart>": {
         "sheet": "Total Buffer Usage by Database",
         "title": "Chart 3. Total Buffer Usage by Database",
         "label_col": 1,
@@ -491,7 +491,6 @@ def create_pie_chart(
             labels=None,
             startangle=90,
             colors=colors[: len(values)],
-            explode=[0.02] * len(values),
         )
         ax.set_title(title, fontsize=16, fontweight="bold", pad=30, color="#333333")
 

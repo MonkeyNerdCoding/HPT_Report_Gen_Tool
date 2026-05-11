@@ -28,6 +28,7 @@ def render_report(
     rules: list[MappingRule],
     report: GenerationReport,
     log_callback: LogCallback | None = None,
+    text_mapping: dict[str, str] | None = None,
     max_table_rows: int | None = None,
     lightweight_tables: bool = False,
     slow_step_seconds: float = 10.0,
@@ -91,6 +92,10 @@ def render_report(
             if not document_contains_placeholder(doc, rule.placeholder):
                 report.missing_placeholders.append(f"{rule.placeholder}: configured but not found in template")
 
+    if text_mapping:
+        replaced_count = replace_text_placeholders(doc, text_mapping)
+        log(f"Replaced text placeholders: {replaced_count}")
+
     save_started = perf_counter()
     log(f"Starting DOCX save: {output_path}")
     doc.save(output_path)
@@ -103,7 +108,18 @@ def render_report(
 
 def document_contains_placeholder(doc: DocumentObject, placeholder: str) -> bool:
     # Kiểm tra xem placeholder có tồn tại trong body hay trong các cell của table
-    return any(placeholder in paragraph.text for paragraph in iter_paragraphs(doc))
+    return any(placeholder in paragraph.text for paragraph in iter_document_paragraphs(doc))
+
+
+def replace_text_placeholders(doc: DocumentObject, mapping: dict[str, str]) -> int:
+    replaced = 0
+    for paragraph in iter_document_paragraphs(doc):
+        for placeholder, replacement in mapping.items():
+            if placeholder not in paragraph.text:
+                continue
+            _replace_text_in_paragraph(paragraph, placeholder, replacement)
+            replaced += 1
+    return replaced
 
 
 def replace_placeholder(
@@ -146,6 +162,34 @@ def iter_paragraphs(parent: DocumentObject | _Cell):
         for row in table.rows:
             for cell in row.cells:
                 yield from iter_paragraphs(cell)
+
+
+def iter_document_paragraphs(doc: DocumentObject):
+    yield from iter_paragraphs(doc)
+    for section in doc.sections:
+        yield from iter_paragraphs(section.header)
+        yield from iter_paragraphs(section.footer)
+
+
+def _replace_text_in_paragraph(paragraph: Paragraph, placeholder: str, replacement: str) -> None:
+    replaced_in_run = False
+    for run in paragraph.runs:
+        if placeholder in run.text:
+            run.text = run.text.replace(placeholder, replacement)
+            format_text_run(run)
+            replaced_in_run = True
+
+    if not replaced_in_run and placeholder in paragraph.text:
+        paragraph.text = paragraph.text.replace(placeholder, replacement)
+        for run in paragraph.runs:
+            format_text_run(run)
+
+
+def format_text_run(run) -> None:
+    run.font.name = "Cambria"
+    run.font.size = Pt(12)
+    run.font.color.rgb = RGBColor(0, 0, 0)
+    run._element.rPr.rFonts.set(qn("w:eastAsia"), "Cambria")
 
 
 def clear_paragraph(paragraph: Paragraph) -> None:
