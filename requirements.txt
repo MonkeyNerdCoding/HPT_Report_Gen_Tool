@@ -4,5 +4,6 @@ matplotlib
 openpyxl
 pandas
 pillow
+playwright
 python-docx
 PyYAML

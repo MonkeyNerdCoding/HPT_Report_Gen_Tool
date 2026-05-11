@@ -249,6 +249,7 @@ def insert_image_after_paragraph(
 ) -> None:
     # Chèn ảnh vào một paragraph mới rồi đặt paragraph đó ngay sau paragraph gốc
     image_paragraph = doc.add_paragraph()
+    image_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     run = image_paragraph.add_run()
     kwargs = {}
     if width_inches:

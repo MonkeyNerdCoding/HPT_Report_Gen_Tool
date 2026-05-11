@@ -12,6 +12,9 @@ from utils.normalize import strip_chart_suffix
 
 
 LOGO_NAMES = {"edb360_img.jpg", "edb360_favicon.ico"}
+CHART_PAGE_TIMEOUT_MS = 15000
+PRIMARY_SVG_TIMEOUT_MS = 8000
+FALLBACK_SVG_TIMEOUT_MS = 3000
 
 
 def extract_static_images(page: ReportPage, soup: BeautifulSoup) -> list[ImageContent]:
@@ -66,34 +69,62 @@ def extract_rendered_chart(
     if not is_google_chart_page(html):
         return None
 
-    fallback = render_google_chart_with_matplotlib(page, html, chart_output_dir, report)
-    if fallback:
-        return fallback
+    return render_google_chart_from_dom_svg(page, html, chart_output_dir, report)
 
+
+def render_google_chart_from_dom_svg(
+    page: ReportPage,
+    html: str,
+    chart_output_dir: Path,
+    report: GenerationReport,
+) -> ImageContent | None:
     try:
+        from playwright.sync_api import Error as PlaywrightError
+        from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
         from playwright.sync_api import sync_playwright
     except ImportError:
-        report.skipped.append(
-            f"Chart detected but Playwright is not installed, skipped render: {page.path.name}"
+        report.warnings.append(
+            "Chart detected but Playwright is not installed. "
+            f"Cannot render SVG DOM chart for {page.path.name}. "
+            "Install with: pip install -r requirements.txt; playwright install chromium"
         )
         return None
 
     chart_output_dir.mkdir(parents=True, exist_ok=True)
     variant = detect_chart_variant(page.path, html)
+    svg_path = chart_output_dir / f"{page.path.stem}.svg"
     image_path = chart_output_dir / f"{page.path.stem}.png"
 
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch()
-            page_browser = browser.new_page(viewport={"width": 1000, "height": 700})
-            page_browser.goto(page.path.resolve().as_uri(), wait_until="networkidle", timeout=30000)
-            locator = page_browser.locator(".google-chart").first
-            if locator.count() == 0:
-                locator = page_browser.locator("svg").first
-            locator.screenshot(path=str(image_path))
-            browser.close()
+            try:
+                page_browser = browser.new_page(viewport={"width": 1000, "height": 700})
+                page_browser.goto(
+                    page.path.resolve().as_uri(),
+                    wait_until="domcontentloaded",
+                    timeout=CHART_PAGE_TIMEOUT_MS,
+                )
+                locator = _wait_for_chart_svg(page_browser, PlaywrightTimeoutError)
+                svg_info = _extract_svg_info(locator)
+                _validate_svg_info(svg_info, page.path.name)
+
+                normalized_svg = normalize_svg_for_export(
+                    svg_info["outer_html"],
+                    svg_info["width"],
+                    svg_info["height"],
+                    svg_info["view_box"],
+                )
+                svg_path.write_text(normalized_svg, encoding="utf-8")
+
+                try:
+                    locator.screenshot(path=str(image_path))
+                except PlaywrightError:
+                    _rasterize_svg_with_browser(page_browser, normalized_svg, image_path)
+            finally:
+                browser.close()
     except Exception as exc:
-        report.warnings.append(f"Could not render chart {page.path.name}: {exc}")
+        report.warnings.append(f"Could not render SVG DOM chart {page.path.name}: {exc}")
         return None
 
     keys = set(page.keys)
@@ -110,6 +141,126 @@ def extract_rendered_chart(
     )
 
 
+def _wait_for_chart_svg(page_browser, timeout_error_type):
+    try:
+        return page_browser.wait_for_selector(".google-chart svg", timeout=PRIMARY_SVG_TIMEOUT_MS)
+    except timeout_error_type:
+        try:
+            return page_browser.wait_for_selector("svg", timeout=FALLBACK_SVG_TIMEOUT_MS)
+        except timeout_error_type as exc:
+            raise TimeoutError(
+                "Timed out waiting for rendered chart SVG with selectors "
+                "'.google-chart svg' or 'svg'"
+            ) from exc
+
+
+def _extract_svg_info(locator) -> dict[str, object]:
+    return locator.evaluate(
+        """
+        (svg) => {
+            const rect = svg.getBoundingClientRect();
+            const box = (() => {
+                try {
+                    return svg.getBBox();
+                } catch (_error) {
+                    return { width: 0, height: 0 };
+                }
+            })();
+            return {
+                outer_html: svg.outerHTML,
+                width: rect.width || Number(svg.getAttribute('width')) || box.width || 0,
+                height: rect.height || Number(svg.getAttribute('height')) || box.height || 0,
+                view_box: svg.getAttribute('viewBox') || '',
+                has_content: !!svg.querySelector('text,path,rect,polyline,polygon,circle,line,ellipse')
+            };
+        }
+        """,
+    )
+
+
+def _validate_svg_info(svg_info: dict[str, object], chart_name: str) -> None:
+    outer_html = str(svg_info.get("outer_html") or "")
+    width = float(svg_info.get("width") or 0)
+    height = float(svg_info.get("height") or 0)
+    view_box = str(svg_info.get("view_box") or "")
+    has_content = bool(svg_info.get("has_content"))
+
+    if not outer_html.strip().lower().startswith("<svg"):
+        raise ValueError(f"Rendered chart SVG is missing for {chart_name}")
+    if not has_content:
+        raise ValueError(f"Rendered chart SVG is empty for {chart_name}")
+    if (width <= 0 or height <= 0) and not view_box:
+        raise ValueError(f"Rendered chart SVG has no size or viewBox for {chart_name}")
+
+
+def normalize_svg_for_export(
+    svg: str,
+    width: object = 0,
+    height: object = 0,
+    view_box: object = "",
+) -> str:
+    normalized = svg.strip()
+    if not normalized:
+        return normalized
+
+    start_tag_match = re.match(r"<svg\b[^>]*>", normalized, re.IGNORECASE)
+    if not start_tag_match:
+        return normalized
+
+    start_tag = start_tag_match.group(0)
+    updated_tag = start_tag
+    if "xmlns=" not in updated_tag:
+        updated_tag = updated_tag[:-1] + ' xmlns="http://www.w3.org/2000/svg">'
+
+    width_value = _clean_svg_dimension(width)
+    height_value = _clean_svg_dimension(height)
+    if width_value and not re.search(r"\bwidth\s*=", updated_tag, re.IGNORECASE):
+        updated_tag = updated_tag[:-1] + f' width="{width_value}">'
+    if height_value and not re.search(r"\bheight\s*=", updated_tag, re.IGNORECASE):
+        updated_tag = updated_tag[:-1] + f' height="{height_value}">'
+    if (
+        width_value
+        and height_value
+        and not re.search(r"\bviewBox\s*=", updated_tag)
+        and not str(view_box or "").strip()
+    ):
+        updated_tag = updated_tag[:-1] + f' viewBox="0 0 {width_value} {height_value}">'
+
+    return updated_tag + normalized[start_tag_match.end() :]
+
+
+def _clean_svg_dimension(value: object) -> str:
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return ""
+    if number <= 0:
+        return ""
+    if number.is_integer():
+        return str(int(number))
+    return f"{number:.2f}".rstrip("0").rstrip(".")
+
+
+def _rasterize_svg_with_browser(page_browser, svg: str, image_path: Path) -> None:
+    page_browser.set_content(
+        f"""
+        <!doctype html>
+        <html>
+          <head>
+            <style>
+              html, body {{ margin: 0; padding: 0; background: white; }}
+              svg {{ display: block; }}
+            </style>
+          </head>
+          <body>{svg}</body>
+        </html>
+        """,
+        wait_until="domcontentloaded",
+    )
+    page_browser.locator("svg").first.screenshot(path=str(image_path))
+
+
+# Legacy rollback only. Do not use for OracleHC chart rendering.
 def render_google_chart_with_matplotlib(
     page: ReportPage,
     html: str,
@@ -152,6 +303,7 @@ def render_google_chart_with_matplotlib(
     )
 
 
+# Legacy rollback only. Do not use for OracleHC chart rendering.
 def parse_array_to_data_table(html: str) -> tuple[list[str], list[list[object]]] | None:
     match = re.search(r"arrayToDataTable\(\s*\[(.*?)\]\s*\)", html, re.DOTALL)
     if not match:
@@ -186,6 +338,7 @@ def parse_array_to_data_table(html: str) -> tuple[list[str], list[list[object]]]
     return headers, rows
 
 
+# Legacy rollback only. Do not use for OracleHC chart rendering.
 def render_line_chart_png(
     headers: list[str],
     rows: list[list[object]],
@@ -269,11 +422,13 @@ def render_line_chart_png(
     plt.close(fig)
 
 
+# Legacy rollback only. Do not use for OracleHC chart rendering.
 def _is_library_cache_chart(title: str, y_label: str) -> bool:
     text = f"{title} {y_label}".lower()
     return "library cache hit ratio" in text
 
 
+# Legacy rollback only. Do not use for OracleHC chart rendering.
 def _round_axis_upper(value: float) -> float:
     if value <= 100:
         return 100
@@ -281,6 +436,7 @@ def _round_axis_upper(value: float) -> float:
     return ((int(value + magnitude - 1) // magnitude) * magnitude)
 
 
+# Legacy rollback only. Do not use for OracleHC chart rendering.
 def smooth_line_for_display(
     xs: list[object],
     ys: list[float],

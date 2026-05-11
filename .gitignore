@@ -1,0 +1,14 @@
+dist/
+build/
+*.exe
+*.pkg
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+tmp_pycache_check/
+generated_charts/
+ai_smoke_output.docx
+pytest-cache-files-*/
