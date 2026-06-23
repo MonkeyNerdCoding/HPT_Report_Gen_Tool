@@ -41,4 +41,3 @@ pyinstaller --clean --noconfirm --onefile --windowed --name "OracleHC Report Gen
 - Nếu muốn chia sẻ bản build, upload file `.exe` trên GitHub Releases hoặc dịch vụ lưu trữ file.
 
 ---
-Cần mình tạo Release lên GitHub và upload file `.exe` giúp không? 
