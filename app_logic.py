@@ -8,6 +8,7 @@ from extraction.extract_html import extract_content_from_input
 from mapping.content_registry import ContentRegistry
 from mapping.mapper import resolve_mappings
 from models import GenerationReport
+from placeholder_inserter import PlaceholderInsertReport, insert_mapping_placeholders
 from rpwithchart import render_excel_report
 from rendering.word_renderer import render_report
 from sql_healthcheck.merge_sql import merge_sql_root_healthcheck
@@ -15,6 +16,7 @@ from sql_healthcheck.merge_sql import merge_sql_root_healthcheck
 
 LogCallback = Callable[[str], None]
 DEFAULT_SQL_MAPPING = Path(__file__).resolve().parent / "mapping" / "sql_healthcheck_mapping.yaml"
+DEFAULT_MAX_TABLE_DATA_ROWS = 50
 
 
 def generate_report(
@@ -85,11 +87,52 @@ def generate_report_to_file(
         log("Validation completed. No Word file was written.")
     else:
         log("Rendering Word report...")
-        render_report(template_path, output_path, resolved, rules, report)
+        render_report(
+            template_path,
+            output_path,
+            resolved,
+            rules,
+            report,
+            log_callback=log_callback,
+            max_table_rows=DEFAULT_MAX_TABLE_DATA_ROWS + 1,
+        )
         log(f"Done. Output saved to: {output_path}")
 
     _log_summary(report, log)
     return str(output_path)
+
+
+def insert_placeholders_into_word(
+    word_file: str | Path,
+    mapping_file: str | Path = DEFAULT_MAPPING,
+    log_callback: LogCallback | None = None,
+) -> PlaceholderInsertReport:
+    """Insert known report placeholders into a Word file in place."""
+    template_path = _validate_word_file(word_file)
+    mapping_path = Path(mapping_file)
+    if not mapping_path.is_file():
+        raise FileNotFoundError(f"Mapping file does not exist: {mapping_path}")
+
+    log = _make_logger(log_callback)
+    log("Loading placeholder mapping...")
+    rules = load_mapping_rules(mapping_path)
+    log(f"Loaded placeholders: {len(rules)}")
+    log(f"Word file: {template_path}")
+
+    report = insert_mapping_placeholders(template_path, rules, create_backup=True)
+    if report.backup_path:
+        log(f"Backup file: {report.backup_path}")
+    log(f"Inserted placeholders: {len(report.inserted)}")
+    for placeholder in report.inserted:
+        log(f"  + {placeholder}")
+    log(f"Already present: {len(report.already_present)}")
+    if report.missing_anchors:
+        log(f"Could not place placeholders: {len(report.missing_anchors)}")
+        for placeholder in report.missing_anchors:
+            log(f"  ! {placeholder}")
+    else:
+        log("All placeholders are present in the Word file.")
+    return report
 
 
 def run_sql_pipeline(

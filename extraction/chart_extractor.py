@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from pathlib import Path
 import ast
+import os
 import re
 
 from bs4 import BeautifulSoup
@@ -15,6 +16,11 @@ LOGO_NAMES = {"edb360_img.jpg", "edb360_favicon.ico"}
 CHART_PAGE_TIMEOUT_MS = 15000
 PRIMARY_SVG_TIMEOUT_MS = 8000
 FALLBACK_SVG_TIMEOUT_MS = 3000
+ENABLE_BROWSER_CHART_RENDER = os.getenv("ORACLEHC_ENABLE_BROWSER_CHARTS", "").strip().lower() in {
+    "1",
+    "true",
+    "yes",
+}
 
 
 def extract_static_images(page: ReportPage, soup: BeautifulSoup) -> list[ImageContent]:
@@ -67,6 +73,13 @@ def extract_rendered_chart(
     report: GenerationReport,
 ) -> ImageContent | None:
     if not is_google_chart_page(html):
+        return None
+
+    chart = render_google_chart_with_matplotlib(page, html, chart_output_dir, report)
+    if chart:
+        return chart
+
+    if not ENABLE_BROWSER_CHART_RENDER:
         return None
 
     return render_google_chart_from_dom_svg(page, html, chart_output_dir, report)
@@ -260,7 +273,6 @@ def _rasterize_svg_with_browser(page_browser, svg: str, image_path: Path) -> Non
     page_browser.locator("svg").first.screenshot(path=str(image_path))
 
 
-# Legacy rollback only. Do not use for OracleHC chart rendering.
 def render_google_chart_with_matplotlib(
     page: ReportPage,
     html: str,

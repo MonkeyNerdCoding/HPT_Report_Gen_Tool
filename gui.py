@@ -11,7 +11,7 @@ from tkinter import filedialog, messagebox
 import customtkinter as ctk
 from PIL import Image
 
-from app_logic import generate_report, run_sql_pipeline
+from app_logic import generate_report, insert_placeholders_into_word, run_sql_pipeline
 from assets import resource_path
 
 
@@ -212,8 +212,24 @@ class ReportGeneratorApp(ctk.CTk):
         )
         self.create_button.grid(row=0, column=0, sticky="ew", padx=16, pady=(10, 4))
 
+        self.placeholder_button = ctk.CTkButton(
+            actions,
+            text="Insert Placeholders into Word",
+            height=38,
+            corner_radius=8,
+            fg_color=CONTROL_BG,
+            hover_color=CONTROL_HOVER,
+            text_color=TEXT_PRIMARY,
+            text_color_disabled=DISABLED_TEXT,
+            border_width=1,
+            border_color=BORDER_STRONG,
+            font=ctk.CTkFont(size=13, weight="bold"),
+            command=self._start_placeholder_insert,
+        )
+        self.placeholder_button.grid(row=1, column=0, sticky="ew", padx=16, pady=(4, 4))
+
         status_row = ctk.CTkFrame(actions, fg_color="transparent")
-        status_row.grid(row=1, column=0, sticky="ew", padx=16, pady=(4, 10))
+        status_row.grid(row=2, column=0, sticky="ew", padx=16, pady=(4, 10))
         status_row.grid_columnconfigure(1, weight=1)
 
         ctk.CTkLabel(
@@ -472,6 +488,38 @@ class ReportGeneratorApp(ctk.CTk):
 
         self._start_oracle_generation(html_folder, word_file)
 
+    def _start_placeholder_insert(self) -> None:
+        word_file = self.word_file_var.get().strip()
+        validation_error = self._validate_word_only(word_file)
+        if validation_error:
+            self.status_var.set("Failed")
+            messagebox.showerror(APP_TITLE, validation_error)
+            self._append_log(f"Validation failed: {validation_error}")
+            return
+
+        self.last_output_file = None
+        self.generated_report_files = []
+        self.last_output_folder = str(Path(word_file).parent)
+        self.last_save_dir = self.last_output_folder
+        self._save_settings()
+        self.open_file_button.configure(state="disabled")
+        self.open_folder_button.configure(state="disabled")
+        self.create_button.configure(state="disabled")
+        self.placeholder_button.configure(state="disabled", text="Inserting...")
+        self.status_var.set("Processing")
+        self.log_count = 0
+        self._update_progress_bar(0)
+        self._append_log("")
+        self._append_log("Starting placeholder insertion...")
+        self._append_log(f"Word file: {word_file}")
+
+        worker = threading.Thread(
+            target=self._run_placeholder_insert,
+            args=(word_file,),
+            daemon=True,
+        )
+        worker.start()
+
     def _start_oracle_generation(self, html_folder: str, word_file: str) -> None:
         output_file = self._ask_output_file(word_file)
         if not output_file:
@@ -487,6 +535,7 @@ class ReportGeneratorApp(ctk.CTk):
         self.open_file_button.configure(state="disabled")
         self.open_folder_button.configure(state="disabled")
         self.create_button.configure(state="disabled", text="Processing...")
+        self.placeholder_button.configure(state="disabled")
         self.status_var.set("Processing")
         self.log_count = 0
         self._update_progress_bar(0)
@@ -516,6 +565,7 @@ class ReportGeneratorApp(ctk.CTk):
         self.open_file_button.configure(state="disabled")
         self.open_folder_button.configure(state="disabled")
         self.create_button.configure(state="disabled", text="Processing...")
+        self.placeholder_button.configure(state="disabled")
         self.status_var.set("Processing")
         self.log_count = 0
         self._update_progress_bar(0)
@@ -579,6 +629,18 @@ class ReportGeneratorApp(ctk.CTk):
 
         self.events.put(("success", report_files))
 
+    def _run_placeholder_insert(self, word_file: str) -> None:
+        try:
+            report = insert_placeholders_into_word(
+                word_file=word_file,
+                log_callback=lambda message: self.events.put(("log", message)),
+            )
+        except Exception as exc:
+            self.events.put(("error", f"{exc}\n\n{traceback.format_exc()}"))
+            return
+
+        self.events.put(("placeholder_success", (word_file, report)))
+
     def _poll_events(self) -> None:
         while True:
             try:
@@ -594,6 +656,8 @@ class ReportGeneratorApp(ctk.CTk):
                 self._update_progress_bar(progress_value)
             elif event_type == "success":
                 self._handle_success(payload)
+            elif event_type == "placeholder_success":
+                self._handle_placeholder_success(payload)
             elif event_type == "error":
                 self._handle_error(str(payload))
 
@@ -608,6 +672,7 @@ class ReportGeneratorApp(ctk.CTk):
     def _handle_success(self, result: object) -> None:
         self._update_progress_bar(1.0)  # Set to 100%
         self.create_button.configure(state="normal", text="Generate Report")
+        self.placeholder_button.configure(state="normal", text="Insert Placeholders into Word")
         self.status_var.set("Success")
         if isinstance(result, list):
             output_files = [str(path) for path in result]
@@ -632,9 +697,32 @@ class ReportGeneratorApp(ctk.CTk):
         self._append_log(f"Success: {output_file}")
         messagebox.showinfo(APP_TITLE, f"Report created successfully:\n{output_file}")
 
+    def _handle_placeholder_success(self, result: object) -> None:
+        word_file, report = result
+        word_file = str(word_file)
+        self._update_progress_bar(1.0)
+        self.create_button.configure(state="normal", text="Generate Report")
+        self.placeholder_button.configure(state="normal", text="Insert Placeholders into Word")
+        self.status_var.set("Success")
+        self.generated_report_files = [word_file]
+        self.last_output_file = word_file
+        self.last_output_folder = str(Path(word_file).parent)
+        self.open_file_button.configure(state="normal")
+        self.open_folder_button.configure(state="normal")
+
+        if getattr(report, "missing_anchors", None):
+            messagebox.showwarning(
+                APP_TITLE,
+                "Placeholder insertion finished, but some placeholders could not be placed. Check the runtime log.",
+            )
+            return
+
+        messagebox.showinfo(APP_TITLE, f"Placeholders inserted successfully:\n{word_file}")
+
     def _handle_error(self, details: str) -> None:
         self._update_progress_bar(0)
         self.create_button.configure(state="normal", text="Generate Report")
+        self.placeholder_button.configure(state="normal", text="Insert Placeholders into Word")
         self.status_var.set("Failed")
         summary = details.splitlines()[0] if details else "Report generation failed."
         self._append_log("Failed.")
@@ -650,6 +738,17 @@ class ReportGeneratorApp(ctk.CTk):
 
         if not html_path.is_dir():
             return f"HTML root folder does not exist: {html_path}"
+        if not word_path.is_file():
+            return f"Word file does not exist: {word_path}"
+        if word_path.suffix.lower() != ".docx":
+            return f"Word file must be a .docx file: {word_path}"
+        return None
+
+    def _validate_word_only(self, word_file: str) -> str | None:
+        if not word_file:
+            return "Please select a Word file/template."
+
+        word_path = Path(word_file)
         if not word_path.is_file():
             return f"Word file does not exist: {word_path}"
         if word_path.suffix.lower() != ".docx":
