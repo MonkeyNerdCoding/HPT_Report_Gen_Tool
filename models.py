@@ -5,6 +5,10 @@ from pathlib import Path
 from typing import Literal
 
 
+class OperationCancelled(Exception):
+    pass
+
+
 ContentType = Literal["table", "chart", "image", "text"]
 
 
@@ -79,6 +83,8 @@ class MappingRule:
     content_type: ContentType = "table"
     source_file: str = ""
     section: str = ""
+    location: str = ""
+    report_section: str = ""
     table_index: int | None = None
     chart_variant: str = ""
     required: bool = False

@@ -1,72 +1,1944 @@
 placeholders:
-  - placeholder: "<tbs_usage>"
-    source_key: "tablespace_usage"
-    content_type: "table"
-
-  - placeholder: "<data_file>"
-    source_key: "data_files"
-    content_type: "table"
-
-  - placeholder: "<no_pk_table>"
-    source_key: "tables_without_primary_key_constraints"
-    content_type: "table"
-
-  - placeholder: "<no_index_table>"
-    source_key: "tables_without_indexes"
-    content_type: "table"
-
-  - placeholder: "<invalid_obj>"
-    source_key: "invalid_objects"
-    content_type: "table"
-
-  - placeholder: "<db_job>"
-    source_key: "jobs"
-    content_type: "table"
-
-  - placeholder: "<sche_job>"
-    source_key: "scheduler_jobs"
-    content_type: "table"
-
-  - placeholder: "<table_stats>"
-    source_key: "tables_with_stale_stats"
-    content_type: "table"
-
-  - placeholder: "<index_stats>"
-    source_key: "indexes_with_stale_stats"
-    content_type: "table"
-
-  - placeholder: "<buffer_chart>"
-    source_key: "buffer_cache_hit_ratio"
-    content_type: "chart"
-    chart_variant: "line"
-    width_inches: 6.0
-
-  - placeholder: "<library_chart>"
-    source_key: "library_cache_hit_ratio"
-    content_type: "chart"
-    chart_variant: "line"
-    width_inches: 6.0
-  
-  - placeholder: "<SGA_chart>"
-    source_key: "sga_statistics_for_instance_1"
-    content_type: "chart"
-    chart_variant: "line"
-    width_inches: 6.0
-
-  - placeholder: "<PGA_chart>"
-    source_key: "pga_statistics_for_instance_1"
-    content_type: "chart"
-    chart_variant: "line"
-    width_inches: 6.0
-  
-  - placeholder: "<MEMORY_chart>"
-    source_key: "memory_statistics_for_instance_1"
-    content_type: "chart"
-    chart_variant: "line"
-    width_inches: 6.0
-
-  - placeholder: "<log_switch_chart>"
-    source_key: "log_switch_frequency_for_instance_1"
-    content_type: "chart"
-    chart_variant: "line"
-    width_inches: 6.0
+- placeholder: <tbs_usage>
+  source_key: tablespace_usage
+  content_type: table
+  table_index: 0
+  description: Tablespace usage summary
+  template: OracleHC Word template
+  location: MUC DO SU DUNG TABLESPACES
+  purpose: Render tablespace usage table
+  source_html: tablespace_usage.html
+  report_section: Storage
+- placeholder: <data_file>
+  source_key: data_files
+  content_type: table
+  table_index: 0
+  description: Database data files
+  template: OracleHC Word template
+  location: DATA FILE
+  purpose: Render data file table
+  source_html: data_files.html
+  report_section: Storage
+- placeholder: <no_pk_table>
+  source_key: tables_without_primary_key_constraints
+  content_type: table
+  table_index: 0
+  chart_variant: line
+  description: Tables without primary key constraints
+  template: OracleHC Word template
+  location: CAC BANG KHONG CO KHOA CHINH
+  purpose: Render table list without primary keys
+  source_html: tables_without_primary_key_constraints.html
+  report_section: Schema
+- placeholder: <no_index_table>
+  source_key: tables_without_indexes
+  content_type: table
+  table_index: 0
+  description: Tables without indexes
+  template: OracleHC Word template
+  location: CAC BANG KHONG CO INDEX
+  purpose: Render table list without indexes
+  source_html: tables_without_indexes.html
+  report_section: Schema
+- placeholder: <invalid_obj>
+  source_key: invalid_objects
+  content_type: table
+  table_index: 0
+  description: Invalid database objects
+  template: OracleHC Word template
+  location: INVALID OBJECT
+  purpose: Render invalid object table
+  source_html: invalid_objects.html
+  report_section: Database
+- placeholder: <db_job>
+  source_key: jobs
+  content_type: table
+  table_index: 0
+  description: Database jobs
+  template: OracleHC Word template
+  location: Jobs
+  purpose: Render DBMS job table
+  source_html: jobs.html
+  report_section: Database
+- placeholder: <sche_job>
+  source_key: scheduler_jobs
+  content_type: table
+  table_index: 0
+  description: Scheduler jobs
+  template: OracleHC Word template
+  location: Scheduler jobs
+  purpose: Render scheduler job table
+  source_html: scheduler_jobs.html
+  report_section: Database
+- placeholder: <table_stats>
+  source_key: tables_with_stale_stats
+  content_type: table
+  table_index: 0
+  description: Tables with stale statistics
+  template: OracleHC Word template
+  location: TABLE VA INDEX CO STATISTICS CU
+  purpose: Render stale table statistics
+  source_html: tables_with_stale_stats.html
+  report_section: Statistics
+- placeholder: <index_stats>
+  source_key: indexes_with_stale_stats
+  content_type: table
+  table_index: 0
+  description: Indexes with stale statistics
+  template: OracleHC Word template
+  location: TABLE VA INDEX CO STATISTICS CU
+  purpose: Render stale index statistics
+  source_html: indexes_with_stale_stats.html
+  report_section: Statistics
+- placeholder: <buffer_chart>
+  source_key: buffer_cache_hit_ratio
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Buffer cache hit ratio chart
+  template: OracleHC Word template
+  location: BUFFER CACHE HIT
+  purpose: Render buffer cache hit ratio line chart
+  source_html: buffer_cache_hit_ratio_line_chart.html
+  report_section: Memory
+- placeholder: <library_chart>
+  source_key: library_cache_hit_ratio
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Library cache hit ratio chart
+  template: OracleHC Word template
+  location: LIBRARY CACHE HIT
+  purpose: Render library cache hit ratio line chart
+  source_html: library_cache_hit_ratio_line_chart.html
+  report_section: Memory
+- placeholder: <SGA_chart>
+  source_key: sga_statistics_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: SGA statistics chart
+  template: OracleHC Word template
+  location: SGA STATISTICS
+  purpose: Render SGA line chart
+  source_html: sga_statistics_for_instance_1_line_chart.html
+  report_section: Memory
+- placeholder: <PGA_chart>
+  source_key: pga_statistics_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: PGA statistics chart
+  template: OracleHC Word template
+  location: PGA
+  purpose: Render PGA line chart
+  source_html: pga_statistics_for_instance_1_line_chart.html
+  report_section: Memory
+- placeholder: <MEMORY_chart>
+  source_key: memory_statistics_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Memory statistics chart
+  template: OracleHC Word template
+  location: MEMORY STATISTICS
+  purpose: Render memory statistics line chart
+  source_html: memory_statistics_for_instance_1_line_chart.html
+  report_section: Memory
+- placeholder: <log_switch_chart>
+  source_key: log_switch_frequency_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Log switch frequency chart
+  template: OracleHC Word template
+  location: TAN SUAT LOG SWITCH
+  purpose: Render log switch frequency line chart
+  source_html: log_switch_frequency_for_instance_1_line_chart.html
+  report_section: Redo
+- placeholder: '{{table_ash_top_sql_cluster_9_days}}'
+  source_key: ash_top_sql_for_cluster_for_9_days_of_history
+  content_type: table
+  description: ASH top SQL for cluster for 9 days of history
+  template: OracleHC Word template
+  location: ASH TOP SQL FOR CLUSTER
+  purpose: Render ASH top SQL cluster table
+  source_html: ash_top_sql_for_cluster_for_9_days_of_history.html
+  report_section: ASH
+- placeholder: '{{table_ash_cpu_per_source}}'
+  source_key: ash_cpu_per_source
+  content_type: table
+  description: ASH CPU per source
+  template: OracleHC Word template
+  location: ASH CPU PER SOURCE
+  purpose: Render ASH CPU per source table
+  source_html: ash_cpu_per_source.html
+  report_section: ASH
+- placeholder: <system_under_observation>
+  source_key: system_under_observation
+  content_type: table
+  table_index: 0
+  description: System Under Observation
+  template: OracleHC Word template
+  location: SYSTEM UNDER OBSERVATION
+  purpose: Render System Under Observation table
+  source_html: 00009_edb360_1a_6z_653179_1a_1_system_under_observation.html
+  report_section: 1a.1
+- placeholder: <identification>
+  source_key: identification
+  content_type: table
+  table_index: 0
+  description: Identification
+  template: OracleHC Word template
+  location: IDENTIFICATION
+  purpose: Render Identification table
+  source_html: 00010_edb360_1a_6z_653179_1a_2_identification.html
+  report_section: 1a.2
+- placeholder: <pluggable_databases>
+  source_key: pluggable_databases
+  content_type: table
+  table_index: 0
+  description: Pluggable Databases
+  template: OracleHC Word template
+  location: PLUGGABLE DATABASES
+  purpose: Render Pluggable Databases table
+  source_html: 00011_edb360_1a_6z_653179_1a_3_pluggable_databases.html
+  report_section: 1a.3
+- placeholder: <pluggable_databases_saved_states>
+  source_key: pluggable_databases_saved_states
+  content_type: table
+  table_index: 0
+  description: Pluggable Databases Saved States
+  template: OracleHC Word template
+  location: PLUGGABLE DATABASES SAVED STATES
+  purpose: Render Pluggable Databases Saved States table
+  source_html: 00012_edb360_1a_6z_653179_1a_4_pluggable_databases_saved_states.html
+  report_section: 1a.4
+- placeholder: <registry_sql_patch>
+  source_key: registry_sql_patch
+  content_type: table
+  table_index: 0
+  description: Registry Sql Patch
+  template: OracleHC Word template
+  location: REGISTRY SQL PATCH
+  purpose: Render Registry Sql Patch table
+  source_html: 00013_edb360_1a_6z_653179_1a_5_registry_sql_patch.html
+  report_section: 1a.5
+- placeholder: <registry_history>
+  source_key: registry_history
+  content_type: table
+  table_index: 0
+  description: Registry History
+  template: OracleHC Word template
+  location: REGISTRY HISTORY
+  purpose: Render Registry History table
+  source_html: 00014_edb360_1a_6z_653179_1a_6_registry_history.html
+  report_section: 1a.6
+- placeholder: <database_links>
+  source_key: database_links
+  content_type: table
+  table_index: 0
+  description: Database Links
+  template: OracleHC Word template
+  location: DATABASE LINKS
+  purpose: Render Database Links table
+  source_html: 00015_edb360_1a_6z_653179_1a_7_database_links.html
+  report_section: 1a.7
+- placeholder: <all_parameters>
+  source_key: all_parameters
+  content_type: table
+  table_index: 0
+  description: All Parameters
+  template: OracleHC Word template
+  location: ALL PARAMETERS
+  purpose: Render All Parameters table
+  source_html: 00016_edb360_1a_6z_653179_1a_8_all_parameters.html
+  report_section: 1a.8
+- placeholder: <pdb_parameter_file>
+  source_key: pdb_parameter_file
+  content_type: table
+  table_index: 0
+  description: Pdb Parameter File
+  template: OracleHC Word template
+  location: PDB PARAMETER FILE
+  purpose: Render Pdb Parameter File table
+  source_html: 00017_edb360_1a_6z_653179_1a_9_pdb_parameter_file.html
+  report_section: 1a.9
+- placeholder: <memory_configuration>
+  source_key: memory_configuration
+  content_type: table
+  table_index: 0
+  description: Memory Configuration
+  template: OracleHC Word template
+  location: MEMORY CONFIGURATION
+  purpose: Render Memory Configuration table
+  source_html: 00018_edb360_1a_6z_653179_1a_10_memory_configuration.html
+  report_section: 1a.10
+- placeholder: <profiles>
+  source_key: profiles
+  content_type: table
+  table_index: 0
+  description: Profiles
+  template: OracleHC Word template
+  location: PROFILES
+  purpose: Render Profiles table
+  source_html: 00019_edb360_1a_6z_653179_1b_11_profiles.html
+  report_section: 1b.11
+- placeholder: <users_with_default_password>
+  source_key: users_with_default_password
+  content_type: table
+  table_index: 0
+  description: Users With Default Password
+  template: OracleHC Word template
+  location: USERS WITH DEFAULT PASSWORD
+  purpose: Render Users With Default Password table
+  source_html: 00020_edb360_1a_6z_653179_1b_12_users_with_default_password.html
+  report_section: 1b.12
+- placeholder: <package_to_public>
+  source_key: package_to_public
+  content_type: table
+  table_index: 0
+  description: Package To Public
+  template: OracleHC Word template
+  location: PACKAGE TO PUBLIC
+  purpose: Render Package To Public table
+  source_html: 00021_edb360_1a_6z_653179_1b_13_package_to_public.html
+  report_section: 1b.13
+- placeholder: <users_with_sensitive_roles_granted>
+  source_key: users_with_sensitive_roles_granted
+  content_type: table
+  table_index: 0
+  description: Users With Sensitive Roles Granted
+  template: OracleHC Word template
+  location: USERS WITH SENSITIVE ROLES GRANTED
+  purpose: Render Users With Sensitive Roles Granted table
+  source_html: 00022_edb360_1a_6z_653179_1b_14_users_with_sensitive_roles_granted.html
+  report_section: 1b.14
+- placeholder: <users_with_objects_in_tablespace_system_sysaux>
+  source_key: users_with_objects_in_tablespace_system_sysaux
+  content_type: table
+  table_index: 0
+  description: Users With Objects In Tablespace System Sysaux
+  template: OracleHC Word template
+  location: USERS WITH OBJECTS IN TABLESPACE SYSTEM SYSAUX
+  purpose: Render Users With Objects In Tablespace System Sysaux table
+  source_html: 00023_edb360_1a_6z_653179_1b_15_users_with_objects_in_tablespace_system_sysaux.html
+  report_section: 1b.15
+- placeholder: <memory_resize_operations_hist>
+  source_key: memory_resize_operations_hist
+  content_type: table
+  table_index: 0
+  description: Memory Resize Operations Hist
+  template: OracleHC Word template
+  location: MEMORY RESIZE OPERATIONS HIST
+  purpose: Render Memory Resize Operations Hist table
+  source_html: 00024_edb360_1a_6z_653179_1d_16_memory_resize_operations_hist.html
+  report_section: 1d.16
+- placeholder: <cpu_demand_series_percentile_for_instance_1>
+  source_key: cpu_demand_series_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Cpu Demand Series Percentile For Instance 1
+  template: OracleHC Word template
+  location: CPU DEMAND SERIES PERCENTILE FOR INSTANCE 1
+  purpose: Render Cpu Demand Series Percentile For Instance 1 table
+  source_html: 00025_edb360_1a_6z_653179_1e_17_cpu_demand_series_percentile_for_instance_1.html
+  report_section: 1e.17
+- placeholder: <cpu_demand_series_percentile_for_instance_1_chart>
+  source_key: cpu_demand_series_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Cpu Demand Series Percentile For Instance 1
+  template: OracleHC Word template
+  location: CPU DEMAND SERIES PERCENTILE FOR INSTANCE 1
+  purpose: Render Cpu Demand Series Percentile For Instance 1 chart
+  source_html: 00026_edb360_1a_6z_653179_1e_17_cpu_demand_series_percentile_for_instance_1_line_chart.html
+  report_section: 1e.17
+- placeholder: <active_sessions_percentile_for_instance_1>
+  source_key: active_sessions_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Active Sessions Percentile For Instance 1
+  template: OracleHC Word template
+  location: ACTIVE SESSIONS PERCENTILE FOR INSTANCE 1
+  purpose: Render Active Sessions Percentile For Instance 1 table
+  source_html: 00027_edb360_1a_6z_653179_1e_18_active_sessions_percentile_for_instance_1.html
+  report_section: 1e.18
+- placeholder: <active_sessions_percentile_for_instance_1_chart>
+  source_key: active_sessions_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Active Sessions Percentile For Instance 1
+  template: OracleHC Word template
+  location: ACTIVE SESSIONS PERCENTILE FOR INSTANCE 1
+  purpose: Render Active Sessions Percentile For Instance 1 chart
+  source_html: 00028_edb360_1a_6z_653179_1e_18_active_sessions_percentile_for_instance_1_line_chart.html
+  report_section: 1e.18
+- placeholder: <tablespace_size_series>
+  source_key: tablespace_size_series
+  content_type: table
+  table_index: 0
+  description: Tablespace Size Series
+  template: OracleHC Word template
+  location: TABLESPACE SIZE SERIES
+  purpose: Render Tablespace Size Series table
+  source_html: 00029_edb360_1a_6z_653179_1e_19_tablespace_size_series.html
+  report_section: 1e.19
+- placeholder: <tablespace_size_series_chart>
+  source_key: tablespace_size_series
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Tablespace Size Series
+  template: OracleHC Word template
+  location: TABLESPACE SIZE SERIES
+  purpose: Render Tablespace Size Series chart
+  source_html: 00030_edb360_1a_6z_653179_1e_19_tablespace_size_series_line_chart.html
+  report_section: 1e.19
+- placeholder: <reads_per_second_series_for_instance_1>
+  source_key: reads_series_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Reads Per Second Series For Instance 1
+  template: OracleHC Word template
+  location: READS PER SECOND SERIES FOR INSTANCE 1
+  purpose: Render Reads Per Second Series For Instance 1 table
+  source_html: 00031_edb360_1a_6z_653179_1e_20_reads_per_second_series_for_instance_1.html
+  report_section: 1e.20
+- placeholder: <reads_per_second_series_for_instance_1_chart>
+  source_key: reads_series_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Reads Per Second Series For Instance 1
+  template: OracleHC Word template
+  location: READS PER SECOND SERIES FOR INSTANCE 1
+  purpose: Render Reads Per Second Series For Instance 1 chart
+  source_html: 00032_edb360_1a_6z_653179_1e_20_reads_per_second_series_for_instance_1_line_chart.html
+  report_section: 1e.20
+- placeholder: <writes_per_second_series_for_instance_1>
+  source_key: writes_series_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Writes Per Second Series For Instance 1
+  template: OracleHC Word template
+  location: WRITES PER SECOND SERIES FOR INSTANCE 1
+  purpose: Render Writes Per Second Series For Instance 1 table
+  source_html: 00033_edb360_1a_6z_653179_1e_21_writes_per_second_series_for_instance_1.html
+  report_section: 1e.21
+- placeholder: <writes_per_second_series_for_instance_1_chart>
+  source_key: writes_series_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Writes Per Second Series For Instance 1
+  template: OracleHC Word template
+  location: WRITES PER SECOND SERIES FOR INSTANCE 1
+  purpose: Render Writes Per Second Series For Instance 1 chart
+  source_html: 00034_edb360_1a_6z_653179_1e_21_writes_per_second_series_for_instance_1_line_chart.html
+  report_section: 1e.21
+- placeholder: <invalid_objects>
+  source_key: invalid_objects
+  content_type: table
+  table_index: 0
+  description: Invalid Objects
+  template: OracleHC Word template
+  location: INVALID OBJECTS
+  purpose: Render Invalid Objects table
+  source_html: 00035_edb360_1a_6z_653179_2a_22_invalid_objects.html
+  report_section: 2a.22
+- placeholder: <nonindexed_fk_constraints>
+  source_key: non_indexed_fk_constraints
+  content_type: table
+  table_index: 0
+  description: Nonindexed Fk Constraints
+  template: OracleHC Word template
+  location: NONINDEXED FK CONSTRAINTS
+  purpose: Render Nonindexed Fk Constraints table
+  source_html: 00036_edb360_1a_6z_653179_2a_23_nonindexed_fk_constraints.html
+  report_section: 2a.23
+- placeholder: <redundant_indexes2>
+  source_key: redundant_indexes
+  content_type: table
+  table_index: 0
+  description: Redundant Indexes2
+  template: OracleHC Word template
+  location: REDUNDANT INDEXES2
+  purpose: Render Redundant Indexes2 table
+  source_html: 00037_edb360_1a_6z_653179_2a_24_redundant_indexes2.html
+  report_section: 2a.24
+- placeholder: <jobs>
+  source_key: jobs
+  content_type: table
+  table_index: 0
+  description: Jobs
+  template: OracleHC Word template
+  location: JOBS
+  purpose: Render Jobs table
+  source_html: 00038_edb360_1a_6z_653179_2a_25_jobs.html
+  report_section: 2a.25
+- placeholder: <scheduler_jobs>
+  source_key: scheduler_jobs
+  content_type: table
+  table_index: 0
+  description: Scheduler Jobs
+  template: OracleHC Word template
+  location: SCHEDULER JOBS
+  purpose: Render Scheduler Jobs table
+  source_html: 00039_edb360_1a_6z_653179_2a_26_scheduler_jobs.html
+  report_section: 2a.26
+- placeholder: <scheduler_jobs_pdbs>
+  source_key: scheduler_jobs_pdbs
+  content_type: table
+  table_index: 0
+  description: Scheduler Jobs Pdbs
+  template: OracleHC Word template
+  location: SCHEDULER JOBS PDBS
+  purpose: Render Scheduler Jobs Pdbs table
+  source_html: 00040_edb360_1a_6z_653179_2a_27_scheduler_jobs_pdbs.html
+  report_section: 2a.27
+- placeholder: <scheduler_windows>
+  source_key: scheduler_windows
+  content_type: table
+  table_index: 0
+  description: Scheduler Windows
+  template: OracleHC Word template
+  location: SCHEDULER WINDOWS
+  purpose: Render Scheduler Windows table
+  source_html: 00041_edb360_1a_6z_653179_2a_28_scheduler_windows.html
+  report_section: 2a.28
+- placeholder: <scheduler_windows_pdbs>
+  source_key: scheduler_windows_pdbs
+  content_type: table
+  table_index: 0
+  description: Scheduler Windows Pdbs
+  template: OracleHC Word template
+  location: SCHEDULER WINDOWS PDBS
+  purpose: Render Scheduler Windows Pdbs table
+  source_html: 00042_edb360_1a_6z_653179_2a_29_scheduler_windows_pdbs.html
+  report_section: 2a.29
+- placeholder: <scheduler_window_group_members>
+  source_key: scheduler_window_group_members
+  content_type: table
+  table_index: 0
+  description: Scheduler Window Group Members
+  template: OracleHC Word template
+  location: SCHEDULER WINDOW GROUP MEMBERS
+  purpose: Render Scheduler Window Group Members table
+  source_html: 00043_edb360_1a_6z_653179_2a_30_scheduler_window_group_members.html
+  report_section: 2a.30
+- placeholder: <scheduler_window_group_members_pdbs>
+  source_key: scheduler_window_group_members_pdbs
+  content_type: table
+  table_index: 0
+  description: Scheduler Window Group Members Pdbs
+  template: OracleHC Word template
+  location: SCHEDULER WINDOW GROUP MEMBERS PDBS
+  purpose: Render Scheduler Window Group Members Pdbs table
+  source_html: 00044_edb360_1a_6z_653179_2a_31_scheduler_window_group_members_pdbs.html
+  report_section: 2a.31
+- placeholder: <automated_maintenance_tasks>
+  source_key: automated_maintenance_tasks
+  content_type: table
+  table_index: 0
+  description: Automated Maintenance Tasks
+  template: OracleHC Word template
+  location: AUTOMATED MAINTENANCE TASKS
+  purpose: Render Automated Maintenance Tasks table
+  source_html: 00045_edb360_1a_6z_653179_2a_32_automated_maintenance_tasks.html
+  report_section: 2a.32
+- placeholder: <automated_maintenance_tasks_pdbs>
+  source_key: automated_maintenance_tasks_pdbs
+  content_type: table
+  table_index: 0
+  description: Automated Maintenance Tasks Pdbs
+  template: OracleHC Word template
+  location: AUTOMATED MAINTENANCE TASKS PDBS
+  purpose: Render Automated Maintenance Tasks Pdbs table
+  source_html: 00046_edb360_1a_6z_653179_2a_33_automated_maintenance_tasks_pdbs.html
+  report_section: 2a.33
+- placeholder: <automated_maintenance_tasks_history>
+  source_key: automated_maintenance_tasks_history
+  content_type: table
+  table_index: 0
+  description: Automated Maintenance Tasks History
+  template: OracleHC Word template
+  location: AUTOMATED MAINTENANCE TASKS HISTORY
+  purpose: Render Automated Maintenance Tasks History table
+  source_html: 00047_edb360_1a_6z_653179_2a_34_automated_maintenance_tasks_history.html
+  report_section: 2a.34
+- placeholder: <scheduler_jobs_run_details>
+  source_key: scheduler_jobs_run_details
+  content_type: table
+  table_index: 0
+  description: Scheduler Jobs Run Details
+  template: OracleHC Word template
+  location: SCHEDULER JOBS RUN DETAILS
+  purpose: Render Scheduler Jobs Run Details table
+  source_html: 00048_edb360_1a_6z_653179_2a_35_scheduler_jobs_run_details.html
+  report_section: 2a.35
+- placeholder: <automated_maintenance_tasks_history_pdbs>
+  source_key: automated_maintenance_tasks_history_pdbs
+  content_type: table
+  table_index: 0
+  description: Automated Maintenance Tasks History Pdbs
+  template: OracleHC Word template
+  location: AUTOMATED MAINTENANCE TASKS HISTORY PDBS
+  purpose: Render Automated Maintenance Tasks History Pdbs table
+  source_html: 00049_edb360_1a_6z_653179_2a_36_automated_maintenance_tasks_history_pdbs.html
+  report_section: 2a.36
+- placeholder: <top_sql_by_temp_space_usage>
+  source_key: top_sql_by_temp_space_usage
+  content_type: table
+  table_index: 0
+  description: Top Sql By Temp Space Usage
+  template: OracleHC Word template
+  location: TOP SQL BY TEMP SPACE USAGE
+  purpose: Render Top Sql By Temp Space Usage table
+  source_html: 00050_edb360_1a_6z_653179_2a_37_top_sql_by_temp_space_usage.html
+  report_section: 2a.37
+- placeholder: <top_sql_by_pga_allocated_memory>
+  source_key: top_sql_by_pga_allocated_memory
+  content_type: table
+  table_index: 0
+  description: Top Sql By Pga Allocated Memory
+  template: OracleHC Word template
+  location: TOP SQL BY PGA ALLOCATED MEMORY
+  purpose: Render Top Sql By Pga Allocated Memory table
+  source_html: 00051_edb360_1a_6z_653179_2a_38_top_sql_by_pga_allocated_memory.html
+  report_section: 2a.38
+- placeholder: <tables_without_indexes>
+  source_key: tables_without_indexes
+  content_type: table
+  table_index: 0
+  description: Tables Without Indexes
+  template: OracleHC Word template
+  location: TABLES WITHOUT INDEXES
+  purpose: Render Tables Without Indexes table
+  source_html: 00052_edb360_1a_6z_653179_2a_39_tables_without_indexes.html
+  report_section: 2a.39
+- placeholder: <tables_without_primary_key_constraints>
+  source_key: tables_without_primary_key_constraints
+  content_type: table
+  table_index: 0
+  description: Tables Without Primary Key Constraints
+  template: OracleHC Word template
+  location: TABLES WITHOUT PRIMARY KEY CONSTRAINTS
+  purpose: Render Tables Without Primary Key Constraints table
+  source_html: 00053_edb360_1a_6z_653179_2a_40_tables_without_primary_key_constraints.html
+  report_section: 2a.40
+- placeholder: <indexes_need_rebuild>
+  source_key: indexes_need_rebuild
+  content_type: table
+  table_index: 0
+  description: Indexes Need Rebuild
+  template: OracleHC Word template
+  location: INDEXES NEED REBUILD
+  purpose: Render Indexes Need Rebuild table
+  source_html: 00054_edb360_1a_6z_653179_2a_41_indexes_need_rebuild.html
+  report_section: 2a.41
+- placeholder: <tablespace_usage>
+  source_key: tablespace_usage
+  content_type: table
+  table_index: 0
+  description: Tablespace Usage
+  template: OracleHC Word template
+  location: TABLESPACE USAGE
+  purpose: Render Tablespace Usage table
+  source_html: 00055_edb360_1a_6z_653179_2b_42_tablespace_usage.html
+  report_section: 2b.42
+- placeholder: <data_files>
+  source_key: data_files
+  content_type: table
+  table_index: 0
+  description: Data Files
+  template: OracleHC Word template
+  location: DATA FILES
+  purpose: Render Data Files table
+  source_html: 00056_edb360_1a_6z_653179_2b_43_data_files.html
+  report_section: 2b.43
+- placeholder: <kernel_io_taking_long>
+  source_key: kernel_i_o_taking_long
+  content_type: table
+  table_index: 0
+  description: Kernel Io Taking Long
+  template: OracleHC Word template
+  location: KERNEL IO TAKING LONG
+  purpose: Render Kernel Io Taking Long table
+  source_html: 00057_edb360_1a_6z_653179_2b_44_kernel_io_taking_long.html
+  report_section: 2b.44
+- placeholder: <log_writer_io_taking_long>
+  source_key: log_writer_i_o_taking_long
+  content_type: table
+  table_index: 0
+  description: Log Writer Io Taking Long
+  template: OracleHC Word template
+  location: LOG WRITER IO TAKING LONG
+  purpose: Render Log Writer Io Taking Long table
+  source_html: 00058_edb360_1a_6z_653179_2b_45_log_writer_io_taking_long.html
+  report_section: 2b.45
+- placeholder: <io_taking_long>
+  source_key: i_o_taking_long
+  content_type: table
+  table_index: 0
+  description: Io Taking Long
+  template: OracleHC Word template
+  location: IO TAKING LONG
+  purpose: Render Io Taking Long table
+  source_html: 00059_edb360_1a_6z_653179_2b_46_io_taking_long.html
+  report_section: 2b.46
+- placeholder: <tablespace_growth_per_day>
+  source_key: tablespace_growth_per_day
+  content_type: table
+  table_index: 0
+  description: Tablespace Growth Per Day
+  template: OracleHC Word template
+  location: TABLESPACE GROWTH PER DAY
+  purpose: Render Tablespace Growth Per Day table
+  source_html: 00060_edb360_1a_6z_653179_2b_47_tablespace_growth_per_day.html
+  report_section: 2b.47
+- placeholder: <segment_shrink_recommendations>
+  source_key: segment_shrink_recommendations
+  content_type: table
+  table_index: 0
+  description: Segment Shrink Recommendations
+  template: OracleHC Word template
+  location: SEGMENT SHRINK RECOMMENDATIONS
+  purpose: Render Segment Shrink Recommendations table
+  source_html: 00061_edb360_1a_6z_653179_2b_48_segment_shrink_recommendations.html
+  report_section: 2b.48
+- placeholder: <objects_in_recycle_bin>
+  source_key: objects_in_recycle_bin
+  content_type: table
+  table_index: 0
+  description: Objects In Recycle Bin
+  template: OracleHC Word template
+  location: OBJECTS IN RECYCLE BIN
+  purpose: Render Objects In Recycle Bin table
+  source_html: 00062_edb360_1a_6z_653179_2b_49_objects_in_recycle_bin.html
+  report_section: 2b.49
+- placeholder: <asm_disk_group>
+  source_key: asm_disk_group
+  content_type: table
+  table_index: 0
+  description: Asm Disk Group
+  template: OracleHC Word template
+  location: ASM DISK GROUP
+  purpose: Render Asm Disk Group table
+  source_html: 00063_edb360_1a_6z_653179_2c_50_asm_disk_group.html
+  report_section: 2c.50
+- placeholder: <block_corruption>
+  source_key: block_corruption
+  content_type: table
+  table_index: 0
+  description: Block Corruption
+  template: OracleHC Word template
+  location: BLOCK CORRUPTION
+  purpose: Render Block Corruption table
+  source_html: 00064_edb360_1a_6z_653179_2d_51_block_corruption.html
+  report_section: 2d.51
+- placeholder: <rman_backup>
+  source_key: rman_backup
+  content_type: table
+  table_index: 0
+  description: Rman Backup
+  template: OracleHC Word template
+  location: RMAN BACKUP
+  purpose: Render Rman Backup table
+  source_html: 00065_edb360_1a_6z_653179_2d_52_rman_backup.html
+  report_section: 2d.52
+- placeholder: <fast_recovery_area>
+  source_key: fast_recovery_area
+  content_type: table
+  table_index: 0
+  description: Fast Recovery Area
+  template: OracleHC Word template
+  location: FAST RECOVERY AREA
+  purpose: Render Fast Recovery Area table
+  source_html: 00066_edb360_1a_6z_653179_2d_53_fast_recovery_area.html
+  report_section: 2d.53
+- placeholder: <redo_log>
+  source_key: redo_log
+  content_type: table
+  table_index: 0
+  description: Redo Log
+  template: OracleHC Word template
+  location: REDO LOG
+  purpose: Render Redo Log table
+  source_html: 00067_edb360_1a_6z_653179_2d_54_redo_log.html
+  report_section: 2d.54
+- placeholder: <redo_log_files>
+  source_key: redo_log_files
+  content_type: table
+  table_index: 0
+  description: Redo Log Files
+  template: OracleHC Word template
+  location: REDO LOG FILES
+  purpose: Render Redo Log Files table
+  source_html: 00068_edb360_1a_6z_653179_2d_55_redo_log_files.html
+  report_section: 2d.55
+- placeholder: <nologging_objects>
+  source_key: nologging_objects
+  content_type: table
+  table_index: 0
+  description: Nologging Objects
+  template: OracleHC Word template
+  location: NOLOGGING OBJECTS
+  purpose: Render Nologging Objects table
+  source_html: 00069_edb360_1a_6z_653179_2d_56_nologging_objects.html
+  report_section: 2d.56
+- placeholder: <log_switch_frequency_for_instance_1>
+  source_key: log_switch_frequency_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Log Switch Frequency For Instance 1
+  template: OracleHC Word template
+  location: LOG SWITCH FREQUENCY FOR INSTANCE 1
+  purpose: Render Log Switch Frequency For Instance 1 table
+  source_html: 00070_edb360_1a_6z_653179_2d_57_log_switch_frequency_for_instance_1.html
+  report_section: 2d.57
+- placeholder: <log_switch_frequency_for_instance_1_chart>
+  source_key: log_switch_frequency_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Log Switch Frequency For Instance 1
+  template: OracleHC Word template
+  location: LOG SWITCH FREQUENCY FOR INSTANCE 1
+  purpose: Render Log Switch Frequency For Instance 1 chart
+  source_html: 00071_edb360_1a_6z_653179_2d_57_log_switch_frequency_for_instance_1_line_chart.html
+  report_section: 2d.57
+- placeholder: <resource_plan_directives>
+  source_key: resource_plan_directives
+  content_type: table
+  table_index: 0
+  description: Resource Plan Directives
+  template: OracleHC Word template
+  location: RESOURCE PLAN DIRECTIVES
+  purpose: Render Resource Plan Directives table
+  source_html: 00072_edb360_1a_6z_653179_3a_58_resource_plan_directives.html
+  report_section: 3a.58
+- placeholder: <resource_plans>
+  source_key: resource_plans
+  content_type: table
+  table_index: 0
+  description: Resource Plans
+  template: OracleHC Word template
+  location: RESOURCE PLANS
+  purpose: Render Resource Plans table
+  source_html: 00073_edb360_1a_6z_653179_3a_59_resource_plans.html
+  report_section: 3a.59
+- placeholder: <resource_plans_for_pdbs>
+  source_key: resource_plans_for_pdbs
+  content_type: table
+  table_index: 0
+  description: Resource Plans For Pdbs
+  template: OracleHC Word template
+  location: RESOURCE PLANS FOR PDBS
+  purpose: Render Resource Plans For Pdbs table
+  source_html: 00074_edb360_1a_6z_653179_3a_60_resource_plans_for_pdbs.html
+  report_section: 3a.60
+- placeholder: <resource_plan_history>
+  source_key: resource_plan_history
+  content_type: table
+  table_index: 0
+  description: Resource Plan History
+  template: OracleHC Word template
+  location: RESOURCE PLAN HISTORY
+  purpose: Render Resource Plan History table
+  source_html: 00075_edb360_1a_6z_653179_3a_61_resource_plan_history.html
+  report_section: 3a.61
+- placeholder: <default_values_for_dbmsstats>
+  source_key: default_values_for_dbms_stats
+  content_type: table
+  table_index: 0
+  description: Default Values For Dbmsstats
+  template: OracleHC Word template
+  location: DEFAULT VALUES FOR DBMSSTATS
+  purpose: Render Default Values For Dbmsstats table
+  source_html: 00076_edb360_1a_6z_653179_3c_62_default_values_for_dbmsstats.html
+  report_section: 3c.62
+- placeholder: <tables_with_missing_stats>
+  source_key: tables_with_missing_stats
+  content_type: table
+  table_index: 0
+  description: Tables With Missing Stats
+  template: OracleHC Word template
+  location: TABLES WITH MISSING STATS
+  purpose: Render Tables With Missing Stats table
+  source_html: 00077_edb360_1a_6z_653179_3c_63_tables_with_missing_stats.html
+  report_section: 3c.63
+- placeholder: <indexes_with_missing_stats>
+  source_key: indexes_with_missing_stats
+  content_type: table
+  table_index: 0
+  description: Indexes With Missing Stats
+  template: OracleHC Word template
+  location: INDEXES WITH MISSING STATS
+  purpose: Render Indexes With Missing Stats table
+  source_html: 00078_edb360_1a_6z_653179_3c_64_indexes_with_missing_stats.html
+  report_section: 3c.64
+- placeholder: <tables_with_stale_stats>
+  source_key: tables_with_stale_stats
+  content_type: table
+  table_index: 0
+  description: Tables With Stale Stats
+  template: OracleHC Word template
+  location: TABLES WITH STALE STATS
+  purpose: Render Tables With Stale Stats table
+  source_html: 00079_edb360_1a_6z_653179_3c_65_tables_with_stale_stats.html
+  report_section: 3c.65
+- placeholder: <indexes_with_stale_stats>
+  source_key: indexes_with_stale_stats
+  content_type: table
+  table_index: 0
+  description: Indexes With Stale Stats
+  template: OracleHC Word template
+  location: INDEXES WITH STALE STATS
+  purpose: Render Indexes With Stale Stats table
+  source_html: 00080_edb360_1a_6z_653179_3c_66_indexes_with_stale_stats.html
+  report_section: 3c.66
+- placeholder: <cpu_busy_and_idle_times_percent_for_instance_1>
+  source_key: cpu_busy_and_idle_times_percent_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Cpu Busy And Idle Times Percent For Instance 1
+  template: OracleHC Word template
+  location: CPU BUSY AND IDLE TIMES PERCENT FOR INSTANCE 1
+  purpose: Render Cpu Busy And Idle Times Percent For Instance 1 table
+  source_html: 00081_edb360_1a_6z_653179_3e_67_cpu_busy_and_idle_times_percent_for_instance_1.html
+  report_section: 3e.67
+- placeholder: <cpu_busy_and_idle_times_percent_for_instance_1_chart>
+  source_key: cpu_busy_and_idle_times_percent_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Cpu Busy And Idle Times Percent For Instance 1
+  template: OracleHC Word template
+  location: CPU BUSY AND IDLE TIMES PERCENT FOR INSTANCE 1
+  purpose: Render Cpu Busy And Idle Times Percent For Instance 1 chart
+  source_html: 00082_edb360_1a_6z_653179_3e_67_cpu_busy_and_idle_times_percent_for_instance_1_line_chart.html
+  report_section: 3e.67
+- placeholder: <cpu_user_and_sys_times_percent_for_instance_1>
+  source_key: cpu_user_and_sys_times_percent_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Cpu User And Sys Times Percent For Instance 1
+  template: OracleHC Word template
+  location: CPU USER AND SYS TIMES PERCENT FOR INSTANCE 1
+  purpose: Render Cpu User And Sys Times Percent For Instance 1 table
+  source_html: 00083_edb360_1a_6z_653179_3e_68_cpu_user_and_sys_times_percent_for_instance_1.html
+  report_section: 3e.68
+- placeholder: <cpu_user_and_sys_times_percent_for_instance_1_chart>
+  source_key: cpu_user_and_sys_times_percent_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Cpu User And Sys Times Percent For Instance 1
+  template: OracleHC Word template
+  location: CPU USER AND SYS TIMES PERCENT FOR INSTANCE 1
+  purpose: Render Cpu User And Sys Times Percent For Instance 1 chart
+  source_html: 00084_edb360_1a_6z_653179_3e_68_cpu_user_and_sys_times_percent_for_instance_1_line_chart.html
+  report_section: 3e.68
+- placeholder: <undo_statistics_for_instance_1>
+  source_key: undo_statistics_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Undo Statistics For Instance 1
+  template: OracleHC Word template
+  location: UNDO STATISTICS FOR INSTANCE 1
+  purpose: Render Undo Statistics For Instance 1 table
+  source_html: 00085_edb360_1a_6z_653179_3e_69_undo_statistics_for_instance_1.html
+  report_section: 3e.69
+- placeholder: <undo_statistics_for_instance_1_chart>
+  source_key: undo_statistics_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Undo Statistics For Instance 1
+  template: OracleHC Word template
+  location: UNDO STATISTICS FOR INSTANCE 1
+  purpose: Render Undo Statistics For Instance 1 chart
+  source_html: 00086_edb360_1a_6z_653179_3e_69_undo_statistics_for_instance_1_line_chart.html
+  report_section: 3e.69
+- placeholder: <sql_area_statistics_for_instance_1>
+  source_key: sql_area_statistics_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Sql Area Statistics For Instance 1
+  template: OracleHC Word template
+  location: SQL AREA STATISTICS FOR INSTANCE 1
+  purpose: Render Sql Area Statistics For Instance 1 table
+  source_html: 00087_edb360_1a_6z_653179_3e_70_sql_area_statistics_for_instance_1.html
+  report_section: 3e.70
+- placeholder: <sql_area_statistics_for_instance_1_chart>
+  source_key: sql_area_statistics_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Sql Area Statistics For Instance 1
+  template: OracleHC Word template
+  location: SQL AREA STATISTICS FOR INSTANCE 1
+  purpose: Render Sql Area Statistics For Instance 1 chart
+  source_html: 00088_edb360_1a_6z_653179_3e_70_sql_area_statistics_for_instance_1_line_chart.html
+  report_section: 3e.70
+- placeholder: <cpu_rsrc_mgr_wait_time_per_instance>
+  source_key: cpu_rsrc_mgr_wait_time_per_instance
+  content_type: table
+  table_index: 0
+  description: Cpu Rsrc Mgr Wait Time Per Instance
+  template: OracleHC Word template
+  location: CPU RSRC MGR WAIT TIME PER INSTANCE
+  purpose: Render Cpu Rsrc Mgr Wait Time Per Instance table
+  source_html: 00089_edb360_1a_6z_653179_3e_71_cpu_rsrc_mgr_wait_time_per_instance.html
+  report_section: 3e.71
+- placeholder: <cpu_rsrc_mgr_wait_time_per_instance_chart>
+  source_key: cpu_rsrc_mgr_wait_time_per_instance
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Cpu Rsrc Mgr Wait Time Per Instance
+  template: OracleHC Word template
+  location: CPU RSRC MGR WAIT TIME PER INSTANCE
+  purpose: Render Cpu Rsrc Mgr Wait Time Per Instance chart
+  source_html: 00090_edb360_1a_6z_653179_3e_71_cpu_rsrc_mgr_wait_time_per_instance_line_chart.html
+  report_section: 3e.71
+- placeholder: <os_cpu_wait_time_per_instance>
+  source_key: os_cpu_wait_time_per_instance
+  content_type: table
+  table_index: 0
+  description: Os Cpu Wait Time Per Instance
+  template: OracleHC Word template
+  location: OS CPU WAIT TIME PER INSTANCE
+  purpose: Render Os Cpu Wait Time Per Instance table
+  source_html: 00091_edb360_1a_6z_653179_3e_72_os_cpu_wait_time_per_instance.html
+  report_section: 3e.72
+- placeholder: <os_cpu_wait_time_per_instance_chart>
+  source_key: os_cpu_wait_time_per_instance
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Os Cpu Wait Time Per Instance
+  template: OracleHC Word template
+  location: OS CPU WAIT TIME PER INSTANCE
+  purpose: Render Os Cpu Wait Time Per Instance chart
+  source_html: 00092_edb360_1a_6z_653179_3e_72_os_cpu_wait_time_per_instance_line_chart.html
+  report_section: 3e.72
+- placeholder: <sql_ordered_by_physical_reads>
+  source_key: sql_ordered_by_physical_reads
+  content_type: table
+  table_index: 0
+  description: Sql Ordered By Physical Reads
+  template: OracleHC Word template
+  location: SQL ORDERED BY PHYSICAL READS
+  purpose: Render Sql Ordered By Physical Reads table
+  source_html: 00093_edb360_1a_6z_653179_3h_73_sql_ordered_by_physical_reads.html
+  report_section: 3h.73
+- placeholder: <sql_ordered_by_physical_reads_time_series>
+  source_key: sql_ordered_by_physical_reads_time_series
+  content_type: table
+  table_index: 0
+  description: Sql Ordered By Physical Reads Time Series
+  template: OracleHC Word template
+  location: SQL ORDERED BY PHYSICAL READS TIME SERIES
+  purpose: Render Sql Ordered By Physical Reads Time Series table
+  source_html: 00094_edb360_1a_6z_653179_3h_74_sql_ordered_by_physical_reads_time_series.html
+  report_section: 3h.74
+- placeholder: <sql_ordered_by_physical_reads_time_series_chart>
+  source_key: sql_ordered_by_physical_reads_time_series
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Sql Ordered By Physical Reads Time Series
+  template: OracleHC Word template
+  location: SQL ORDERED BY PHYSICAL READS TIME SERIES
+  purpose: Render Sql Ordered By Physical Reads Time Series chart
+  source_html: 00095_edb360_1a_6z_653179_3h_74_sql_ordered_by_physical_reads_time_series_line_chart.html
+  report_section: 3h.74
+- placeholder: <sql_ordered_by_direct_writes>
+  source_key: sql_ordered_by_direct_writes
+  content_type: table
+  table_index: 0
+  description: Sql Ordered By Direct Writes
+  template: OracleHC Word template
+  location: SQL ORDERED BY DIRECT WRITES
+  purpose: Render Sql Ordered By Direct Writes table
+  source_html: 00096_edb360_1a_6z_653179_3h_75_sql_ordered_by_direct_writes.html
+  report_section: 3h.75
+- placeholder: <sql_ordered_by_direct_writes_time_series>
+  source_key: sql_ordered_by_direct_writes_time_series
+  content_type: table
+  table_index: 0
+  description: Sql Ordered By Direct Writes Time Series
+  template: OracleHC Word template
+  location: SQL ORDERED BY DIRECT WRITES TIME SERIES
+  purpose: Render Sql Ordered By Direct Writes Time Series table
+  source_html: 00097_edb360_1a_6z_653179_3h_76_sql_ordered_by_direct_writes_time_series.html
+  report_section: 3h.76
+- placeholder: <sql_ordered_by_direct_writes_time_series_chart>
+  source_key: sql_ordered_by_direct_writes_time_series
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Sql Ordered By Direct Writes Time Series
+  template: OracleHC Word template
+  location: SQL ORDERED BY DIRECT WRITES TIME SERIES
+  purpose: Render Sql Ordered By Direct Writes Time Series chart
+  source_html: 00098_edb360_1a_6z_653179_3h_76_sql_ordered_by_direct_writes_time_series_line_chart.html
+  report_section: 3h.76
+- placeholder: <sql_blocking_sql>
+  source_key: sql_blocking_sql
+  content_type: table
+  table_index: 0
+  description: Sql Blocking Sql
+  template: OracleHC Word template
+  location: SQL BLOCKING SQL
+  purpose: Render Sql Blocking Sql table
+  source_html: 00099_edb360_1a_6z_653179_3h_77_sql_blocking_sql.html
+  report_section: 3h.77
+- placeholder: <database_role>
+  source_key: database_role
+  content_type: table
+  table_index: 0
+  description: Database Role
+  template: OracleHC Word template
+  location: DATABASE ROLE
+  purpose: Render Database Role table
+  source_html: 00100_edb360_1a_6z_653179_3k_78_database_role.html
+  report_section: 3k.78
+- placeholder: <force_logging>
+  source_key: force_logging
+  content_type: table
+  table_index: 0
+  description: Force Logging
+  template: OracleHC Word template
+  location: FORCE LOGGING
+  purpose: Render Force Logging table
+  source_html: 00101_edb360_1a_6z_653179_3k_79_force_logging.html
+  report_section: 3k.79
+- placeholder: <threads>
+  source_key: threads
+  content_type: table
+  table_index: 0
+  description: Threads
+  template: OracleHC Word template
+  location: THREADS
+  purpose: Render Threads table
+  source_html: 00102_edb360_1a_6z_653179_3k_80_threads.html
+  report_section: 3k.80
+- placeholder: <redo_log_group>
+  source_key: redo_log_group
+  content_type: table
+  table_index: 0
+  description: Redo Log Group
+  template: OracleHC Word template
+  location: REDO LOG GROUP
+  purpose: Render Redo Log Group table
+  source_html: 00103_edb360_1a_6z_653179_3k_81_redo_log_group.html
+  report_section: 3k.81
+- placeholder: <standby_logs>
+  source_key: standby_logs
+  content_type: table
+  table_index: 0
+  description: Standby Logs
+  template: OracleHC Word template
+  location: STANDBY LOGS
+  purpose: Render Standby Logs table
+  source_html: 00104_edb360_1a_6z_653179_3k_82_standby_logs.html
+  report_section: 3k.82
+- placeholder: <archive_destinations>
+  source_key: archive_destinations
+  content_type: table
+  table_index: 0
+  description: Archive Destinations
+  template: OracleHC Word template
+  location: ARCHIVE DESTINATIONS
+  purpose: Render Archive Destinations table
+  source_html: 00105_edb360_1a_6z_653179_3k_83_archive_destinations.html
+  report_section: 3k.83
+- placeholder: <destination_errors>
+  source_key: destination_errors
+  content_type: table
+  table_index: 0
+  description: Destination Errors
+  template: OracleHC Word template
+  location: DESTINATION ERRORS
+  purpose: Render Destination Errors table
+  source_html: 00106_edb360_1a_6z_653179_3k_84_destination_errors.html
+  report_section: 3k.84
+- placeholder: <error_conditions>
+  source_key: error_conditions
+  content_type: table
+  table_index: 0
+  description: Error Conditions
+  template: OracleHC Word template
+  location: ERROR CONDITIONS
+  purpose: Render Error Conditions table
+  source_html: 00107_edb360_1a_6z_653179_3k_85_error_conditions.html
+  report_section: 3k.85
+- placeholder: <status_processes_redo_shipping>
+  source_key: status_processes_redo_shipping
+  content_type: table
+  table_index: 0
+  description: Status Processes Redo Shipping
+  template: OracleHC Word template
+  location: STATUS PROCESSES REDO SHIPPING
+  purpose: Render Status Processes Redo Shipping table
+  source_html: 00108_edb360_1a_6z_653179_3k_86_status_processes_redo_shipping.html
+  report_section: 3k.86
+- placeholder: <current_and_last_seq>
+  source_key: current_and_last_seq
+  content_type: table
+  table_index: 0
+  description: Current And Last Seq
+  template: OracleHC Word template
+  location: CURRENT AND LAST SEQ
+  purpose: Render Current And Last Seq table
+  source_html: 00109_edb360_1a_6z_653179_3k_87_current_and_last_seq.html
+  report_section: 3k.87
+- placeholder: <standby_dest>
+  source_key: standby_dest
+  content_type: table
+  table_index: 0
+  description: Standby Dest
+  template: OracleHC Word template
+  location: STANDBY DEST
+  purpose: Render Standby Dest table
+  source_html: 00110_edb360_1a_6z_653179_3k_88_standby_dest.html
+  report_section: 3k.88
+- placeholder: <sga_statistics_for_instance_1>
+  source_key: sga_statistics_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Sga Statistics For Instance 1
+  template: OracleHC Word template
+  location: SGA STATISTICS FOR INSTANCE 1
+  purpose: Render Sga Statistics For Instance 1 table
+  source_html: 00111_edb360_1a_6z_653179_4a_89_sga_statistics_for_instance_1.html
+  report_section: 4a.89
+- placeholder: <sga_statistics_for_instance_1_chart>
+  source_key: sga_statistics_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Sga Statistics For Instance 1
+  template: OracleHC Word template
+  location: SGA STATISTICS FOR INSTANCE 1
+  purpose: Render Sga Statistics For Instance 1 chart
+  source_html: 00112_edb360_1a_6z_653179_4a_89_sga_statistics_for_instance_1_line_chart.html
+  report_section: 4a.89
+- placeholder: <pga_statistics_for_instance_1>
+  source_key: pga_statistics_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Pga Statistics For Instance 1
+  template: OracleHC Word template
+  location: PGA STATISTICS FOR INSTANCE 1
+  purpose: Render Pga Statistics For Instance 1 table
+  source_html: 00113_edb360_1a_6z_653179_4b_90_pga_statistics_for_instance_1.html
+  report_section: 4b.90
+- placeholder: <pga_statistics_for_instance_1_chart>
+  source_key: pga_statistics_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Pga Statistics For Instance 1
+  template: OracleHC Word template
+  location: PGA STATISTICS FOR INSTANCE 1
+  purpose: Render Pga Statistics For Instance 1 chart
+  source_html: 00114_edb360_1a_6z_653179_4b_90_pga_statistics_for_instance_1_line_chart.html
+  report_section: 4b.90
+- placeholder: <memory_statistics_for_instance_1>
+  source_key: memory_statistics_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Memory Statistics For Instance 1
+  template: OracleHC Word template
+  location: MEMORY STATISTICS FOR INSTANCE 1
+  purpose: Render Memory Statistics For Instance 1 table
+  source_html: 00115_edb360_1a_6z_653179_4c_91_memory_statistics_for_instance_1.html
+  report_section: 4c.91
+- placeholder: <memory_statistics_for_instance_1_chart>
+  source_key: memory_statistics_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Memory Statistics For Instance 1
+  template: OracleHC Word template
+  location: MEMORY STATISTICS FOR INSTANCE 1
+  purpose: Render Memory Statistics For Instance 1 chart
+  source_html: 00116_edb360_1a_6z_653179_4c_91_memory_statistics_for_instance_1_line_chart.html
+  report_section: 4c.91
+- placeholder: <stm_background_cpu_time_per_instance>
+  source_key: stm_background_cpu_time_per_instance
+  content_type: table
+  table_index: 0
+  description: Stm Background Cpu Time Per Instance
+  template: OracleHC Word template
+  location: STM BACKGROUND CPU TIME PER INSTANCE
+  purpose: Render Stm Background Cpu Time Per Instance table
+  source_html: 00117_edb360_1a_6z_653179_4e_92_stm_background_cpu_time_per_instance.html
+  report_section: 4e.92
+- placeholder: <stm_background_cpu_time_per_instance_chart>
+  source_key: stm_background_cpu_time_per_instance
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Stm Background Cpu Time Per Instance
+  template: OracleHC Word template
+  location: STM BACKGROUND CPU TIME PER INSTANCE
+  purpose: Render Stm Background Cpu Time Per Instance chart
+  source_html: 00118_edb360_1a_6z_653179_4e_92_stm_background_cpu_time_per_instance_line_chart.html
+  report_section: 4e.92
+- placeholder: <user_io_wait_latency_histogram>
+  source_key: user_i_o_wait_latency_histogram
+  content_type: table
+  table_index: 0
+  description: User Io Wait Latency Histogram
+  template: OracleHC Word template
+  location: USER IO WAIT LATENCY HISTOGRAM
+  purpose: Render User Io Wait Latency Histogram table
+  source_html: 00119_edb360_1a_6z_653179_4f_93_user_io_wait_latency_histogram.html
+  report_section: 4f.93
+- placeholder: <user_io_wait_latency_histogram_chart>
+  source_key: user_i_o_wait_latency_histogram
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: User Io Wait Latency Histogram
+  template: OracleHC Word template
+  location: USER IO WAIT LATENCY HISTOGRAM
+  purpose: Render User Io Wait Latency Histogram chart
+  source_html: 00120_edb360_1a_6z_653179_4f_93_user_io_wait_latency_histogram_line_chart.html
+  report_section: 4f.93
+- placeholder: <system_io_wait_latency_histogram>
+  source_key: system_i_o_wait_latency_histogram
+  content_type: table
+  table_index: 0
+  description: System Io Wait Latency Histogram
+  template: OracleHC Word template
+  location: SYSTEM IO WAIT LATENCY HISTOGRAM
+  purpose: Render System Io Wait Latency Histogram table
+  source_html: 00121_edb360_1a_6z_653179_4f_94_system_io_wait_latency_histogram.html
+  report_section: 4f.94
+- placeholder: <system_io_wait_latency_histogram_chart>
+  source_key: system_i_o_wait_latency_histogram
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: System Io Wait Latency Histogram
+  template: OracleHC Word template
+  location: SYSTEM IO WAIT LATENCY HISTOGRAM
+  purpose: Render System Io Wait Latency Histogram chart
+  source_html: 00122_edb360_1a_6z_653179_4f_94_system_io_wait_latency_histogram_line_chart.html
+  report_section: 4f.94
+- placeholder: <top_5_wait_events>
+  source_key: top_5_wait_events
+  content_type: table
+  table_index: 0
+  description: Top 5 Wait Events
+  template: OracleHC Word template
+  location: TOP 5 WAIT EVENTS
+  purpose: Render Top 5 Wait Events table
+  source_html: 00123_edb360_1a_6z_653179_4g_95_top_5_wait_events.html
+  report_section: 4g.95
+- placeholder: <commit_log_file_sync_latency_histogram>
+  source_key: commit_log_file_sync_latency_histogram
+  content_type: table
+  table_index: 0
+  description: Commit Log File Sync Latency Histogram
+  template: OracleHC Word template
+  location: COMMIT LOG FILE SYNC LATENCY HISTOGRAM
+  purpose: Render Commit Log File Sync Latency Histogram table
+  source_html: 00124_edb360_1a_6z_653179_4g_96_commit_log_file_sync_latency_histogram.html
+  report_section: 4g.96
+- placeholder: <commit_log_file_sync_latency_histogram_chart>
+  source_key: commit_log_file_sync_latency_histogram
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Commit Log File Sync Latency Histogram
+  template: OracleHC Word template
+  location: COMMIT LOG FILE SYNC LATENCY HISTOGRAM
+  purpose: Render Commit Log File Sync Latency Histogram chart
+  source_html: 00125_edb360_1a_6z_653179_4g_96_commit_log_file_sync_latency_histogram_line_chart.html
+  report_section: 4g.96
+- placeholder: <application_sqlnet_breakreset_to_client_latency_histogram>
+  source_key: application_sql_net_break_reset_to_client_latency_histogram
+  content_type: table
+  table_index: 0
+  description: Application Sqlnet Breakreset To Client Latency Histogram
+  template: OracleHC Word template
+  location: APPLICATION SQLNET BREAKRESET TO CLIENT LATENCY HISTOGRAM
+  purpose: Render Application Sqlnet Breakreset To Client Latency Histogram table
+  source_html: 00126_edb360_1a_6z_653179_4g_97_application_sqlnet_breakreset_to_client_latency_histogram.html
+  report_section: 4g.97
+- placeholder: <application_sqlnet_breakreset_to_client_latency_histogram_chart>
+  source_key: application_sql_net_break_reset_to_client_latency_histogram
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Application Sqlnet Breakreset To Client Latency Histogram
+  template: OracleHC Word template
+  location: APPLICATION SQLNET BREAKRESET TO CLIENT LATENCY HISTOGRAM
+  purpose: Render Application Sqlnet Breakreset To Client Latency Histogram chart
+  source_html: 00127_edb360_1a_6z_653179_4g_97_application_sqlnet_breakreset_to_client_latency_histogram_line_chart.html
+  report_section: 4g.97
+- placeholder: <other_enq_jg_queue_lock_latency_histogram>
+  source_key: other_enq_jg_queue_lock_latency_histogram
+  content_type: table
+  table_index: 0
+  description: Other Enq Jg Queue Lock Latency Histogram
+  template: OracleHC Word template
+  location: OTHER ENQ JG QUEUE LOCK LATENCY HISTOGRAM
+  purpose: Render Other Enq Jg Queue Lock Latency Histogram table
+  source_html: 00128_edb360_1a_6z_653179_4g_98_other_enq_jg_queue_lock_latency_histogram.html
+  report_section: 4g.98
+- placeholder: <other_enq_jg_queue_lock_latency_histogram_chart>
+  source_key: other_enq_jg_queue_lock_latency_histogram
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Other Enq Jg Queue Lock Latency Histogram
+  template: OracleHC Word template
+  location: OTHER ENQ JG QUEUE LOCK LATENCY HISTOGRAM
+  purpose: Render Other Enq Jg Queue Lock Latency Histogram chart
+  source_html: 00129_edb360_1a_6z_653179_4g_98_other_enq_jg_queue_lock_latency_histogram_line_chart.html
+  report_section: 4g.98
+- placeholder: <user_io_db_file_sequential_read_latency_histogram>
+  source_key: user_i_o_db_file_sequential_read_latency_histogram
+  content_type: table
+  table_index: 0
+  description: User Io Db File Sequential Read Latency Histogram
+  template: OracleHC Word template
+  location: USER IO DB FILE SEQUENTIAL READ LATENCY HISTOGRAM
+  purpose: Render User Io Db File Sequential Read Latency Histogram table
+  source_html: 00130_edb360_1a_6z_653179_4g_99_user_io_db_file_sequential_read_latency_histogram.html
+  report_section: 4g.99
+- placeholder: <user_io_db_file_sequential_read_latency_histogram_chart>
+  source_key: user_i_o_db_file_sequential_read_latency_histogram
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: User Io Db File Sequential Read Latency Histogram
+  template: OracleHC Word template
+  location: USER IO DB FILE SEQUENTIAL READ LATENCY HISTOGRAM
+  purpose: Render User Io Db File Sequential Read Latency Histogram chart
+  source_html: 00131_edb360_1a_6z_653179_4g_99_user_io_db_file_sequential_read_latency_histogram_line_chart.html
+  report_section: 4g.99
+- placeholder: <system_io_log_file_parallel_write_latency_histogram>
+  source_key: system_i_o_log_file_parallel_write_latency_histogram
+  content_type: table
+  table_index: 0
+  description: System Io Log File Parallel Write Latency Histogram
+  template: OracleHC Word template
+  location: SYSTEM IO LOG FILE PARALLEL WRITE LATENCY HISTOGRAM
+  purpose: Render System Io Log File Parallel Write Latency Histogram table
+  source_html: 00132_edb360_1a_6z_653179_4g_100_system_io_log_file_parallel_write_latency_histogram.html
+  report_section: 4g.100
+- placeholder: <system_io_log_file_parallel_write_latency_histogram_chart>
+  source_key: system_i_o_log_file_parallel_write_latency_histogram
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: System Io Log File Parallel Write Latency Histogram
+  template: OracleHC Word template
+  location: SYSTEM IO LOG FILE PARALLEL WRITE LATENCY HISTOGRAM
+  purpose: Render System Io Log File Parallel Write Latency Histogram chart
+  source_html: 00133_edb360_1a_6z_653179_4g_100_system_io_log_file_parallel_write_latency_histogram_line_chart.html
+  report_section: 4g.100
+- placeholder: <commit_log_file_sync_waits_count_and_average_latency>
+  source_key: commit_log_file_sync_waits_count_and_average_latency
+  content_type: table
+  table_index: 0
+  description: Commit Log File Sync Waits Count And Average Latency
+  template: OracleHC Word template
+  location: COMMIT LOG FILE SYNC WAITS COUNT AND AVERAGE LATENCY
+  purpose: Render Commit Log File Sync Waits Count And Average Latency table
+  source_html: 00135_edb360_1a_6z_653179_4i_102_commit_log_file_sync_waits_count_and_average_latency.html
+  report_section: 4i.102
+- placeholder: <commit_log_file_sync_waits_count_and_average_latency_chart>
+  source_key: commit_log_file_sync_waits_count_and_average_latency
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Commit Log File Sync Waits Count And Average Latency
+  template: OracleHC Word template
+  location: COMMIT LOG FILE SYNC WAITS COUNT AND AVERAGE LATENCY
+  purpose: Render Commit Log File Sync Waits Count And Average Latency chart
+  source_html: 00136_edb360_1a_6z_653179_4i_102_commit_log_file_sync_waits_count_and_average_latency_line_chart.html
+  report_section: 4i.102
+- placeholder: <application_sqlnet_breakreset_to_client_waits_count_and_average_latency>
+  source_key: application_sql_net_break_reset_to_client_waits_count_and_average_latency
+  content_type: table
+  table_index: 0
+  description: Application Sqlnet Breakreset To Client Waits Count And Average Latency
+  template: OracleHC Word template
+  location: APPLICATION SQLNET BREAKRESET TO CLIENT WAITS COUNT AND AVERAGE LATENCY
+  purpose: Render Application Sqlnet Breakreset To Client Waits Count And Average
+    Latency table
+  source_html: 00137_edb360_1a_6z_653179_4i_103_application_sqlnet_breakreset_to_client_waits_count_and_average_latency.html
+  report_section: 4i.103
+- placeholder: <application_sqlnet_breakreset_to_client_waits_count_and_average_latency_chart>
+  source_key: application_sql_net_break_reset_to_client_waits_count_and_average_latency
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Application Sqlnet Breakreset To Client Waits Count And Average Latency
+  template: OracleHC Word template
+  location: APPLICATION SQLNET BREAKRESET TO CLIENT WAITS COUNT AND AVERAGE LATENCY
+  purpose: Render Application Sqlnet Breakreset To Client Waits Count And Average
+    Latency chart
+  source_html: 00138_edb360_1a_6z_653179_4i_103_application_sqlnet_breakreset_to_client_waits_count_and_average_latency_line_chart.html
+  report_section: 4i.103
+- placeholder: <other_enq_jg_queue_lock_waits_count_and_average_latency>
+  source_key: other_enq_jg_queue_lock_waits_count_and_average_latency
+  content_type: table
+  table_index: 0
+  description: Other Enq Jg Queue Lock Waits Count And Average Latency
+  template: OracleHC Word template
+  location: OTHER ENQ JG QUEUE LOCK WAITS COUNT AND AVERAGE LATENCY
+  purpose: Render Other Enq Jg Queue Lock Waits Count And Average Latency table
+  source_html: 00139_edb360_1a_6z_653179_4i_104_other_enq_jg_queue_lock_waits_count_and_average_latency.html
+  report_section: 4i.104
+- placeholder: <other_enq_jg_queue_lock_waits_count_and_average_latency_chart>
+  source_key: other_enq_jg_queue_lock_waits_count_and_average_latency
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Other Enq Jg Queue Lock Waits Count And Average Latency
+  template: OracleHC Word template
+  location: OTHER ENQ JG QUEUE LOCK WAITS COUNT AND AVERAGE LATENCY
+  purpose: Render Other Enq Jg Queue Lock Waits Count And Average Latency chart
+  source_html: 00140_edb360_1a_6z_653179_4i_104_other_enq_jg_queue_lock_waits_count_and_average_latency_line_chart.html
+  report_section: 4i.104
+- placeholder: <user_io_db_file_sequential_read_waits_count_and_average_latency>
+  source_key: user_i_o_db_file_sequential_read_waits_count_and_average_latency
+  content_type: table
+  table_index: 0
+  description: User Io Db File Sequential Read Waits Count And Average Latency
+  template: OracleHC Word template
+  location: USER IO DB FILE SEQUENTIAL READ WAITS COUNT AND AVERAGE LATENCY
+  purpose: Render User Io Db File Sequential Read Waits Count And Average Latency
+    table
+  source_html: 00141_edb360_1a_6z_653179_4i_105_user_io_db_file_sequential_read_waits_count_and_average_latency.html
+  report_section: 4i.105
+- placeholder: <user_io_db_file_sequential_read_waits_count_and_average_latency_chart>
+  source_key: user_i_o_db_file_sequential_read_waits_count_and_average_latency
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: User Io Db File Sequential Read Waits Count And Average Latency
+  template: OracleHC Word template
+  location: USER IO DB FILE SEQUENTIAL READ WAITS COUNT AND AVERAGE LATENCY
+  purpose: Render User Io Db File Sequential Read Waits Count And Average Latency
+    chart
+  source_html: 00142_edb360_1a_6z_653179_4i_105_user_io_db_file_sequential_read_waits_count_and_average_latency_line_chart.html
+  report_section: 4i.105
+- placeholder: <system_io_log_file_parallel_write_waits_count_and_average_latency>
+  source_key: system_i_o_log_file_parallel_write_waits_count_and_average_latency
+  content_type: table
+  table_index: 0
+  description: System Io Log File Parallel Write Waits Count And Average Latency
+  template: OracleHC Word template
+  location: SYSTEM IO LOG FILE PARALLEL WRITE WAITS COUNT AND AVERAGE LATENCY
+  purpose: Render System Io Log File Parallel Write Waits Count And Average Latency
+    table
+  source_html: 00143_edb360_1a_6z_653179_4i_106_system_io_log_file_parallel_write_waits_count_and_average_latency.html
+  report_section: 4i.106
+- placeholder: <system_io_log_file_parallel_write_waits_count_and_average_latency_chart>
+  source_key: system_i_o_log_file_parallel_write_waits_count_and_average_latency
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: System Io Log File Parallel Write Waits Count And Average Latency
+  template: OracleHC Word template
+  location: SYSTEM IO LOG FILE PARALLEL WRITE WAITS COUNT AND AVERAGE LATENCY
+  purpose: Render System Io Log File Parallel Write Waits Count And Average Latency
+    chart
+  source_html: 00144_edb360_1a_6z_653179_4i_106_system_io_log_file_parallel_write_waits_count_and_average_latency_line_chart.html
+  report_section: 4i.106
+- placeholder: <library_cache_hit_ratio>
+  source_key: library_cache_hit_ratio
+  content_type: table
+  table_index: 0
+  description: Library Cache Hit Ratio
+  template: OracleHC Word template
+  location: LIBRARY CACHE HIT RATIO
+  purpose: Render Library Cache Hit Ratio table
+  source_html: 00145_edb360_1a_6z_653179_4l_107_library_cache_hit_ratio.html
+  report_section: 4l.107
+- placeholder: <library_cache_hit_ratio_chart>
+  source_key: library_cache_hit_ratio
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Library Cache Hit Ratio
+  template: OracleHC Word template
+  location: LIBRARY CACHE HIT RATIO
+  purpose: Render Library Cache Hit Ratio chart
+  source_html: 00146_edb360_1a_6z_653179_4l_107_library_cache_hit_ratio_line_chart.html
+  report_section: 4l.107
+- placeholder: <row_cache_hit_ratio>
+  source_key: row_cache_hit_ratio
+  content_type: table
+  table_index: 0
+  description: Row Cache Hit Ratio
+  template: OracleHC Word template
+  location: ROW CACHE HIT RATIO
+  purpose: Render Row Cache Hit Ratio table
+  source_html: 00147_edb360_1a_6z_653179_4l_108_row_cache_hit_ratio.html
+  report_section: 4l.108
+- placeholder: <row_cache_hit_ratio_chart>
+  source_key: row_cache_hit_ratio
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Row Cache Hit Ratio
+  template: OracleHC Word template
+  location: ROW CACHE HIT RATIO
+  purpose: Render Row Cache Hit Ratio chart
+  source_html: 00148_edb360_1a_6z_653179_4l_108_row_cache_hit_ratio_line_chart.html
+  report_section: 4l.108
+- placeholder: <buffer_cache_hit_ratio>
+  source_key: buffer_cache_hit_ratio
+  content_type: table
+  table_index: 0
+  description: Buffer Cache Hit Ratio
+  template: OracleHC Word template
+  location: BUFFER CACHE HIT RATIO
+  purpose: Render Buffer Cache Hit Ratio table
+  source_html: 00149_edb360_1a_6z_653179_4l_109_buffer_cache_hit_ratio.html
+  report_section: 4l.109
+- placeholder: <buffer_cache_hit_ratio_chart>
+  source_key: buffer_cache_hit_ratio
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Buffer Cache Hit Ratio
+  template: OracleHC Word template
+  location: BUFFER CACHE HIT RATIO
+  purpose: Render Buffer Cache Hit Ratio chart
+  source_html: 00150_edb360_1a_6z_653179_4l_109_buffer_cache_hit_ratio_line_chart.html
+  report_section: 4l.109
+- placeholder: <aas_per_wait_class_for_instance_1>
+  source_key: aas_per_wait_class_for_instance_1
+  content_type: table
+  table_index: 0
+  description: Aas Per Wait Class For Instance 1
+  template: OracleHC Word template
+  location: AAS PER WAIT CLASS FOR INSTANCE 1
+  purpose: Render Aas Per Wait Class For Instance 1 table
+  source_html: 00151_edb360_1a_6z_653179_5a_110_aas_per_wait_class_for_instance_1.html
+  report_section: 5a.110
+- placeholder: <aas_per_wait_class_for_instance_1_chart>
+  source_key: aas_per_wait_class_for_instance_1
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Aas Per Wait Class For Instance 1
+  template: OracleHC Word template
+  location: AAS PER WAIT CLASS FOR INSTANCE 1
+  purpose: Render Aas Per Wait Class For Instance 1 chart
+  source_html: 00152_edb360_1a_6z_653179_5a_110_aas_per_wait_class_for_instance_1_line_chart.html
+  report_section: 5a.110
+- placeholder: <ash_cpu_per_source>
+  source_key: ash_cpu_per_source
+  content_type: table
+  table_index: 0
+  description: Ash Cpu Per Source
+  template: OracleHC Word template
+  location: ASH CPU PER SOURCE
+  purpose: Render Ash Cpu Per Source table
+  source_html: 00153_edb360_1a_6z_653179_5c_111_ash_cpu_per_source.html
+  report_section: 5c.111
+- placeholder: <ash_cpu_per_source_chart>
+  source_key: ash_cpu_per_source
+  content_type: chart
+  chart_variant: pie
+  width_inches: 6.0
+  description: Ash Cpu Per Source
+  template: OracleHC Word template
+  location: ASH CPU PER SOURCE
+  purpose: Render Ash Cpu Per Source chart
+  source_html: 00155_edb360_1a_6z_653179_5c_111_ash_cpu_per_source_pie_chart.html
+  report_section: 5c.111
+- placeholder: <ash_commit_log_file_sync_per_source>
+  source_key: ash_commit_log_file_sync_per_source
+  content_type: table
+  table_index: 0
+  description: Ash Commit Log File Sync Per Source
+  template: OracleHC Word template
+  location: ASH COMMIT LOG FILE SYNC PER SOURCE
+  purpose: Render Ash Commit Log File Sync Per Source table
+  source_html: 00156_edb360_1a_6z_653179_5c_112_ash_commit_log_file_sync_per_source.html
+  report_section: 5c.112
+- placeholder: <ash_commit_log_file_sync_per_source_chart>
+  source_key: ash_commit_log_file_sync_per_source
+  content_type: chart
+  chart_variant: pie
+  width_inches: 6.0
+  description: Ash Commit Log File Sync Per Source
+  template: OracleHC Word template
+  location: ASH COMMIT LOG FILE SYNC PER SOURCE
+  purpose: Render Ash Commit Log File Sync Per Source chart
+  source_html: 00157_edb360_1a_6z_653179_5c_112_ash_commit_log_file_sync_per_source_pie_chart.html
+  report_section: 5c.112
+- placeholder: <ash_application_sqlnet_breakreset_to_client_per_source>
+  source_key: ash_application_sql_net_break_reset_to_client_per_source
+  content_type: table
+  table_index: 0
+  description: Ash Application Sqlnet Breakreset To Client Per Source
+  template: OracleHC Word template
+  location: ASH APPLICATION SQLNET BREAKRESET TO CLIENT PER SOURCE
+  purpose: Render Ash Application Sqlnet Breakreset To Client Per Source table
+  source_html: 00158_edb360_1a_6z_653179_5c_113_ash_application_sqlnet_breakreset_to_client_per_source.html
+  report_section: 5c.113
+- placeholder: <ash_application_sqlnet_breakreset_to_client_per_source_chart>
+  source_key: ash_application_sql_net_break_reset_to_client_per_source
+  content_type: chart
+  chart_variant: pie
+  width_inches: 6.0
+  description: Ash Application Sqlnet Breakreset To Client Per Source
+  template: OracleHC Word template
+  location: ASH APPLICATION SQLNET BREAKRESET TO CLIENT PER SOURCE
+  purpose: Render Ash Application Sqlnet Breakreset To Client Per Source chart
+  source_html: 00159_edb360_1a_6z_653179_5c_113_ash_application_sqlnet_breakreset_to_client_per_source_pie_chart.html
+  report_section: 5c.113
+- placeholder: <ash_other_enq_jg_queue_lock_per_source>
+  source_key: ash_other_enq_jg_queue_lock_per_source
+  content_type: table
+  table_index: 0
+  description: Ash Other Enq Jg Queue Lock Per Source
+  template: OracleHC Word template
+  location: ASH OTHER ENQ JG QUEUE LOCK PER SOURCE
+  purpose: Render Ash Other Enq Jg Queue Lock Per Source table
+  source_html: 00160_edb360_1a_6z_653179_5c_114_ash_other_enq_jg_queue_lock_per_source.html
+  report_section: 5c.114
+- placeholder: <ash_other_enq_jg_queue_lock_per_source_chart>
+  source_key: ash_other_enq_jg_queue_lock_per_source
+  content_type: chart
+  chart_variant: pie
+  width_inches: 6.0
+  description: Ash Other Enq Jg Queue Lock Per Source
+  template: OracleHC Word template
+  location: ASH OTHER ENQ JG QUEUE LOCK PER SOURCE
+  purpose: Render Ash Other Enq Jg Queue Lock Per Source chart
+  source_html: 00161_edb360_1a_6z_653179_5c_114_ash_other_enq_jg_queue_lock_per_source_pie_chart.html
+  report_section: 5c.114
+- placeholder: <ash_system_io_log_file_parallel_write_per_source>
+  source_key: ash_system_i_o_log_file_parallel_write_per_source
+  content_type: table
+  table_index: 0
+  description: Ash System Io Log File Parallel Write Per Source
+  template: OracleHC Word template
+  location: ASH SYSTEM IO LOG FILE PARALLEL WRITE PER SOURCE
+  purpose: Render Ash System Io Log File Parallel Write Per Source table
+  source_html: 00162_edb360_1a_6z_653179_5c_115_ash_system_io_log_file_parallel_write_per_source.html
+  report_section: 5c.115
+- placeholder: <ash_system_io_log_file_parallel_write_per_source_chart>
+  source_key: ash_system_i_o_log_file_parallel_write_per_source
+  content_type: chart
+  chart_variant: pie
+  width_inches: 6.0
+  description: Ash System Io Log File Parallel Write Per Source
+  template: OracleHC Word template
+  location: ASH SYSTEM IO LOG FILE PARALLEL WRITE PER SOURCE
+  purpose: Render Ash System Io Log File Parallel Write Per Source chart
+  source_html: 00163_edb360_1a_6z_653179_5c_115_ash_system_io_log_file_parallel_write_per_source_pie_chart.html
+  report_section: 5c.115
+- placeholder: <ash_user_io_db_file_sequential_read_per_source>
+  source_key: ash_user_i_o_db_file_sequential_read_per_source
+  content_type: table
+  table_index: 0
+  description: Ash User Io Db File Sequential Read Per Source
+  template: OracleHC Word template
+  location: ASH USER IO DB FILE SEQUENTIAL READ PER SOURCE
+  purpose: Render Ash User Io Db File Sequential Read Per Source table
+  source_html: 00164_edb360_1a_6z_653179_5c_116_ash_user_io_db_file_sequential_read_per_source.html
+  report_section: 5c.116
+- placeholder: <ash_user_io_db_file_sequential_read_per_source_chart>
+  source_key: ash_user_i_o_db_file_sequential_read_per_source
+  content_type: chart
+  chart_variant: pie
+  width_inches: 6.0
+  description: Ash User Io Db File Sequential Read Per Source
+  template: OracleHC Word template
+  location: ASH USER IO DB FILE SEQUENTIAL READ PER SOURCE
+  purpose: Render Ash User Io Db File Sequential Read Per Source chart
+  source_html: 00165_edb360_1a_6z_653179_5c_116_ash_user_io_db_file_sequential_read_per_source_pie_chart.html
+  report_section: 5c.116
+- placeholder: <parallel_operations>
+  source_key: parallel_operations
+  content_type: table
+  table_index: 0
+  description: Parallel Operations
+  template: OracleHC Word template
+  location: PARALLEL OPERATIONS
+  purpose: Render Parallel Operations table
+  source_html: 00166_edb360_1a_6z_653179_5d_117_parallel_operations.html
+  report_section: 5d.117
+- placeholder: <parallel_operations_chart>
+  source_key: parallel_operations
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Parallel Operations
+  template: OracleHC Word template
+  location: PARALLEL OPERATIONS
+  purpose: Render Parallel Operations chart
+  source_html: 00167_edb360_1a_6z_653179_5d_117_parallel_operations_line_chart.html
+  report_section: 5d.117
+- placeholder: <workarea_executions>
+  source_key: workarea_executions
+  content_type: table
+  table_index: 0
+  description: Workarea Executions
+  template: OracleHC Word template
+  location: WORKAREA EXECUTIONS
+  purpose: Render Workarea Executions table
+  source_html: 00168_edb360_1a_6z_653179_5d_118_workarea_executions.html
+  report_section: 5d.118
+- placeholder: <workarea_executions_chart>
+  source_key: workarea_executions
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Workarea Executions
+  template: OracleHC Word template
+  location: WORKAREA EXECUTIONS
+  purpose: Render Workarea Executions chart
+  source_html: 00169_edb360_1a_6z_653179_5d_118_workarea_executions_line_chart.html
+  report_section: 5d.118
+- placeholder: <ash_top_timed_events_for_instance_1_for_9_days_of_history>
+  source_key: ash_top_timed_events_for_instance_1_for_9_days_of_history_between_2026_06_07t15_08_04_and_2026_06_16t15_08_04
+  content_type: table
+  table_index: 0
+  description: Ash Top Timed Events For Instance 1 For 9 Days Of History
+  template: OracleHC Word template
+  location: ASH TOP TIMED EVENTS FOR INSTANCE 1 FOR 9 DAYS OF HISTORY
+  purpose: Render Ash Top Timed Events For Instance 1 For 9 Days Of History table
+  source_html: 00170_edb360_1a_6z_653179_6b_119_ash_top_timed_events_for_instance_1_for_9_days_of_history.html
+  report_section: 6b.119
+- placeholder: <ash_top_timed_events_for_instance_1_for_9_days_of_history_chart>
+  source_key: ash_top_timed_events_for_instance_1_for_9_days_of_history_between_2026_06_07t15_08_04_and_2026_06_16t15_08_04
+  content_type: chart
+  chart_variant: bar
+  width_inches: 6.0
+  description: Ash Top Timed Events For Instance 1 For 9 Days Of History
+  template: OracleHC Word template
+  location: ASH TOP TIMED EVENTS FOR INSTANCE 1 FOR 9 DAYS OF HISTORY
+  purpose: Render Ash Top Timed Events For Instance 1 For 9 Days Of History chart
+  source_html: 00171_edb360_1a_6z_653179_6b_119_ash_top_timed_events_for_instance_1_for_9_days_of_history_bar_chart.html
+  report_section: 6b.119
+- placeholder: <ash_top_sql_for_instance_1_for_9_days_of_history>
+  source_key: ash_top_sql_for_instance_1_for_9_days_of_history_between_2026_06_07t15_08_04_and_2026_06_16t15_08_04
+  content_type: table
+  table_index: 0
+  description: Ash Top Sql For Instance 1 For 9 Days Of History
+  template: OracleHC Word template
+  location: ASH TOP SQL FOR INSTANCE 1 FOR 9 DAYS OF HISTORY
+  purpose: Render Ash Top Sql For Instance 1 For 9 Days Of History table
+  source_html: 00172_edb360_1a_6z_653179_6c_120_ash_top_sql_for_instance_1_for_9_days_of_history.html
+  report_section: 6c.120
+- placeholder: <ash_top_sql_for_instance_1_for_9_days_of_history_chart>
+  source_key: ash_top_sql_for_instance_1_for_9_days_of_history_between_2026_06_07t15_08_04_and_2026_06_16t15_08_04
+  content_type: chart
+  chart_variant: pie
+  width_inches: 6.0
+  description: Ash Top Sql For Instance 1 For 9 Days Of History
+  template: OracleHC Word template
+  location: ASH TOP SQL FOR INSTANCE 1 FOR 9 DAYS OF HISTORY
+  purpose: Render Ash Top Sql For Instance 1 For 9 Days Of History chart
+  source_html: 00173_edb360_1a_6z_653179_6c_120_ash_top_sql_for_instance_1_for_9_days_of_history_pie_chart.html
+  report_section: 6c.120
+- placeholder: <log_switch_frequency_for_instance_2_chart>
+  source_key: log_switch_frequency_for_instance_2
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Log Switch Frequency For Instance 2
+  template: OracleHC Word template
+  location: LOG SWITCH FREQUENCY FOR INSTANCE 2
+  purpose: Render Log Switch Frequency For Instance 2 chart
+  source_html: log_switch_frequency_for_instance_2_line_chart.html
+  report_section: 2d
+- placeholder: <aas_per_wait_class_for_instance_2_chart>
+  source_key: aas_per_wait_class_for_instance_2
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Aas Per Wait Class For Instance 2
+  template: OracleHC Word template
+  location: AAS PER WAIT CLASS FOR INSTANCE 2
+  purpose: Render Aas Per Wait Class For Instance 2 chart
+  source_html: aas_per_wait_class_for_instance_2_line_chart.html
+  report_section: 5a
+- placeholder: <ash_top_timed_events_for_instance_2_for_days_of_history_chart>
+  source_key: ash_top_timed_events_for_instance_2_for_days_of_history
+  content_type: chart
+  chart_variant: bar
+  width_inches: 6.0
+  description: Ash Top Timed Events For Instance 2
+  template: OracleHC Word template
+  location: ASH TOP TIMED EVENTS FOR INSTANCE 2
+  purpose: Render Ash Top Timed Events For Instance 2 chart
+  source_html: ash_top_timed_events_for_instance_2_for_days_of_history_bar_chart.html
+  report_section: 6b
+- placeholder: <ash_top_sql_for_instance_2_for_days_of_history_chart>
+  source_key: ash_top_sql_for_instance_2_for_days_of_history
+  content_type: chart
+  chart_variant: pie
+  width_inches: 6.0
+  description: Ash Top Sql For Instance 2
+  template: OracleHC Word template
+  location: ASH TOP SQL FOR INSTANCE 2
+  purpose: Render Ash Top Sql For Instance 2 chart
+  source_html: ash_top_sql_for_instance_2_for_days_of_history_pie_chart.html
+  report_section: 6c
+- placeholder: <cpu_busy_and_idle_times_percent_for_instance_2_chart>
+  source_key: cpu_busy_and_idle_times_percent_for_instance_2
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Cpu Busy And Idle Times Percent For Instance 2
+  template: OracleHC Word template
+  location: CPU BUSY AND IDLE TIMES PERCENT FOR INSTANCE 2
+  purpose: Render Cpu Busy And Idle Times Percent For Instance 2 chart
+  source_html: cpu_busy_and_idle_times_percent_for_instance_2_line_chart.html
+  report_section: 3e
+- placeholder: <memory_statistics_for_instance_2_chart>
+  source_key: memory_statistics_for_instance_2
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Memory Statistics For Instance 2
+  template: OracleHC Word template
+  location: MEMORY STATISTICS FOR INSTANCE 2
+  purpose: Render Memory Statistics For Instance 2 chart
+  source_html: memory_statistics_for_instance_2_line_chart.html
+  report_section: 4c
+- placeholder: <sga_statistics_for_instance_2_chart>
+  source_key: sga_statistics_for_instance_2
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Sga Statistics For Instance 2
+  template: OracleHC Word template
+  location: SGA STATISTICS FOR INSTANCE 2
+  purpose: Render Sga Statistics For Instance 2 chart
+  source_html: sga_statistics_for_instance_2_line_chart.html
+  report_section: 4a
+- placeholder: <pga_statistics_for_instance_2_chart>
+  source_key: pga_statistics_for_instance_2
+  content_type: chart
+  chart_variant: line
+  width_inches: 6.0
+  description: Pga Statistics For Instance 2
+  template: OracleHC Word template
+  location: PGA STATISTICS FOR INSTANCE 2
+  purpose: Render Pga Statistics For Instance 2 chart
+  source_html: pga_statistics_for_instance_2_line_chart.html
+  report_section: 4b

@@ -1,18 +1,25 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+
 from models import ExtractedContent, GenerationReport, MappingRule
 
 from .content_registry import ContentRegistry
+
+CancelCheck = Callable[[], bool]
 
 
 def resolve_mappings(
     rules: list[MappingRule],
     registry: ContentRegistry,
     report: GenerationReport,
+    cancel_check: CancelCheck | None = None,
 ) -> dict[str, tuple[MappingRule, ExtractedContent]]:
     resolved: dict[str, tuple[MappingRule, ExtractedContent]] = {}
 
     for rule in rules:
+        if cancel_check and cancel_check():
+            break
         # Dùng ContentRegistry để tìm nội dung phù hợp theo rule.
         # Truyền các tham số như type, source_key, source_file, section, table_index, variant
         matches = registry.find(

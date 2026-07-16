@@ -1,9 +1,14 @@
 beautifulsoup4
 customtkinter
+fastapi
+jinja2
 matplotlib
 openpyxl
 pandas
 pillow
 playwright
+python-multipart
 python-docx
 PyYAML
+pypdf
+uvicorn

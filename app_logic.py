@@ -7,10 +7,10 @@ from config import DEFAULT_MAPPING, load_mapping_rules
 from extraction.extract_html import extract_content_from_input
 from mapping.content_registry import ContentRegistry
 from mapping.mapper import resolve_mappings
-from models import GenerationReport
+from models import GenerationReport, OperationCancelled
 from placeholder_inserter import PlaceholderInsertReport, insert_mapping_placeholders
 from rpwithchart import render_excel_report
-from rendering.word_renderer import render_report
+from rendering.word_renderer import document_contains_placeholder, render_report
 from sql_healthcheck.merge_sql import merge_sql_root_healthcheck
 
 
@@ -24,6 +24,7 @@ def generate_report(
     word_file: str,
     output_file_path: str,
     log_callback: LogCallback | None = None,
+    cancel_check: Callable[[], bool] | None = None,
 ) -> str:
     """Generate a report using the GUI Save As workflow."""
     return generate_report_to_file(
@@ -33,6 +34,7 @@ def generate_report(
         mapping_file=DEFAULT_MAPPING,
         chart_output_dir=Path(output_file_path).parent / "generated_charts",
         log_callback=log_callback,
+        cancel_check=cancel_check,
     )
 
 
@@ -44,6 +46,7 @@ def generate_report_to_file(
     chart_output_dir: str | Path | None = None,
     validate_only: bool = False,
     log_callback: LogCallback | None = None,
+    cancel_check: Callable[[], bool] | None = None,
 ) -> str:
     """Generate a report to an explicit output file path."""
     input_path = _validate_html_input(html_input)
@@ -71,17 +74,23 @@ def generate_report_to_file(
     log("Loading mapping rules...")
     rules = load_mapping_rules(mapping_path)
     log(f"Loaded mapping rules: {len(rules)}")
+    _check_cancelled(cancel_check)
+
+    chart_rules = _chart_rules_present_in_template(template_path, rules)
+    log(f"Chart placeholders in template: {len(chart_rules)}")
 
     log("Extracting tables and charts from HTML...")
-    contents = extract_content_from_input(input_path, chart_dir, report)
+    contents = extract_content_from_input(input_path, chart_dir, report, chart_rules=chart_rules, cancel_check=cancel_check)
     log(f"Extracted content blocks: {len(contents)}")
+    _check_cancelled(cancel_check)
     if not contents:
         raise ValueError(f"No table, chart, or image content was found under HTML source folder: {input_path}")
 
     log("Resolving mappings...")
     registry = ContentRegistry(contents)
-    resolved = resolve_mappings(rules, registry, report)
+    resolved = resolve_mappings(rules, registry, report, cancel_check=cancel_check)
     log(f"Resolved mappings: {len(resolved)} / {len(rules)}")
+    _check_cancelled(cancel_check)
 
     if validate_only:
         log("Validation completed. No Word file was written.")
@@ -95,6 +104,7 @@ def generate_report_to_file(
             report,
             log_callback=log_callback,
             max_table_rows=DEFAULT_MAX_TABLE_DATA_ROWS + 1,
+            cancel_check=cancel_check,
         )
         log(f"Done. Output saved to: {output_path}")
 
@@ -102,10 +112,22 @@ def generate_report_to_file(
     return str(output_path)
 
 
+def _chart_rules_present_in_template(template_path: Path, rules):
+    from docx import Document
+
+    doc = Document(template_path)
+    return [
+        rule
+        for rule in rules
+        if rule.content_type == "chart" and document_contains_placeholder(doc, rule.placeholder)
+    ]
+
+
 def insert_placeholders_into_word(
     word_file: str | Path,
     mapping_file: str | Path = DEFAULT_MAPPING,
     log_callback: LogCallback | None = None,
+    cancel_check: Callable[[], bool] | None = None,
 ) -> PlaceholderInsertReport:
     """Insert known report placeholders into a Word file in place."""
     template_path = _validate_word_file(word_file)
@@ -118,8 +140,9 @@ def insert_placeholders_into_word(
     rules = load_mapping_rules(mapping_path)
     log(f"Loaded placeholders: {len(rules)}")
     log(f"Word file: {template_path}")
+    _check_cancelled(cancel_check)
 
-    report = insert_mapping_placeholders(template_path, rules, create_backup=True)
+    report = insert_mapping_placeholders(template_path, rules, create_backup=True, cancel_check=cancel_check)
     if report.backup_path:
         log(f"Backup file: {report.backup_path}")
     log(f"Inserted placeholders: {len(report.inserted)}")
@@ -141,6 +164,7 @@ def run_sql_pipeline(
     output_root: str | Path | None = None,
     mapping_file: str | Path | None = DEFAULT_SQL_MAPPING,
     log_callback: LogCallback | None = None,
+    cancel_check: Callable[[], bool] | None = None,
 ) -> list[str]:
     """Run SQLHealcheck CSV files -> merged Excel -> Word report."""
     input_path = _validate_sql_input_root(input_root)
@@ -158,10 +182,13 @@ def run_sql_pipeline(
     log(f"Selected output folder: {output_root_path}")
     log(f"Merged Excel output: {excel_file}")
     log(f"Word report output: {report_file}")
+    _check_cancelled(cancel_check)
 
-    merged_excel = merge_sql_root_healthcheck(input_path, excel_file, log_callback=log_callback)
+    merged_excel = merge_sql_root_healthcheck(input_path, excel_file, log_callback=log_callback, cancel_check=cancel_check)
+    _check_cancelled(cancel_check)
     if not merged_excel:
         raise ValueError(f"No SQLHealcheck files were generated from: {input_path}")
+    _check_cancelled(cancel_check)
 
     generated_report = render_excel_report(
         excel_path=merged_excel,
@@ -170,12 +197,18 @@ def run_sql_pipeline(
         mapping_path=mapping_path,
         log_callback=log_callback,
     )
+    _check_cancelled(cancel_check)
 
     log("")
     log("SQLHealcheck completed.")
     log(f"Merged Excel file: {merged_excel}")
     log(f"Word report: {generated_report}")
     return [str(merged_excel), str(generated_report)]
+
+
+def _check_cancelled(cancel_check: Callable[[], bool] | None) -> None:
+    if cancel_check and cancel_check():
+        raise OperationCancelled("Operation cancelled.")
 
 
 def _make_logger(log_callback: LogCallback | None) -> LogCallback:

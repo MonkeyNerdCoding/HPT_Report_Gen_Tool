@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 import shutil
 import unicodedata
 from dataclasses import dataclass, field
@@ -10,7 +11,10 @@ from docx.document import Document as DocumentObject
 from docx.oxml import OxmlElement
 from docx.text.paragraph import Paragraph
 
-from models import MappingRule
+from models import MappingRule, OperationCancelled
+
+
+CancelCheck = Callable[[], bool]
 
 
 @dataclass
@@ -25,10 +29,13 @@ def insert_mapping_placeholders(
     word_file: str | Path,
     rules: list[MappingRule],
     create_backup: bool = True,
+    cancel_check: CancelCheck | None = None,
 ) -> PlaceholderInsertReport:
     path = Path(word_file)
     doc = Document(str(path))
     report = PlaceholderInsertReport()
+
+    _raise_if_cancelled(cancel_check)
 
     if create_backup:
         backup = path.with_name(f"{path.stem}.placeholder_backup{path.suffix}")
@@ -37,22 +44,23 @@ def insert_mapping_placeholders(
         report.backup_path = backup
 
     anchors = _build_anchor_index(doc)
-    previous_anchor: Paragraph | None = None
-    ordered_placeholders = [rule.placeholder for rule in rules]
+    insertion_cursors: dict[int, Paragraph] = {}
 
-    for placeholder in ordered_placeholders:
+    for rule in rules:
+        _raise_if_cancelled(cancel_check)
+        placeholder = rule.placeholder
         existing = _find_placeholder(doc, placeholder)
         if existing is not None:
             report.already_present.append(placeholder)
-            previous_anchor = existing
             continue
 
-        anchor = _find_best_anchor(doc, anchors, placeholder, previous_anchor)
+        anchor = _find_best_anchor(doc, anchors, rule)
         if anchor is None:
             report.missing_anchors.append(placeholder)
             continue
 
-        previous_anchor = _insert_after(anchor, placeholder)
+        insertion_anchor = insertion_cursors.get(id(anchor), anchor)
+        insertion_cursors[id(anchor)] = _insert_after(insertion_anchor, placeholder)
         report.inserted.append(placeholder)
 
     if report.inserted:
@@ -95,9 +103,9 @@ def _build_anchor_index(doc: DocumentObject) -> dict[str, Paragraph]:
 def _find_best_anchor(
     doc: DocumentObject,
     anchors: dict[str, Paragraph],
-    placeholder: str,
-    previous_anchor: Paragraph | None,
+    rule: MappingRule,
 ) -> Paragraph | None:
+    placeholder = rule.placeholder
     strategy = _PLACEHOLDER_STRATEGIES.get(placeholder, ())
     for candidate in strategy:
         if isinstance(candidate, tuple):
@@ -110,17 +118,31 @@ def _find_best_anchor(
         if anchor is not None:
             return anchor
 
+    for candidate in (rule.location, rule.section, rule.report_section):
+        if not candidate:
+            continue
+        anchor = anchors.get(_normalize(candidate))
+        if anchor is not None:
+            return anchor
+
     if placeholder in _DATABASE_FALLBACK_PLACEHOLDERS:
-        return previous_anchor or anchors.get(_normalize("QUẢN LÝ DATABASE"))
+        return anchors.get(_normalize("QUẢN LÝ DATABASE"))
 
     if placeholder in _MEMORY_FALLBACK_PLACEHOLDERS:
         return (
             anchors.get(_normalize("CẤU HÌNH VÙNG NHỚ CHO CSDL"))
             or anchors.get(_normalize("HIỆU SUẤT BỘ NHỚ"))
-            or previous_anchor
         )
 
-    return previous_anchor
+    if placeholder in _ASH_FALLBACK_PLACEHOLDERS:
+        return anchors.get(_normalize("ASH"))
+
+    return None
+
+
+def _raise_if_cancelled(cancel_check: CancelCheck | None) -> None:
+    if cancel_check and cancel_check():
+        raise OperationCancelled("Operation cancelled.")
 
 
 def _section_tail(
@@ -167,6 +189,17 @@ _MEMORY_FALLBACK_PLACEHOLDERS = {
     "<MEMORY_chart>",
 }
 
+_ASH_FALLBACK_PLACEHOLDERS = {
+    "<aas_per_wait_class_for_instance_1>",
+    "<aas_per_wait_class_for_instance_1_chart>",
+    "<ash_top_timed_events_for_instance_1_for_9_days_of_history>",
+    "<ash_top_timed_events_for_instance_1_for_9_days_of_history_chart>",
+    "{{table_ash_top_sql_cluster_9_days}}",
+    "{{table_ash_cpu_per_source}}",
+    "<ash_cpu_per_source_chart>",
+    "<ash_top_sql_for_instance_1_for_9_days_of_history_chart>",
+}
+
 _PLACEHOLDER_STRATEGIES: dict[str, tuple[str | tuple[str, tuple[str, ...]], ...]] = {
     "<tbs_usage>": ("MỨC ĐỘ SỬ DỤNG TABLESPACES",),
     "<data_file>": ("DATA FILE",),
@@ -185,7 +218,7 @@ _PLACEHOLDER_STRATEGIES: dict[str, tuple[str | tuple[str, tuple[str, ...]], ...]
     ),
     "<invalid_obj>": ("INVALID OBJECT",),
     "<db_job>": ("Jobs",),
-    "<sche_job>": ("Scheduler jobs",),
+    "<sche_job>": ("Schedule Jobs", "Scheduler jobs"),
     "<table_stats>": ("Tables with Stale Stats", "TABLE VÀ INDEX CÓ STATISTICS CŨ"),
     "<index_stats>": ("Indexes with Stale Stats", "TABLE VÀ INDEX CÓ STATISTICS CŨ"),
     "<buffer_chart>": ("BUFFER CACHE HIT",),
@@ -196,5 +229,77 @@ _PLACEHOLDER_STRATEGIES: dict[str, tuple[str | tuple[str, tuple[str, ...]], ...]
     "<log_switch_chart>": (
         "TẦN SUẤT LOG SWITCH",
         ("ONLINE REDO LOG", ("CẤU HÌNH LƯU TRỮ",)),
+    ),
+    "<aas_per_wait_class_for_instance_1>": (
+        "WAIT CLASS",
+        "AAS PER WAIT CLASS FOR INSTANCE 1",
+    ),
+    "<aas_per_wait_class_for_instance_1_chart>": (
+        "WAIT CLASS",
+        "AAS PER WAIT CLASS FOR INSTANCE 1",
+    ),
+    "<ash_top_timed_events_for_instance_1_for_9_days_of_history>": (
+        "WAIT EVENT",
+        "WAIT EVEN",
+        "ASH TOP TIMED EVENTS FOR INSTANCE 1 FOR 9 DAYS OF HISTORY",
+    ),
+    "<ash_top_timed_events_for_instance_1_for_9_days_of_history_chart>": (
+        "WAIT EVENT",
+        "WAIT EVEN",
+        "ASH TOP TIMED EVENTS FOR INSTANCE 1 FOR 9 DAYS OF HISTORY",
+    ),
+    "{{table_ash_top_sql_cluster_9_days}}": (
+        "CÁC CÂU LỆNH TỐN NHIỀU DB TIME",
+        "CAC CAU LENH TON NHIEU DB TIME",
+        "ASH TOP SQL FOR CLUSTER",
+    ),
+    "{{table_ash_cpu_per_source}}": (
+        "CÁC CÂU LỆNH SỬ DỤNG NHIỀU CPU",
+        "CAC CAU LENH SU DUNG NHIEU CPU",
+        "ASH CPU PER SOURCE",
+    ),
+    "<ash_cpu_per_source_chart>": (
+        "CÁC CÂU LỆNH SỬ DỤNG NHIỀU CPU",
+        "CAC CAU LENH SU DUNG NHIEU CPU",
+        "ASH CPU PER SOURCE",
+    ),
+    "<ash_top_sql_for_instance_1_for_9_days_of_history_chart>": (
+        "CÁC CÂU LỆNH TỐN NHIỀU DB TIME",
+        "CAC CAU LENH TON NHIEU DB TIME",
+        "ASH TOP SQL FOR INSTANCE 1 FOR 9 DAYS OF HISTORY",
+        "ASH TOP SQL FOR CLUSTER",
+    ),    "<log_switch_frequency_for_instance_2_chart>": (
+        "Instances 2: Log switch frequency",
+        "Instance 2: Log switch frequency",
+        "LOG SWITCH FREQUENCY FOR INSTANCE 2",
+    ),
+    "<aas_per_wait_class_for_instance_2_chart>": (
+        "Instance 2: AAS per Wait Class",
+        "AAS PER WAIT CLASS FOR INSTANCE 2",
+    ),
+    "<ash_top_timed_events_for_instance_2_for_days_of_history_chart>": (
+        "Instance 2: ASH Top Timed Events",
+        "ASH TOP TIMED EVENTS FOR INSTANCE 2",
+    ),
+    "<ash_top_sql_for_instance_2_for_days_of_history_chart>": (
+        "ASH TOP SQL FOR INSTANCE 2",
+        "Instance 2: ASH Top SQL",
+        "{{table_ash_top_sql_cluster_9_days}}",
+    ),
+    "<cpu_busy_and_idle_times_percent_for_instance_2_chart>": (
+        "Instance 2: CPU Busy and Idle Times Percent",
+        "CPU BUSY AND IDLE TIMES PERCENT FOR INSTANCE 2",
+    ),
+    "<memory_statistics_for_instance_2_chart>": (
+        "Memory Statistics trên Instance 2",
+        "MEMORY STATISTICS FOR INSTANCE 2",
+    ),
+    "<sga_statistics_for_instance_2_chart>": (
+        "SGA Statistics trên Instance 2",
+        "SGA STATISTICS FOR INSTANCE 2",
+    ),
+    "<pga_statistics_for_instance_2_chart>": (
+        "PGA Statistics trên Instance 2",
+        "PGA STATISTICS FOR INSTANCE 2",
     ),
 }

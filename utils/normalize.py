@@ -20,3 +20,26 @@ def strip_chart_suffix(key: str) -> str:
             return key[: -len(suffix)]
     return key
 
+
+def content_key_aliases(value: str | None) -> set[str]:
+    """Return lookup aliases for report keys that vary by date or RAC shape."""
+    key = normalize_key(value)
+    if not key:
+        return set()
+
+    aliases = {key, strip_chart_suffix(key)}
+    for item in list(aliases):
+        if "_between_" in item:
+            aliases.add(item.split("_between_", 1)[0])
+        normalized_days = re.sub(r"_for_\d+_days_of_history", "_for_days_of_history", item)
+        if normalized_days != item:
+            aliases.add(normalized_days)
+
+    for item in list(aliases):
+        if "for_cluster_for_9_days_of_history" in item:
+            aliases.add(item.replace("for_cluster_for_9_days_of_history", "for_instance_1_for_9_days_of_history"))
+        if "for_instance_1_for_9_days_of_history" in item:
+            aliases.add(item.replace("for_instance_1_for_9_days_of_history", "for_cluster_for_9_days_of_history"))
+
+    return {alias for alias in aliases if alias}
+

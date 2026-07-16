@@ -6,7 +6,7 @@ import re
 from bs4 import BeautifulSoup
 
 from models import ReportPage
-from utils.normalize import normalize_key, strip_chart_suffix
+from utils.normalize import content_key_aliases, normalize_key, strip_chart_suffix
 
 
 def read_html(path: Path) -> str:
@@ -37,6 +37,8 @@ def parse_html_file(path: Path) -> tuple[ReportPage, BeautifulSoup, str]:
         strip_chart_suffix(normalize_key(logical_from_name)),
         strip_chart_suffix(logical_key),
     }
+    for value in (title, heading, path.stem, logical_from_name, logical_key):
+        keys.update(content_key_aliases(value))
     if section:
         keys.add(section.lower())
         keys.add(section.lower().replace(".", "_"))

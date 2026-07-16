@@ -16,7 +16,7 @@ LOGO_NAMES = {"edb360_img.jpg", "edb360_favicon.ico"}
 CHART_PAGE_TIMEOUT_MS = 15000
 PRIMARY_SVG_TIMEOUT_MS = 8000
 FALLBACK_SVG_TIMEOUT_MS = 3000
-ENABLE_BROWSER_CHART_RENDER = os.getenv("ORACLEHC_ENABLE_BROWSER_CHARTS", "").strip().lower() in {
+DISABLE_BROWSER_CHART_RENDER = os.getenv("ORACLEHC_DISABLE_BROWSER_CHARTS", "").strip().lower() in {
     "1",
     "true",
     "yes",
@@ -75,14 +75,11 @@ def extract_rendered_chart(
     if not is_google_chart_page(html):
         return None
 
-    chart = render_google_chart_with_matplotlib(page, html, chart_output_dir, report)
+    chart = None if DISABLE_BROWSER_CHART_RENDER else render_google_chart_from_dom_svg(page, html, chart_output_dir, report)
     if chart:
         return chart
 
-    if not ENABLE_BROWSER_CHART_RENDER:
-        return None
-
-    return render_google_chart_from_dom_svg(page, html, chart_output_dir, report)
+    return render_google_chart_with_matplotlib(page, html, chart_output_dir, report)
 
 
 def render_google_chart_from_dom_svg(
@@ -110,7 +107,7 @@ def render_google_chart_from_dom_svg(
 
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch()
+            browser = p.chromium.launch(headless=True)
             try:
                 page_browser = browser.new_page(viewport={"width": 1000, "height": 700})
                 page_browser.goto(
@@ -118,21 +115,23 @@ def render_google_chart_from_dom_svg(
                     wait_until="domcontentloaded",
                     timeout=CHART_PAGE_TIMEOUT_MS,
                 )
-                locator = _wait_for_chart_svg(page_browser, PlaywrightTimeoutError)
+                locator = _wait_for_chart_element(page_browser, PlaywrightTimeoutError)
                 svg_info = _extract_svg_info(locator)
-                _validate_svg_info(svg_info, page.path.name)
-
-                normalized_svg = normalize_svg_for_export(
-                    svg_info["outer_html"],
-                    svg_info["width"],
-                    svg_info["height"],
-                    svg_info["view_box"],
-                )
-                svg_path.write_text(normalized_svg, encoding="utf-8")
+                if svg_info["outer_html"]:
+                    normalized_svg = normalize_svg_for_export(
+                        svg_info["outer_html"],
+                        svg_info["width"],
+                        svg_info["height"],
+                        svg_info["view_box"],
+                    )
+                    svg_path.write_text(normalized_svg, encoding="utf-8")
 
                 try:
                     locator.screenshot(path=str(image_path))
                 except PlaywrightError:
+                    if not svg_info["outer_html"]:
+                        raise
+                    _validate_svg_info(svg_info, page.path.name)
                     _rasterize_svg_with_browser(page_browser, normalized_svg, image_path)
             finally:
                 browser.close()
@@ -154,6 +153,15 @@ def render_google_chart_from_dom_svg(
     )
 
 
+def _wait_for_chart_element(page_browser, timeout_error_type):
+    try:
+        chart = page_browser.wait_for_selector("div.google-chart", timeout=PRIMARY_SVG_TIMEOUT_MS)
+        page_browser.wait_for_selector("div.google-chart svg", timeout=PRIMARY_SVG_TIMEOUT_MS)
+        return chart
+    except timeout_error_type:
+        return _wait_for_chart_svg(page_browser, timeout_error_type)
+
+
 def _wait_for_chart_svg(page_browser, timeout_error_type):
     try:
         return page_browser.wait_for_selector(".google-chart svg", timeout=PRIMARY_SVG_TIMEOUT_MS)
@@ -170,21 +178,22 @@ def _wait_for_chart_svg(page_browser, timeout_error_type):
 def _extract_svg_info(locator) -> dict[str, object]:
     return locator.evaluate(
         """
-        (svg) => {
-            const rect = svg.getBoundingClientRect();
+        (element) => {
+            const svg = element.matches('svg') ? element : element.querySelector('svg');
+            const rect = element.getBoundingClientRect();
             const box = (() => {
                 try {
-                    return svg.getBBox();
+                    return svg ? svg.getBBox() : { width: 0, height: 0 };
                 } catch (_error) {
                     return { width: 0, height: 0 };
                 }
             })();
             return {
-                outer_html: svg.outerHTML,
-                width: rect.width || Number(svg.getAttribute('width')) || box.width || 0,
-                height: rect.height || Number(svg.getAttribute('height')) || box.height || 0,
-                view_box: svg.getAttribute('viewBox') || '',
-                has_content: !!svg.querySelector('text,path,rect,polyline,polygon,circle,line,ellipse')
+                outer_html: svg ? svg.outerHTML : '',
+                width: rect.width || (svg ? Number(svg.getAttribute('width')) : 0) || box.width || 0,
+                height: rect.height || (svg ? Number(svg.getAttribute('height')) : 0) || box.height || 0,
+                view_box: svg ? (svg.getAttribute('viewBox') || '') : '',
+                has_content: !!(svg && svg.querySelector('text,path,rect,polyline,polygon,circle,line,ellipse'))
             };
         }
         """,
@@ -280,7 +289,7 @@ def render_google_chart_with_matplotlib(
     report: GenerationReport,
 ) -> ImageContent | None:
     variant = detect_chart_variant(page.path, html)
-    if variant != "line":
+    if variant not in {"line", "bar", "pie"}:
         return None
 
     parsed = parse_array_to_data_table(html)
@@ -299,7 +308,12 @@ def render_google_chart_with_matplotlib(
     y_label = extract_axis_title(html, "vAxis")
     x_label = extract_axis_title(html, "hAxis")
 
-    render_line_chart_png(headers, rows, title, y_label, image_path, x_label=x_label)
+    if variant == "bar":
+        render_bar_chart_png(headers, rows, title, y_label, image_path, x_label=x_label)
+    elif variant == "pie":
+        render_pie_chart_png(headers, rows, title, image_path)
+    else:
+        render_line_chart_png(headers, rows, title, y_label, image_path, x_label=x_label)
 
     keys = set(page.keys)
     keys.add(strip_chart_suffix(page.logical_key))
@@ -341,13 +355,124 @@ def parse_array_to_data_table(html: str) -> tuple[list[str], list[list[object]]]
         try:
             parsed = ast.literal_eval(line)
         except Exception:
+            if not headers:
+                quoted_headers = re.findall(r"'([^']+)'|\"([^\"]+)\"", line)
+                headers = [single or double for single, double in quoted_headers]
             continue
         if parsed and all(isinstance(item, str) for item in parsed):
             headers = [str(item) for item in parsed]
+        elif parsed and isinstance(parsed, list):
+            rows.append(parsed)
 
     if not headers:
         return None
     return headers, rows
+
+
+def render_bar_chart_png(
+    headers: list[str],
+    rows: list[list[object]],
+    title: str,
+    y_label: str,
+    image_path: Path,
+    x_label: str = "",
+) -> None:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import textwrap
+
+    labels: list[str] = []
+    values: list[float] = []
+    colors: list[str] = []
+    for row in rows:
+        if len(row) < 2:
+            continue
+        try:
+            value = float(row[1])
+        except (TypeError, ValueError):
+            continue
+        labels.append(str(row[0]))
+        values.append(value)
+        color = str(row[2]).strip() if len(row) > 2 else ""
+        colors.append(f"#{color}" if re.fullmatch(r"[0-9A-Fa-f]{6}", color) else "#1976D2")
+
+    fig, ax = plt.subplots(figsize=(12, 6.75))
+    if values:
+        wrapped_labels = ["\n".join(textwrap.wrap(label, width=18)) for label in labels]
+        ax.bar(wrapped_labels, values, color=colors)
+        ax.set_ylim(bottom=0)
+        ax.grid(axis="y", linestyle="--", alpha=0.4)
+    else:
+        ax.text(
+            0.5,
+            0.5,
+            "No plottable data",
+            transform=ax.transAxes,
+            ha="center",
+            va="center",
+            fontsize=14,
+            color="gray",
+        )
+
+    if title:
+        ax.set_title(title, fontsize=13, pad=10)
+    if y_label:
+        ax.set_ylabel(y_label, fontsize=12)
+    if x_label:
+        ax.set_xlabel(x_label, fontsize=11)
+
+    plt.xticks(rotation=0, ha="center")
+    plt.savefig(image_path, bbox_inches="tight", dpi=150)
+    plt.close(fig)
+
+
+def render_pie_chart_png(
+    headers: list[str],
+    rows: list[list[object]],
+    title: str,
+    image_path: Path,
+) -> None:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    labels: list[str] = []
+    values: list[float] = []
+    for row in rows:
+        if len(row) < 2:
+            continue
+        try:
+            value = float(row[1])
+        except (TypeError, ValueError):
+            continue
+        if value <= 0:
+            continue
+        labels.append(str(row[0]))
+        values.append(value)
+
+    fig, ax = plt.subplots(figsize=(12, 6.75))
+    if values:
+        wedges, _, autotexts = ax.pie(
+            values,
+            startangle=90,
+            counterclock=False,
+            autopct=lambda percent: f"{percent:.1f}%" if percent >= 3 else "",
+            pctdistance=0.78,
+            wedgeprops={"width": 0.72, "edgecolor": "white"},
+        )
+        ax.legend(wedges, labels, loc="center left", bbox_to_anchor=(1.0, 0.5), fontsize=9)
+        for text in autotexts:
+            text.set_color("white")
+            text.set_fontweight("bold")
+        ax.axis("equal")
+    else:
+        ax.text(0.5, 0.5, "No plottable data", transform=ax.transAxes, ha="center", va="center", fontsize=14, color="gray")
+
+    if title:
+        ax.set_title(title, fontsize=13, pad=10)
+    plt.savefig(image_path, bbox_inches="tight", dpi=150)
+    plt.close(fig)
 
 
 # Legacy rollback only. Do not use for OracleHC chart rendering.

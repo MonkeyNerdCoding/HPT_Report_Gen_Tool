@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OracleHC Report Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="app-panel" aria-labelledby="page-title">
+        <header class="brand-header">
+          <img class="brand-logo" src="{{ url_for('assets', path='/tachnen_hpt.png') }}" alt="HPT knowing IT">
+          <div>
+            <p class="eyebrow">HPT Report Tool</p>
+            <h1 id="page-title">OracleHC Report Generator</h1>
+          </div>
+        </header>
+
+        {% if error_message %}
+        <div class="alert" role="alert">
+          <strong>{{ error_message }}</strong>
+          <span>Reason: {{ error_reason }}</span>
+        </div>
+        {% endif %}
+
+        <form class="generator-form" method="post" action="/generate" enctype="multipart/form-data" data-generate-form>
+          <fieldset>
+            <legend>Mode</legend>
+            <div class="mode-grid">
+              {% for mode in modes %}
+              <label class="mode-card">
+                <input
+                  type="radio"
+                  name="mode"
+                  value="{{ mode }}"
+                  {% if selected_mode == mode %}checked{% endif %}
+                >
+                <span>{{ mode }}</span>
+              </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+
+          <label class="field">
+            <span>Word Template</span>
+            <input type="file" name="template_file" accept=".docx" required>
+            <small>Upload the Word template file in .docx format.</small>
+          </label>
+
+          <label class="field">
+            <span>Source Package</span>
+            <input type="file" name="source_zip" accept=".zip" required>
+            <small>Upload a ZIP file containing the OracleHC HTML folder or SQLHealthcheck CSV folder.</small>
+          </label>
+
+          <label class="field">
+            <span>Output File Name</span>
+            <input type="text" name="output_name" value="{{ output_name }}" placeholder="final_healthcheck_report.docx">
+          </label>
+
+          <button class="submit-button" type="submit" data-submit-button>
+            Generate Report
+          </button>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      const form = document.querySelector("[data-generate-form]");
+      const button = document.querySelector("[data-submit-button]");
+
+      form.addEventListener("submit", () => {
+        button.disabled = true;
+        button.textContent = "Generating report...";
+      });
+    </script>
+  </body>
+</html>

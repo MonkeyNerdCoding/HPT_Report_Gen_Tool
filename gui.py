@@ -4,6 +4,7 @@ import json
 import os
 import queue
 import threading
+import time
 import traceback
 from pathlib import Path
 from tkinter import filedialog, messagebox
@@ -57,6 +58,11 @@ class ReportGeneratorApp(ctk.CTk):
         self.events: queue.Queue[tuple[str, object]] = queue.Queue()
         self.logo_warning: str | None = None
         self.log_count: int = 0
+        self.operation_started_at: float | None = None
+        self.operation_dialog: ctk.CTkToplevel | None = None
+        self.operation_dialog_progress: ctk.CTkProgressBar | None = None
+        self.operation_dialog_progress_label: ctk.CTkLabel | None = None
+        self.operation_dialog_elapsed_label: ctk.CTkLabel | None = None
 
         self._build_ui()
         self._load_settings()
@@ -502,13 +508,9 @@ class ReportGeneratorApp(ctk.CTk):
         self.last_output_folder = str(Path(word_file).parent)
         self.last_save_dir = self.last_output_folder
         self._save_settings()
-        self.open_file_button.configure(state="disabled")
-        self.open_folder_button.configure(state="disabled")
+        self._begin_operation_ui("Insert Placeholders", "Scanning the template and inserting only placeholders that match visible anchors.")
         self.create_button.configure(state="disabled")
         self.placeholder_button.configure(state="disabled", text="Inserting...")
-        self.status_var.set("Processing")
-        self.log_count = 0
-        self._update_progress_bar(0)
         self._append_log("")
         self._append_log("Starting placeholder insertion...")
         self._append_log(f"Word file: {word_file}")
@@ -532,13 +534,9 @@ class ReportGeneratorApp(ctk.CTk):
         self.last_output_folder = str(Path(output_file).parent)
         self.last_save_dir = self.last_output_folder
         self._save_settings()
-        self.open_file_button.configure(state="disabled")
-        self.open_folder_button.configure(state="disabled")
+        self._begin_operation_ui("Generate Report", "Running extraction, mapping, and Word rendering.")
         self.create_button.configure(state="disabled", text="Processing...")
         self.placeholder_button.configure(state="disabled")
-        self.status_var.set("Processing")
-        self.log_count = 0
-        self._update_progress_bar(0)
         self._append_log("")
         self._append_log("Starting report generation...")
         self._append_log(f"Output file: {output_file}")
@@ -562,13 +560,9 @@ class ReportGeneratorApp(ctk.CTk):
         self.last_output_folder = str(Path(output_folder).resolve())
         self.last_save_dir = self.last_output_folder
         self._save_settings()
-        self.open_file_button.configure(state="disabled")
-        self.open_folder_button.configure(state="disabled")
+        self._begin_operation_ui("Generate Report", "Merging SQL CSV files and rendering the final Word report.")
         self.create_button.configure(state="disabled", text="Processing...")
         self.placeholder_button.configure(state="disabled")
-        self.status_var.set("Processing")
-        self.log_count = 0
-        self._update_progress_bar(0)
         self._append_log("")
         self._append_log("Starting SQLHealcheck generation...")
         self._append_log(f"SQL root folder: {input_folder}")
@@ -666,8 +660,144 @@ class ReportGeneratorApp(ctk.CTk):
     def _update_progress_bar(self, value: float) -> None:
         """Update progress bar and label."""
         self.progress.set(value)
+        if self.operation_dialog_progress is not None:
+            self.operation_dialog_progress.set(value)
         percentage = int(value * 100)
         self.progress_label.configure(text=f"{percentage}%")
+        if self.operation_dialog_progress_label is not None:
+            self.operation_dialog_progress_label.configure(text=f"{percentage}%")
+
+    def _begin_operation_ui(self, title: str, message: str) -> None:
+        self.operation_started_at = time.monotonic()
+        self.status_var.set("Processing")
+        self.log_count = 0
+        self._update_progress_bar(0)
+        self.open_file_button.configure(state="disabled")
+        self.open_folder_button.configure(state="disabled")
+        self._show_operation_dialog(title, message)
+        self._schedule_elapsed_update()
+
+    def _show_operation_dialog(self, title: str, message: str) -> None:
+        if self.operation_dialog is not None:
+            try:
+                self.operation_dialog.destroy()
+            except Exception:
+                pass
+
+        dialog = ctk.CTkToplevel(self)
+        dialog.title(title)
+        dialog.geometry("420x210")
+        dialog.resizable(False, False)
+        dialog.transient(self)
+        dialog.protocol("WM_DELETE_WINDOW", self._hide_operation_dialog)
+        dialog.configure(fg_color=APP_BG)
+
+        frame = ctk.CTkFrame(dialog, fg_color=PANEL_BG, corner_radius=10, border_width=1, border_color=BORDER_COLOR)
+        frame.pack(fill="both", expand=True, padx=14, pady=14)
+        frame.grid_columnconfigure(0, weight=1)
+
+        ctk.CTkLabel(
+            frame,
+            text=title,
+            text_color=TEXT_PRIMARY,
+            font=ctk.CTkFont(size=18, weight="bold"),
+        ).grid(row=0, column=0, sticky="w", padx=18, pady=(16, 6))
+
+        self.operation_dialog_elapsed_label = ctk.CTkLabel(
+            frame,
+            text="Elapsed: 00:00:00",
+            text_color=TEXT_MUTED,
+            font=ctk.CTkFont(size=12, weight="bold"),
+        )
+        self.operation_dialog_elapsed_label.grid(row=1, column=0, sticky="w", padx=18, pady=(0, 10))
+
+        message_label = ctk.CTkLabel(
+            frame,
+            text=message,
+            text_color=TEXT_SECONDARY,
+            font=ctk.CTkFont(size=12),
+            justify="left",
+            wraplength=380,
+        )
+        message_label.grid(row=2, column=0, sticky="w", padx=18, pady=(0, 10))
+
+        bar_frame = ctk.CTkFrame(frame, fg_color="transparent")
+        bar_frame.grid(row=3, column=0, sticky="ew", padx=18, pady=(0, 12))
+        bar_frame.grid_columnconfigure(0, weight=1)
+
+        self.operation_dialog_progress = ctk.CTkProgressBar(
+            bar_frame,
+            mode="determinate",
+            height=12,
+            corner_radius=8,
+            fg_color="#e8ebf0",
+            progress_color=PRIMARY_COLOR,
+        )
+        self.operation_dialog_progress.grid(row=0, column=0, sticky="ew")
+        self.operation_dialog_progress.set(0)
+
+        self.operation_dialog_progress_label = ctk.CTkLabel(
+            bar_frame,
+            text="0%",
+            text_color=TEXT_PRIMARY,
+            font=ctk.CTkFont(size=11, weight="bold"),
+        )
+        self.operation_dialog_progress_label.grid(row=0, column=1, sticky="e", padx=(8, 0))
+
+        button_row = ctk.CTkFrame(frame, fg_color="transparent")
+        button_row.grid(row=4, column=0, sticky="e", padx=18, pady=(4, 16))
+
+        close_button = ctk.CTkButton(
+            button_row,
+            text="Hide",
+            width=92,
+            height=34,
+            corner_radius=8,
+            fg_color=CONTROL_BG,
+            hover_color=CONTROL_HOVER,
+            text_color=TEXT_PRIMARY,
+            border_width=1,
+            border_color=BORDER_STRONG,
+            font=ctk.CTkFont(size=12, weight="bold"),
+            command=self._hide_operation_dialog,
+        )
+        close_button.grid(row=0, column=0)
+
+        self.operation_dialog = dialog
+        self.operation_dialog.lift()
+
+    def _hide_operation_dialog(self) -> None:
+        if self.operation_dialog is not None:
+            self.operation_dialog.withdraw()
+
+    def _destroy_operation_dialog(self) -> None:
+        if self.operation_dialog is not None:
+            try:
+                self.operation_dialog.destroy()
+            except Exception:
+                pass
+        self.operation_dialog = None
+        self.operation_dialog_progress = None
+        self.operation_dialog_progress_label = None
+        self.operation_dialog_elapsed_label = None
+
+    def _schedule_elapsed_update(self) -> None:
+        self.after(1000, self._update_operation_elapsed)
+
+    def _update_operation_elapsed(self) -> None:
+        if self.operation_started_at is None or self.operation_dialog is None:
+            return
+        elapsed_seconds = int(time.monotonic() - self.operation_started_at)
+        hours, remainder = divmod(elapsed_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if self.operation_dialog_elapsed_label is not None:
+            self.operation_dialog_elapsed_label.configure(text=f"Elapsed: {hours:02d}:{minutes:02d}:{seconds:02d}")
+        if self.status_var.get() == "Processing":
+            self._schedule_elapsed_update()
+
+    def _finish_operation_ui(self) -> None:
+        self.operation_started_at = None
+        self._destroy_operation_dialog()
 
     def _handle_success(self, result: object) -> None:
         self._update_progress_bar(1.0)  # Set to 100%
@@ -696,6 +826,7 @@ class ReportGeneratorApp(ctk.CTk):
         self.open_folder_button.configure(state="normal")
         self._append_log(f"Success: {output_file}")
         messagebox.showinfo(APP_TITLE, f"Report created successfully:\n{output_file}")
+        self._finish_operation_ui()
 
     def _handle_placeholder_success(self, result: object) -> None:
         word_file, report = result
@@ -715,9 +846,11 @@ class ReportGeneratorApp(ctk.CTk):
                 APP_TITLE,
                 "Placeholder insertion finished, but some placeholders could not be placed. Check the runtime log.",
             )
+            self._finish_operation_ui()
             return
 
         messagebox.showinfo(APP_TITLE, f"Placeholders inserted successfully:\n{word_file}")
+        self._finish_operation_ui()
 
     def _handle_error(self, details: str) -> None:
         self._update_progress_bar(0)
@@ -728,6 +861,7 @@ class ReportGeneratorApp(ctk.CTk):
         self._append_log("Failed.")
         self._append_log(details)
         messagebox.showerror(APP_TITLE, summary)
+        self._finish_operation_ui()
 
     def _validate_oracle_inputs(self, html_folder: str, word_file: str) -> str | None:
         if not html_folder or not word_file:

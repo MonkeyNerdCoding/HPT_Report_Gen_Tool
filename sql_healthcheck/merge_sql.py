@@ -18,6 +18,7 @@ def merge_sql_csv(
     input_folder: str | Path,
     output_file: str | Path,
     log_callback: LogCallback | None = None,
+    cancel_check: Callable[[], bool] | None = None,
 ) -> str | None:
     """Merge all CSV files in one DB folder into a multi-sheet Excel workbook."""
     input_path = Path(input_folder)
@@ -32,6 +33,8 @@ def merge_sql_csv(
     all_data = {}
 
     for file in csv_files:
+        if cancel_check and cancel_check():
+            return None
         filename = os.path.basename(file)
         sheet_name = extract_sheet_name(filename)
 
@@ -67,6 +70,7 @@ def merge_sql_root_csv(
     input_root: str | Path,
     output_file: str | Path,
     log_callback: LogCallback | None = None,
+    cancel_check: Callable[[], bool] | None = None,
 ) -> str | None:
     """Merge CSV files from every direct DB subfolder into one Excel workbook."""
     input_path = Path(input_root)
@@ -80,6 +84,8 @@ def merge_sql_root_csv(
 
     all_data: dict[str, list[pd.DataFrame]] = {}
     for db_folder in db_folders:
+        if cancel_check and cancel_check():
+            return None
         csv_files = sorted(glob.glob(os.path.join(str(db_folder), "*.csv")))
         if not csv_files:
             log(f"⚠️ Không có CSV trong {db_folder}, bỏ qua.\n")
@@ -87,7 +93,7 @@ def merge_sql_root_csv(
 
         log("")
         log(f"🚀 Đang xử lý DB folder: {db_folder.name}")
-        folder_data = _read_csv_files(csv_files, log)
+        folder_data = _read_csv_files(csv_files, log, cancel_check=cancel_check)
         for sheet_name, dataframes in folder_data.items():
             all_data.setdefault(sheet_name, []).extend(dataframes)
 
@@ -102,6 +108,7 @@ def merge_sql_root_healthcheck(
     input_root: str | Path,
     output_file: str | Path,
     log_callback: LogCallback | None = None,
+    cancel_check: Callable[[], bool] | None = None,
 ) -> str | None:
     """Merge one DB folder or a root of DB subfolders with CSV files into one workbook."""
     input_path = Path(input_root)
@@ -109,14 +116,14 @@ def merge_sql_root_healthcheck(
 
     direct_csv_files = sorted(glob.glob(os.path.join(str(input_path), "*.csv")))
     if direct_csv_files:
-        return merge_sql_csv(input_path, output_file, log_callback=log_callback)
+        return merge_sql_csv(input_path, output_file, log_callback=log_callback, cancel_check=cancel_check)
 
     db_folders_with_csv = [
         child for child in input_path.iterdir()
         if child.is_dir() and any(csv_file.is_file() for csv_file in child.glob("*.csv"))
     ]
     if db_folders_with_csv:
-        return merge_sql_root_csv(input_path, output_file, log_callback=log_callback)
+        return merge_sql_root_csv(input_path, output_file, log_callback=log_callback, cancel_check=cancel_check)
 
     log(f"⚠️ Không tìm thấy CSV hoặc DB folder chứa CSV trong {input_path}, bỏ qua.\n")
     return None
@@ -125,9 +132,12 @@ def merge_sql_root_healthcheck(
 def _read_csv_files(
     csv_files: list[str],
     log: LogCallback,
+    cancel_check: Callable[[], bool] | None = None,
 ) -> dict[str, list[pd.DataFrame]]:
     all_data: dict[str, list[pd.DataFrame]] = {}
     for csv_file in csv_files:
+        if cancel_check and cancel_check():
+            return all_data
         filename = os.path.basename(csv_file)
         sheet_name = extract_sheet_name(filename)
         if not sheet_name:

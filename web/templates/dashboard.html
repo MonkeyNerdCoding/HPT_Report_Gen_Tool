@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HPT OracleHC Report Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/dashboard.css') }}">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand-mark" href="#" data-tab-target="tool" aria-label="HPT Report Tool">
+          <img src="{{ url_for('assets', path='/tachnen_hpt.png') }}" alt="HPT knowing IT">
+          <span>
+            <strong>HPT Report Tool</strong>
+            <small>OracleHC &amp; SQLHealthcheck Report Automation</small>
+          </span>
+        </a>
+        <nav class="app-nav" aria-label="Primary navigation">
+          <button class="nav-tab is-active" type="button" data-tab-target="tool">Tool</button>
+          <button class="nav-tab" type="button" data-tab-target="history">History</button>
+          <button class="nav-tab" type="button" data-tab-target="guide">Guide</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="page-section is-active" data-tab-page="tool">
+        <section class="hero-section" aria-labelledby="hero-title">
+          <div>
+            <span class="badge">Internal HPT Tool</span>
+            <h1 id="hero-title">OracleHC Report Generator</h1>
+            <p>Generate OracleHC and SQLHealthcheck reports from Word templates and source packages.</p>
+          </div>
+          <div class="hero-guide" aria-label="How to use">
+            <strong>How to use</strong>
+            <ol>
+              <li>Select report mode</li>
+              <li>Upload Word template</li>
+              <li>Upload source package</li>
+              <li>Generate and download report</li>
+            </ol>
+          </div>
+        </section>
+
+        {% if error_message %}
+        <div class="alert" role="alert">
+          <strong>{{ error_message }}</strong>
+          <span>Reason: {{ error_reason }}</span>
+        </div>
+        {% endif %}
+
+        <div class="tool-grid">
+          <section class="card form-card" aria-labelledby="form-title">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Report setup</p>
+                <h2 id="form-title">Generate Report</h2>
+              </div>
+              <button class="secondary-button" type="button" data-reset-form>Reset Form</button>
+            </div>
+
+            <form class="generator-form" action="/generate" method="post" enctype="multipart/form-data" data-generate-form>
+              <fieldset>
+                <legend>Mode</legend>
+                <div class="segmented-control" data-mode-selector></div>
+              </fieldset>
+
+              <label class="field">
+                <span>Word Template</span>
+                <input class="native-file" type="file" name="template_file" accept=".docx" required data-file-input="template">
+                <span class="upload-box" data-upload-box="template">
+                  <span>
+                    <strong>Choose .docx file</strong>
+                    <small data-file-name="template">No template selected</small>
+                  </span>
+                  <em>Browse</em>
+                </span>
+                <small>Upload the Word template file in .docx format.</small>
+                <span class="field-error" data-field-error="template"></span>
+              </label>
+
+              <label class="field">
+                <span>Upload Source Package (.zip)</span>
+                <input class="native-file" type="file" name="source_zip" accept=".zip" required data-file-input="source">
+                <span class="upload-box" data-upload-box="source">
+                  <span>
+                    <strong>Choose source package</strong>
+                    <small data-file-name="source">No source package selected</small>
+                  </span>
+                  <em>Browse</em>
+                </span>
+                <small data-source-helper>OracleHC: ZIP containing the OracleHC HTML folder.</small>
+                <span class="field-error" data-field-error="source"></span>
+              </label>
+
+              <label class="field">
+                <span>Output File Name</span>
+                <input type="text" name="output_name" value="{{ output_name }}" placeholder="final_oraclehc_report.docx" data-output-name>
+                <span class="field-error" data-field-error="output"></span>
+              </label>
+
+              <input type="hidden" name="mode" value="{{ selected_mode }}" data-mode-value>
+
+              <div class="form-actions">
+                <button class="primary-button" type="submit" data-submit-button>Generate Report</button>
+              </div>
+            </form>
+
+            <section class="result-card" hidden data-result-card>
+              <div>
+                <span class="status-dot success"></span>
+                <strong>Report is ready</strong>
+                <p data-result-filename>final_oraclehc_report.docx</p>
+              </div>
+              <div class="result-actions">
+                <button class="secondary-button" type="button" data-download-again>Download Again</button>
+                <button class="secondary-button" type="button" data-generate-another>Generate Another Report</button>
+              </div>
+            </section>
+          </section>
+
+          <aside class="side-stack">
+            <section class="card placeholder-card" aria-labelledby="placeholder-title">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Template helper</p>
+                  <h2 id="placeholder-title">Insert Placeholder</h2>
+                </div>
+              </div>
+              <input class="search-input" type="search" placeholder="Search placeholder..." data-placeholder-search>
+              <div class="placeholder-groups" data-placeholder-groups></div>
+            </section>
+
+            <section class="card log-card" aria-labelledby="log-title">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Runtime</p>
+                  <h2 id="log-title">Log Tracking</h2>
+                </div>
+                <button class="secondary-button" type="button" data-clear-logs>Clear Logs</button>
+              </div>
+              <div class="log-list" data-log-list aria-live="polite"></div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="page-section" data-tab-page="history">
+        <section class="hero-section compact">
+          <div>
+            <span class="badge">Local view</span>
+            <h1>Report History</h1>
+            <p>View recently generated reports and their processing status.</p>
+          </div>
+        </section>
+        <section class="card history-card">
+          <div class="history-filters">
+            <input class="search-input" type="search" placeholder="Search by filename..." data-history-search>
+            <select data-history-mode>
+              <option value="all">All modes</option>
+              <option value="oraclehc">OracleHC</option>
+              <option value="sqlhealthcheck">SQLHealthcheck</option>
+            </select>
+            <select data-history-status>
+              <option value="all">All statuses</option>
+              <option value="success">Success</option>
+              <option value="failed">Failed</option>
+              <option value="processing">Processing</option>
+              <option value="ready">Ready</option>
+            </select>
+          </div>
+          <div class="history-table-wrap">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>File Name</th>
+                  <th>Mode</th>
+                  <th>Template</th>
+                  <th>Source Package</th>
+                  <th>Status</th>
+                  <th>Created At</th>
+                  <th>Duration</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody data-history-body></tbody>
+            </table>
+          </div>
+          <div class="empty-state" hidden data-history-empty>
+            <strong>No reports generated yet.</strong>
+            <span>Start by uploading a Word template and source package.</span>
+          </div>
+        </section>
+      </section>
+
+      <section class="page-section" data-tab-page="guide">
+        <section class="hero-section compact">
+          <div>
+            <span class="badge">Guide</span>
+            <h1>Prepare Your Inputs</h1>
+            <p>Keep the package structure close to the desktop tool source folders.</p>
+          </div>
+        </section>
+        <section class="guide-grid">
+          <article class="card">
+            <p class="eyebrow">OracleHC</p>
+            <h2>HTML package</h2>
+            <p>Upload a ZIP containing the OracleHC HTML folder, including the index file and related assets.</p>
+          </article>
+          <article class="card">
+            <p class="eyebrow">SQLHealthcheck</p>
+            <h2>CSV package</h2>
+            <p>Upload a ZIP containing SQLHealthcheck CSV files or DB folders that contain CSV files.</p>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <div class="toast-region" data-toast-region aria-live="polite"></div>
+    <script src="{{ url_for('static', path='/app.js') }}"></script>
+  </body>
+</html>

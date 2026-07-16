@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HPT OracleHC Report Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/dashboard.css') }}">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand-mark" href="#" data-tab-target="tool" aria-label="HPT Report Tool">
+          <img src="{{ url_for('assets', path='/tachnen_hpt.png') }}" alt="HPT knowing IT">
+          <span>
+            <strong>HPT Report Tool</strong>
+            <small>OracleHC &amp; SQLHealthcheck Report Automation</small>
+          </span>
+        </a>
+        <nav class="app-nav" aria-label="Primary navigation">
+          <button class="nav-tab is-active" type="button" data-tab-target="tool">Tool</button>
+          <button class="nav-tab" type="button" data-tab-target="placeholder">Placeholder</button>
+          <button class="nav-tab" type="button" data-tab-target="ai-review">AI Review</button>
+          <button class="nav-tab" type="button" data-tab-target="company">Company/Profile</button>
+          <button class="nav-tab" type="button" data-tab-target="history">History</button>
+          <button class="nav-tab" type="button" data-tab-target="guide">Guide</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="page-section is-active" data-tab-page="tool">
+        <section class="hero-section compact">
+          <div>
+            <span class="badge">Internal HPT Tool</span>
+            <h1>OracleHC Report Generator</h1>
+            <p>Generate OracleHC and SQLHealthcheck reports from Word templates and source data, then insert mapped placeholders directly into the Word template when needed.</p>
+          </div>
+        </section>
+
+        <div class="tool-grid">
+          <section class="card form-card" aria-labelledby="setup-title">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Report setup</p>
+                <h2 id="setup-title">Report Setup</h2>
+              </div>
+            </div>
+
+            <form class="generator-form" action="/api/report/generate" method="post" enctype="multipart/form-data" data-generate-form>
+              <fieldset class="form-section step-mode">
+                <legend class="section-head"><span>01</span> Report Mode</legend>
+                <p class="section-copy">Choose the report type.</p>
+                <div class="segmented-control" data-mode-selector></div>
+              </fieldset>
+
+              <label class="field form-section">
+                <span class="section-head"><em>02</em> Word Template</span>
+                <small class="section-copy">Upload the .docx report template.</small>
+                <input class="native-file" type="file" name="template_file" accept=".docx" required data-file-input="template">
+                <span class="upload-row">
+                  <span class="file-badge">DOC</span>
+                  <span class="upload-copy">
+                    <strong data-file-name="template">No template selected</strong>
+                    <small data-file-meta="template">Waiting for upload</small>
+                  </span>
+                  <em class="browse-button">Browse</em>
+                </span>
+                <span class="field-error" data-field-error="template"></span>
+              </label>
+
+              <label class="field form-section">
+                <span class="section-head"><em>03</em> Source Data</span>
+                <small class="section-copy" data-source-helper>ZIP containing OracleHC HTML output.</small>
+                <input class="native-file" type="file" name="source_zip" accept=".zip" required data-file-input="source">
+                <span class="upload-row">
+                  <span class="file-badge">ZIP</span>
+                  <span class="upload-copy">
+                    <strong data-file-name="source">No source data selected</strong>
+                    <small data-file-meta="source">Waiting for upload</small>
+                  </span>
+                  <em class="browse-button">Browse</em>
+                </span>
+                <span class="field-error" data-field-error="source"></span>
+              </label>
+
+              <label class="field form-section">
+                <span class="section-head"><em>04</em> Output File</span>
+                <small class="section-copy">Final .docx filename.</small>
+                <input type="text" name="output_name" value="{{ output_name }}" placeholder="final_oraclehc_report.docx" data-output-name>
+                <span class="field-error" data-field-error="output"></span>
+              </label>
+
+              <input type="hidden" name="mode" value="{{ selected_mode }}" data-mode-value>
+
+              <div class="form-actions">
+                <button class="primary-button" type="submit" data-submit-button disabled>Generate Report</button>
+                <button class="secondary-button" type="button" data-insert-placeholders disabled>Insert Placeholders into Word</button>
+                <button class="text-button" type="button" data-reset-form>Reset Form</button>
+              </div>
+            </form>
+
+            <section class="result-card" hidden data-result-card>
+              <div>
+                <span class="status-dot success"></span>
+                <strong data-result-title>Report is ready</strong>
+                <p data-result-filename>final_oraclehc_report.docx</p>
+              </div>
+              <div class="result-actions">
+                <button class="secondary-button" type="button" data-download-again>Download Report</button>
+                <button class="secondary-button" type="button" data-generate-another>Generate Another Report</button>
+              </div>
+            </section>
+          </section>
+
+          <aside class="side-stack">
+            <section class="card log-card" aria-labelledby="log-title">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">Runtime</p>
+                  <h2 id="log-title">Runtime Log</h2>
+                </div>
+              </div>
+              <div class="log-toolbar">
+                <div class="log-filters" data-log-filters>
+                  <button class="is-active" type="button" data-log-level="all">All</button>
+                  <button type="button" data-log-level="info">Info</button>
+                  <button type="button" data-log-level="success">Success</button>
+                  <button type="button" data-log-level="warning">Warning</button>
+                  <button type="button" data-log-level="error">Error</button>
+                </div>
+                <div class="inline-actions compact">
+                  <button class="secondary-button" type="button" data-copy-logs>Copy Logs</button>
+                  <button class="secondary-button" type="button" data-download-logs>Download Logs</button>
+                  <button class="secondary-button" type="button" data-clear-logs>Clear Logs</button>
+                </div>
+              </div>
+              <div class="log-list" data-log-list aria-live="polite"></div>
+            </section>
+          </aside>
+        </div>
+
+      </section>
+
+      <section class="page-section" data-tab-page="placeholder" id="placeholder-top">
+        <section class="hero-section compact">
+          <div>
+            <span class="badge">YAML manager</span>
+            <h1>Placeholder</h1>
+            <p>Manage mapped placeholders, inspect where each item comes from, scan a new Word/PDF/HTML file, and add new placeholders back into YAML.</p>
+          </div>
+        </section>
+
+        <details class="card placeholder-manager collapsible-card" open>
+          <summary class="collapsible-summary">
+            <div>
+              <p class="eyebrow">Mapping inventory</p>
+              <h2>Placeholder List</h2>
+            </div>
+            <div class="inline-actions">
+              <button class="secondary-button" type="button" data-refresh-placeholders>Refresh</button>
+              <span class="collapse-indicator" aria-hidden="true"></span>
+            </div>
+          </summary>
+          <details class="placeholder-editor" data-placeholder-editor>
+            <summary>
+              <span>Add / Edit Placeholder</span>
+              <em data-placeholder-editor-mode>New</em>
+            </summary>
+            <form class="placeholder-edit-form" data-placeholder-edit-form>
+              <input type="hidden" data-placeholder-original>
+              <label>
+                <span>Placeholder</span>
+                <input type="text" required placeholder="<placeholder_name>" data-placeholder-field="placeholder">
+              </label>
+              <label>
+                <span>Source key</span>
+                <input type="text" required placeholder="source_key" data-placeholder-field="source_key">
+              </label>
+              <label>
+                <span>Type</span>
+                <select data-placeholder-field="content_type">
+                  <option value="table">Table</option>
+                  <option value="chart">Chart</option>
+                  <option value="image">Image</option>
+                  <option value="text">Text</option>
+                </select>
+              </label>
+              <label>
+                <span>Source HTML/File</span>
+                <input type="text" placeholder="source.html" data-placeholder-field="source_html">
+              </label>
+              <label>
+                <span>Description</span>
+                <input type="text" placeholder="Short description" data-placeholder-field="description">
+              </label>
+              <label>
+                <span>Location</span>
+                <input type="text" placeholder="Report location" data-placeholder-field="location">
+              </label>
+              <label>
+                <span>Purpose</span>
+                <input type="text" placeholder="Render purpose" data-placeholder-field="purpose">
+              </label>
+              <label>
+                <span>Chart variant</span>
+                <select data-placeholder-field="chart_variant">
+                  <option value="">Default</option>
+                  <option value="line">Line</option>
+                  <option value="pie">Pie</option>
+                  <option value="bar">Bar</option>
+                </select>
+              </label>
+              <div class="placeholder-edit-actions">
+                <button class="primary-button" type="submit" data-placeholder-save>Save</button>
+                <button class="secondary-button" type="button" data-placeholder-new>New</button>
+              </div>
+            </form>
+          </details>
+          <div class="placeholder-toolbar">
+            <input class="search-input" type="search" placeholder="Search key, description, source, section/table..." data-placeholder-search>
+            <select data-placeholder-type>
+              <option value="all">All types</option>
+              <option value="table">Table</option>
+              <option value="chart">Chart</option>
+              <option value="image">Image</option>
+              <option value="text">Text</option>
+            </select>
+          </div>
+          <div class="history-overview placeholder-stats" data-placeholder-stats></div>
+          <div class="placeholder-table-wrap">
+            <table class="placeholder-table">
+              <thead>
+                <tr>
+                  <th>Placeholder</th>
+                  <th>Description</th>
+                  <th>Type</th>
+                  <th>Source</th>
+                  <th>Template/File</th>
+                  <th>Section/Location</th>
+                  <th>Purpose</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody data-placeholder-body></tbody>
+            </table>
+          </div>
+          <div class="empty-state" hidden data-placeholder-empty>
+            <strong>No placeholders found.</strong>
+            <span>Refresh mapping or add placeholders after scanning a template.</span>
+          </div>
+        </details>
+
+        <section class="card placeholder-scan-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Scan placeholder</p>
+              <h2>Scan New File</h2>
+            </div>
+          </div>
+          <form class="placeholder-scan-form" data-placeholder-scan-form>
+            <label class="field">
+              <span class="section-head"><em>01</em> Word/PDF/HTML File</span>
+              <small class="section-copy">Upload a file that already contains placeholders.</small>
+              <input class="native-file" type="file" name="template_file" accept=".docx,.pdf,.html,.htm" required data-placeholder-file>
+              <span class="upload-row">
+                <span class="file-badge">TPL</span>
+                <span class="upload-copy">
+                  <strong data-placeholder-file-name>No scan file selected</strong>
+                  <small data-placeholder-file-meta>Waiting for upload</small>
+                </span>
+                <em class="browse-button">Browse</em>
+              </span>
+              <span class="field-error" data-placeholder-file-error></span>
+            </label>
+            <div class="form-actions scan-actions">
+              <button class="primary-button" type="submit" data-scan-placeholders>Scan Placeholder</button>
+              <button class="secondary-button" type="button" data-add-new-placeholders disabled>Add New to YAML</button>
+            </div>
+          </form>
+          <div class="scan-result-grid" hidden data-placeholder-scan-results>
+            <section class="scan-panel">
+              <h3>Found in File</h3>
+              <div class="mini-table-wrap"><table class="mini-table"><tbody data-scan-found></tbody></table></div>
+            </section>
+            <section class="scan-panel">
+              <h3>In YAML, Missing in File</h3>
+              <div class="mini-table-wrap"><table class="mini-table"><tbody data-scan-missing></tbody></table></div>
+            </section>
+            <section class="scan-panel">
+              <h3>In File, Missing in YAML</h3>
+              <div class="mini-table-wrap"><table class="mini-table"><tbody data-scan-new></tbody></table></div>
+            </section>
+          </div>
+        </section>
+        <span id="placeholder-bottom"></span>
+      </section>
+
+      <section class="page-section ai-review-page" data-tab-page="ai-review">
+        <section class="hero-section compact ai-hero-card">
+          <div>
+            <span class="badge">Oracle Health Check</span>
+            <h1>AI Review</h1>
+            <p>Generate a concise editable review table from parsed OracleHC data. The backend sends summarized extracted metrics only, then validates JSON before rendering.</p>
+            <div class="ai-hero-pills" aria-label="AI Review capabilities">
+              <span>Parsed metrics only</span>
+              <span>Gemini provider</span>
+              <span>Editable table</span>
+            </div>
+          </div>
+          <div class="ai-mascot" aria-hidden="true">
+            <span class="ai-glow-orb"></span>
+            <span class="ai-mascot-antenna"></span>
+            <span class="ai-mascot-head"><i></i><i></i><b></b></span>
+            <span class="ai-mascot-body"><strong>HPT</strong><em>DOC</em></span>
+          </div>
+        </section>
+
+        <section class="card ai-review-card ai-review-surface">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Review setup</p>
+              <h2>Scan &amp; Generate</h2>
+            </div>
+          </div>
+          <form class="ai-review-form" data-ai-review-form>
+            <div class="ai-review-grid">
+              <label>
+                <span>Source Package</span>
+                <select data-ai-history-source>
+                  <option value="">Upload new source</option>
+                </select>
+              </label>
+              <label>
+                <span>Review Type</span>
+                <select data-ai-review-type>
+                  <option value="oracle_health_check">Oracle Health Check</option>
+                </select>
+              </label>
+              <label>
+                <span>Output Style</span>
+                <select data-ai-output-style>
+                  <option value="short_table">Short Table</option>
+                </select>
+              </label>
+            </div>
+            <label class="field ai-upload-field">
+              <span class="section-head"><em>01</em> Upload Source Package / Word File</span>
+              <small class="section-copy">Use this when no History item is selected. Accepts .zip, .docx, .html, or .htm.</small>
+              <input class="native-file" type="file" accept=".zip,.docx,.html,.htm" data-ai-source-file>
+              <span class="upload-row">
+                <span class="file-badge">AI</span>
+                <span class="upload-copy">
+                  <strong data-ai-source-name>No source selected</strong>
+                  <small data-ai-source-meta>Waiting for upload or History selection</small>
+                </span>
+                <em class="browse-button">Browse</em>
+              </span>
+              <span class="field-error" data-ai-source-error></span>
+            </label>
+            <div class="form-actions ai-review-actions">
+              <button class="primary-button ai-primary-button" type="submit" data-ai-generate>Scan &amp; Generate AI Review</button>
+              <button class="secondary-button" type="button" data-ai-copy disabled>Copy Table</button>
+              <button class="secondary-button" type="button" data-ai-export-docx disabled>Export DOCX</button>
+              <button class="secondary-button" type="button" data-ai-export-xlsx disabled>Export XLSX</button>
+            </div>
+          </form>
+
+          <section class="ai-scan-panel" data-ai-scan-panel>
+            <div class="ai-scan-line" aria-hidden="true"></div>
+            <div class="ai-scan-header">
+              <div>
+                <p class="eyebrow">AI Scan Progress</p>
+                <div class="ai-review-status" data-ai-review-status>Ready</div>
+              </div>
+              <span class="ai-live-indicator" data-ai-live-indicator>Idle</span>
+            </div>
+            <ol class="ai-step-list" data-ai-step-list>
+              <li data-ai-step="0">Reading source package</li>
+              <li data-ai-step="1">Parsing eDB360 index</li>
+              <li data-ai-step="2">Extracting tables/metrics</li>
+              <li data-ai-step="3">Mapping health-check sections</li>
+              <li data-ai-step="4">Generating AI review</li>
+              <li data-ai-step="5">Validating JSON output</li>
+              <li data-ai-step="6">Completed</li>
+            </ol>
+          </section>
+          <div class="ai-review-table-wrap" hidden data-ai-review-result>
+            <table class="ai-review-table">
+              <thead>
+                <tr>
+                  <th>Mục</th>
+                  <th>Đánh giá</th>
+                  <th>Khuyến nghị</th>
+                </tr>
+              </thead>
+              <tbody data-ai-review-body></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="page-section" data-tab-page="company">
+        <section class="hero-section compact">
+          <div>
+            <span class="badge">Company/Profile</span>
+            <h1>Company/Profile</h1>
+            <p>Manage companies and review assigned reports from History.</p>
+          </div>
+        </section>
+        <section class="card company-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Company list</p>
+              <h2>Companies</h2>
+            </div>
+            <button class="primary-button compact-button" type="button" data-new-company>+ New Company</button>
+          </div>
+          <div class="history-filters company-toolbar">
+            <input class="search-input" type="search" placeholder="Search company..." data-company-search>
+          </div>
+          <div class="history-table-wrap">
+            <table class="history-table company-table">
+              <thead>
+                <tr>
+                  <th>Company Name</th>
+                  <th>Short Name</th>
+                  <th>Contact Person</th>
+                  <th>Total Reports</th>
+                  <th>Latest Report</th>
+                  <th>Last Updated</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody data-company-body></tbody>
+            </table>
+          </div>
+          <div class="empty-state" hidden data-company-empty>
+            <strong>No companies yet.</strong>
+            <span>Create a company here or from Assign Report in History.</span>
+          </div>
+        </section>
+
+        <section class="card company-detail-card" hidden data-company-detail>
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Company reports</p>
+              <h2 data-company-detail-title>Company</h2>
+            </div>
+          </div>
+          <div class="history-filters company-report-filters">
+            <select data-company-report-type>
+              <option value="all">All report types</option>
+              <option value="01. Bao cao dinh ki">01. Bao cao dinh ki</option>
+              <option value="02. Bao cao Health Check">02. Bao cao Health Check</option>
+              <option value="03. Bao cao Tuning">03. Bao cao Tuning</option>
+              <option value="04. Bao cao bao mat">04. Bao cao bao mat</option>
+            </select>
+            <select data-company-quarter>
+              <option value="all">All quarters</option>
+              <option value="Q1">Q1</option>
+              <option value="Q2">Q2</option>
+              <option value="Q3">Q3</option>
+              <option value="Q4">Q4</option>
+            </select>
+            <input class="search-input" type="number" min="2000" max="2100" placeholder="Year" data-company-year>
+            <select data-company-report-status>
+              <option value="all">All report statuses</option>
+              <option value="Draft">Draft</option>
+              <option value="Generated">Generated</option>
+              <option value="Reviewed">Reviewed</option>
+              <option value="Sent">Sent</option>
+            </select>
+          </div>
+          <div class="history-table-wrap">
+            <table class="history-table company-report-table">
+              <thead>
+                <tr>
+                  <th>Report Type</th>
+                  <th>Period</th>
+                  <th>Month</th>
+                  <th>Year</th>
+                  <th>Status</th>
+                  <th>Note</th>
+                  <th>Created At</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody data-company-report-body></tbody>
+            </table>
+          </div>
+          <div class="empty-state" hidden data-company-report-empty>
+            <strong>No assigned reports found.</strong>
+            <span>Use Assign/Edit from History to attach reports to this company.</span>
+          </div>
+        </section>
+      </section>
+
+      <section class="page-section" data-tab-page="history">
+        <section class="hero-section compact">
+          <div>
+            <span class="badge">SQLite history</span>
+            <h1>Report History</h1>
+            <p>View generated reports, runtime logs, download status, and processing progress.</p>
+          </div>
+        </section>
+        <details class="card history-card collapsible-card" open>
+          <summary class="collapsible-summary">
+            <div>
+              <p class="eyebrow">SQLite history</p>
+              <h2>Report History List</h2>
+            </div>
+            <span class="collapse-indicator" aria-hidden="true"></span>
+          </summary>
+          <div class="history-overview" data-history-stats></div>
+          <div class="history-filters">
+            <input class="search-input" type="search" placeholder="Search by filename..." data-history-search>
+            <select data-history-mode>
+              <option value="all">All modes</option>
+              <option value="oraclehc">OracleHC</option>
+              <option value="sqlhealthcheck">SQLHealthcheck</option>
+            </select>
+            <select data-history-status>
+              <option value="all">All statuses</option>
+              <option value="success">Success</option>
+              <option value="failed">Failed</option>
+              <option value="processing">Processing</option>
+            </select>
+          </div>
+          <div class="history-table-wrap">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>File Name</th>
+                  <th>Company</th>
+                  <th>Report Type</th>
+                  <th>Period</th>
+                  <th>Year</th>
+                  <th>Mode</th>
+                  <th>Template</th>
+                  <th>Source Package</th>
+                  <th>Status</th>
+                  <th>Progress</th>
+                  <th>Created At</th>
+                  <th>Duration</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody data-history-body></tbody>
+            </table>
+          </div>
+          <div class="empty-state" hidden data-history-empty>
+            <strong>No reports generated yet.</strong>
+            <span>Start by uploading a Word template and source data package.</span>
+          </div>
+        </details>
+      </section>
+
+      <section class="page-section" data-tab-page="guide">
+        <section class="hero-section compact">
+          <div>
+            <span class="badge">Guide</span>
+            <h1>How to use</h1>
+            <p>Select mode, upload the Word template and source data package, insert placeholders when needed, generate, then download the final Word file.</p>
+          </div>
+        </section>
+        <section class="guide-grid">
+          <article class="card">
+            <p class="eyebrow">Expected source package</p>
+            <h2>OracleHC</h2>
+            <p>ZIP containing OracleHC HTML output folder.</p>
+          </article>
+          <article class="card">
+            <p class="eyebrow">Expected source package</p>
+            <h2>SQLHealthcheck</h2>
+            <p>ZIP containing SQLHealthcheck CSV output folder.</p>
+          </article>
+          <article class="card">
+            <p class="eyebrow">Placeholder workflow</p>
+            <h2>Insert Flow</h2>
+            <p>Upload the Word template, then use the insert action to apply the placeholder mapping from the Python inserter. The report generator still uses the source ZIP to build the final output.</p>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <div class="toast-region" data-toast-region aria-live="polite"></div>
+    <div class="scroll-floating-actions" data-scroll-actions>
+      <button class="scroll-fab" type="button" aria-label="Back to top" title="Back to top" data-page-scroll="top">
+        <span aria-hidden="true">↑</span>
+      </button>
+      <button class="scroll-fab" type="button" aria-label="Go to bottom" title="Go to bottom" data-page-scroll="bottom">
+        <span aria-hidden="true">↓</span>
+      </button>
+    </div>
+    <div class="form-modal" hidden data-company-modal aria-hidden="true">
+      <form class="modal-card" data-company-form>
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">Company</p>
+            <h2 data-company-modal-title>New Company</h2>
+          </div>
+          <button class="secondary-button" type="button" data-close-company-modal>Close</button>
+        </div>
+        <input type="hidden" data-company-id>
+        <div class="modal-grid">
+          <label><span>Company Name</span><input type="text" required data-company-field="company_name"></label>
+          <label><span>Short Name</span><input type="text" required data-company-field="short_name"></label>
+          <label><span>Customer Code</span><input type="text" data-company-field="customer_code"></label>
+          <label><span>Contact Person</span><input type="text" data-company-field="contact_person"></label>
+          <label><span>Email</span><input type="text" data-company-field="email"></label>
+          <label><span>Phone</span><input type="text" data-company-field="phone"></label>
+          <label class="modal-wide"><span>Note</span><input type="text" data-company-field="note"></label>
+        </div>
+        <div class="modal-actions">
+          <button class="secondary-button" type="button" data-close-company-modal>Cancel</button>
+          <button class="primary-button compact-button" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+    <div class="form-modal" hidden data-assign-modal aria-hidden="true">
+      <form class="modal-card" data-assign-form>
+        <div class="card-header">
+          <div>
+            <p class="eyebrow">Assign Report</p>
+            <h2>Assign Report</h2>
+          </div>
+          <button class="secondary-button" type="button" data-close-assign-modal>Close</button>
+        </div>
+        <input type="hidden" data-assign-job-id>
+        <div class="assign-summary" data-assign-summary></div>
+        <div class="modal-grid">
+          <label class="modal-company-select"><span>Company</span><select data-assign-field="company_id"></select></label>
+          <label><span>Report Type</span><select data-assign-field="report_type">
+            <option value="01. Bao cao dinh ki">01. Bao cao dinh ki</option>
+            <option value="02. Bao cao Health Check">02. Bao cao Health Check</option>
+            <option value="03. Bao cao Tuning">03. Bao cao Tuning</option>
+            <option value="04. Bao cao bao mat">04. Bao cao bao mat</option>
+            <option value="Unclassified">Unclassified</option>
+          </select></label>
+          <label><span>Period Type</span><select data-assign-field="period_type"><option value="Quarter">Quarter</option><option value="Month">Month</option><option value="Custom">Custom</option></select></label>
+          <label><span>Quarter</span><select data-assign-field="quarter"><option value=""></option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></label>
+          <label><span>Month</span><input type="text" placeholder="optional" data-assign-field="month"></label>
+          <label><span>Year</span><input type="number" min="2000" max="2100" data-assign-field="year"></label>
+          <label><span>Report Status</span><select data-assign-field="report_status"><option value="Draft">Draft</option><option value="Generated">Generated</option><option value="Reviewed">Reviewed</option><option value="Sent">Sent</option></select></label>
+          <label class="modal-wide"><span>Note</span><input type="text" data-assign-field="note"></label>
+        </div>
+        <div class="modal-actions">
+          <button class="secondary-button" type="button" data-close-assign-modal>Cancel</button>
+          <button class="primary-button compact-button" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+    <div class="loading-modal" hidden data-loading-modal aria-hidden="true">
+      <div class="loading-card">
+        <div class="loading-orbit" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <p class="eyebrow">Processing</p>
+        <h2 data-loading-title>Working...</h2>
+        <p data-loading-step>Preparing</p>
+        <div class="loading-bar"><span data-loading-bar style="width: 0%"></span></div>
+        <strong data-loading-percent>0%</strong>
+      </div>
+    </div>
+    <script src="{{ url_for('static', path='/app_async.js') }}"></script>
+  </body>
+</html>

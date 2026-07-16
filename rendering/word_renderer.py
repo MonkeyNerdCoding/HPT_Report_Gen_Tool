@@ -15,10 +15,11 @@ from docx.shared import Inches, Pt, RGBColor
 from docx.table import _Cell
 from docx.text.paragraph import Paragraph
 
-from models import ExtractedContent, GenerationReport, ImageContent, MappingRule, TableContent
+from models import ExtractedContent, GenerationReport, ImageContent, MappingRule, OperationCancelled, TableContent
 
 
 LogCallback = Callable[[str], None]
+CancelCheck = Callable[[], bool]
 
 
 def render_report(
@@ -32,12 +33,14 @@ def render_report(
     max_table_rows: int | None = None,
     lightweight_tables: bool = False,
     slow_step_seconds: float = 10.0,
+    cancel_check: CancelCheck | None = None,
 ) -> None:
     log = _make_logger(log_callback)
     render_started = perf_counter()
     log(f"Starting Word report render: {output_path}")
     doc = Document(template_path)
     log("Word template loaded.")
+    _raise_if_cancelled(cancel_check)
 
     # Thay thế {{collection_date}} nếu có trong template (bao gồm cả body, header, footer)
     # Mục đích: nhiều template đặt placeholder trong footer/header nên cần xử lý
@@ -48,6 +51,7 @@ def render_report(
     replaced_collection_date = False
     # Thay thế trong body
     for paragraph in iter_paragraphs(doc):
+        _raise_if_cancelled(cancel_check)
         if "{{collection_date}}" in paragraph.text:
             paragraph.text = paragraph.text.replace("{{collection_date}}", collection_date)
             replaced_collection_date = True
@@ -56,17 +60,29 @@ def render_report(
         # Header
         # Header: duyệt các paragraph trong header của từng section
         for paragraph in section.header.paragraphs:
+            _raise_if_cancelled(cancel_check)
             if "{{collection_date}}" in paragraph.text:
                 paragraph.text = paragraph.text.replace("{{collection_date}}", collection_date)
                 replaced_collection_date = True
         # Footer
         # Footer: duyệt các paragraph trong footer của từng section
         for paragraph in section.footer.paragraphs:
+            _raise_if_cancelled(cancel_check)
             if "{{collection_date}}" in paragraph.text:
                 paragraph.text = paragraph.text.replace("{{collection_date}}", collection_date)
                 replaced_collection_date = True
 
+    known_placeholders = set(resolved) | {rule.placeholder for rule in rules}
+    present_placeholders = collect_present_placeholders(doc, known_placeholders)
+    skipped_resolved = [placeholder for placeholder in resolved if placeholder not in present_placeholders]
+    if skipped_resolved:
+        log(f"Skipping resolved mappings not present in template: {len(skipped_resolved)}")
+
     for placeholder, (rule, content) in resolved.items():
+        _raise_if_cancelled(cancel_check)
+        if placeholder not in present_placeholders:
+            report.missing_placeholders.append(f"{placeholder}: placeholder not found in template")
+            continue
         step_started = perf_counter()
         content_for_render = _prepare_content_for_render(placeholder, content, max_table_rows, log)
         log(_describe_render_step("Rendering", placeholder, content_for_render))
@@ -88,15 +104,18 @@ def render_report(
             log(f"Slow render step: {placeholder} took {elapsed:.2f}s")
 
     for rule in rules:
+        _raise_if_cancelled(cancel_check)
         if rule.placeholder not in resolved:
-            if not document_contains_placeholder(doc, rule.placeholder):
+            if rule.placeholder not in present_placeholders:
                 report.missing_placeholders.append(f"{rule.placeholder}: configured but not found in template")
 
     if text_mapping:
+        _raise_if_cancelled(cancel_check)
         replaced_count = replace_text_placeholders(doc, text_mapping)
         log(f"Replaced text placeholders: {replaced_count}")
 
     save_started = perf_counter()
+    _raise_if_cancelled(cancel_check)
     log(f"Starting DOCX save: {output_path}")
     doc.save(output_path)
     save_elapsed = perf_counter() - save_started
@@ -106,9 +125,21 @@ def render_report(
     log(f"Finished Word report render in {perf_counter() - render_started:.2f}s")
 
 
+def _raise_if_cancelled(cancel_check: CancelCheck | None) -> None:
+    if cancel_check and cancel_check():
+        raise OperationCancelled("Operation cancelled.")
+
+
 def document_contains_placeholder(doc: DocumentObject, placeholder: str) -> bool:
     # Kiểm tra xem placeholder có tồn tại trong body hay trong các cell của table
     return any(placeholder in paragraph.text for paragraph in iter_document_paragraphs(doc))
+
+
+def collect_present_placeholders(doc: DocumentObject, placeholders: set[str]) -> set[str]:
+    if not placeholders:
+        return set()
+    document_text = "\n".join(paragraph.text for paragraph in iter_document_paragraphs(doc))
+    return {placeholder for placeholder in placeholders if placeholder in document_text}
 
 
 def replace_text_placeholders(doc: DocumentObject, mapping: dict[str, str]) -> int:

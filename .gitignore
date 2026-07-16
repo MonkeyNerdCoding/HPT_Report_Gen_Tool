@@ -12,3 +12,9 @@ tmp_pycache_check/
 generated_charts/
 ai_smoke_output.docx
 pytest-cache-files-*/
+runtime_jobs/*
+!runtime_jobs/.gitkeep
+data/
+generated_charts_check/
+uvicorn*.log
+*.err.log
