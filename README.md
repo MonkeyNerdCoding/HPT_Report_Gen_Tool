@@ -1,43 +1,85 @@
-# OracleHC Report Generator
+<p align="center">
+  <img src="assets/hpt-logo.jpg" alt="HPT" width="420">
+</p>
 
-Ứng dụng nhỏ tạo báo cáo healthcheck Oracle từ dữ liệu trích xuất và mẫu Word.
+# HPT Report Generator Tool
 
-## Chạy chương trình (phát triển)
+Tool web nội bộ hỗ trợ tạo báo cáo Health Check/Tuning/Security từ dữ liệu OracleHC, SQLHealthcheck và template Word của HPT. Người dùng upload template `.docx` và gói dữ liệu `.zip`, hệ thống tự đọc dữ liệu, map placeholder, render bảng/biểu đồ và trả về file report `.docx`.
 
-- Cài phụ thuộc:
+## Tính năng chính
+
+- Giao diện web chạy local bằng FastAPI.
+- Generate report OracleHC và SQLHealthcheck.
+- Insert placeholder vào template Word theo mapping có sẵn.
+- Quản lý lịch sử report, log xử lý và tải lại file đã generate.
+- Scan/kiểm tra placeholder trong template.
+- Hỗ trợ AI review nếu cấu hình API key phù hợp.
+
+## Clone repo
+
+```bash
+git clone https://github.com/MonkeyNerdCoding/HPT_Report_Gen_Tool.git
+cd HPT_Report_Gen_Tool
+```
+
+## Cài đặt
+
+Yêu cầu Python 3.11+.
+
+```bash
+python -m venv .venv
+```
+
+Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Windows CMD:
+
+```cmd
+.venv\Scripts\activate.bat
+```
+
+Cài thư viện:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-- Chạy GUI (máy phát triển):
+## Chạy web app
 
 ```bash
-python main.py
-# hoặc
-python gui.py
+uvicorn web.app:app --reload
 ```
 
-## Tạo file .exe (Windows)
+Mở trình duyệt:
 
-Sử dụng PyInstaller để đóng gói ứng dụng thành một file thực thi. Ví dụ lệnh đã dùng:
-
-```bash
-pyinstaller --clean --noconfirm --onefile --windowed --name "OracleHC Report Generator" --add-data "assets\\tachnen_hpt.png;assets" --add-data "mapping\\report_mapping.yaml;mapping" gui.py
+```text
+http://127.0.0.1:8000
 ```
 
-- Sau khi chạy xong, file `.exe` sẽ nằm trong thư mục `dist/` (ví dụ: `dist/OracleHC Report Generator.exe`).
-- Các file tạm và gói khác nằm trong `build/`.
+## Cách dùng nhanh
 
-## Lấy file .exe / phân phối
+1. Chọn mode `OracleHC` hoặc `SQLHealthcheck`.
+2. Upload Word template `.docx`.
+3. Upload source package `.zip`.
+4. Nếu template chưa có placeholder, dùng chức năng insert placeholder trước.
+5. Bấm generate và tải file report `.docx` sau khi xử lý xong.
 
-- Không đẩy `dist/` hay `build/` lên GitHub (đã thêm vào `.gitignore`). Thay vào đó bạn có thể:
-  - Tải file `.exe` lên trang Releases của GitHub (recommended), hoặc
-  - Sử dụng Git LFS nếu muốn lưu binary lớn trong repo.
+## Cấu trúc repo
 
-## Lưu ý
+- `web/`: giao diện web, API FastAPI, static assets và templates.
+- `mapping/`: file mapping placeholder với dữ liệu OracleHC/SQLHealthcheck.
+- `extraction/`: parser đọc bảng và biểu đồ từ source HTML.
+- `rendering/`: logic render bảng/biểu đồ vào Word.
+- `sql_healthcheck/`: xử lý dữ liệu SQLHealthcheck.
+- `placeholder_inserter.py`: insert placeholder vào template Word.
+- `app_logic.py`: orchestration chính cho generate report.
+- `data/`, `runtime_jobs/`: dữ liệu runtime local, không commit lên GitHub.
 
-- Nếu cần build lại, xoá thư mục `dist/` và `build/` trước khi chạy PyInstaller.
-- Nếu muốn chia sẻ bản build, upload file `.exe` trên GitHub Releases hoặc dịch vụ lưu trữ file.
+## Ghi chú
 
----
+- Không upload dữ liệu khách hàng, file report sinh ra, `.env`, log runtime hoặc cache lên GitHub.
+- Nếu dùng AI review, tạo `.env` từ `.env.example` và cấu hình API key cần thiết.
