@@ -71,6 +71,7 @@ def extract_rendered_chart(
     html: str,
     chart_output_dir: Path,
     report: GenerationReport,
+    allow_matplotlib_fallback: bool = True,
 ) -> ImageContent | None:
     if not is_google_chart_page(html):
         return None
@@ -78,6 +79,10 @@ def extract_rendered_chart(
     chart = None if DISABLE_BROWSER_CHART_RENDER else render_google_chart_from_dom_svg(page, html, chart_output_dir, report)
     if chart:
         return chart
+
+    if not allow_matplotlib_fallback:
+        report.warnings.append(f"Skipped fallback chart redraw for {page.path.name}; browser-rendered chart was not available.")
+        return None
 
     return render_google_chart_with_matplotlib(page, html, chart_output_dir, report)
 

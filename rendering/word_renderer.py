@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from pathlib import Path
+import re
 from time import perf_counter
 
 from docx import Document
@@ -15,7 +16,7 @@ from docx.shared import Inches, Pt, RGBColor
 from docx.table import _Cell
 from docx.text.paragraph import Paragraph
 
-from models import ExtractedContent, GenerationReport, ImageContent, MappingRule, OperationCancelled, TableContent
+from models import ExtractedContent, GenerationReport, ImageContent, MappingRule, MultiImageContent, OperationCancelled, TableContent
 
 
 LogCallback = Callable[[str], None]
@@ -32,6 +33,7 @@ def render_report(
     text_mapping: dict[str, str] | None = None,
     max_table_rows: int | None = None,
     lightweight_tables: bool = False,
+    cleanup_unresolved_placeholders: bool = False,
     slow_step_seconds: float = 10.0,
     cancel_check: CancelCheck | None = None,
 ) -> None:
@@ -47,7 +49,7 @@ def render_report(
     # cả các section.header/footer chứ không chỉ body.
     
     from datetime import datetime
-    collection_date = datetime.now().strftime("%b-%Y")
+    collection_date = (text_mapping or {}).get("{{collection_date}}") or datetime.now().strftime("%b-%Y")
     replaced_collection_date = False
     # Thay thế trong body
     for paragraph in iter_paragraphs(doc):
@@ -109,10 +111,22 @@ def render_report(
             if rule.placeholder not in present_placeholders:
                 report.missing_placeholders.append(f"{rule.placeholder}: configured but not found in template")
 
+    if cleanup_unresolved_placeholders:
+        _raise_if_cancelled(cancel_check)
+        cleanup_count = remove_unresolved_placeholder_paragraphs(doc, angle_only=True)
+        if cleanup_count:
+            log(f"Removed unresolved placeholder paragraphs: {cleanup_count}")
+
     if text_mapping:
         _raise_if_cancelled(cancel_check)
         replaced_count = replace_text_placeholders(doc, text_mapping)
         log(f"Replaced text placeholders: {replaced_count}")
+
+    if cleanup_unresolved_placeholders:
+        _raise_if_cancelled(cancel_check)
+        cleanup_count = remove_unresolved_placeholder_paragraphs(doc, angle_only=False)
+        if cleanup_count:
+            log(f"Removed unresolved text placeholder paragraphs: {cleanup_count}")
 
     save_started = perf_counter()
     _raise_if_cancelled(cancel_check)
@@ -153,6 +167,48 @@ def replace_text_placeholders(doc: DocumentObject, mapping: dict[str, str]) -> i
     return replaced
 
 
+def remove_unresolved_placeholder_paragraphs(doc: DocumentObject, angle_only: bool = False) -> int:
+    removed = 0
+    for paragraph in list(iter_document_paragraphs(doc)):
+        if _contains_unresolved_placeholder(paragraph.text, angle_only=angle_only):
+            previous = _previous_paragraph(paragraph)
+            if previous is not None and _is_optional_content_heading(previous.text):
+                remove_paragraph(previous)
+                removed += 1
+            remove_paragraph(paragraph)
+            removed += 1
+    return removed
+
+
+def _contains_unresolved_placeholder(text: str, angle_only: bool = False) -> bool:
+    if not text:
+        return False
+    if angle_only:
+        return bool(re.fullmatch(r"\s*<[^<>\n]+>\s*", text))
+    return bool(re.fullmatch(r"\s*\{\{[^{}]+\}\}\s*", text))
+
+
+def _previous_paragraph(paragraph: Paragraph) -> Paragraph | None:
+    previous = paragraph._element.getprevious()
+    while previous is not None and previous.tag != qn("w:p"):
+        previous = previous.getprevious()
+    if previous is None:
+        return None
+    return Paragraph(previous, paragraph._parent)
+
+
+def _is_optional_content_heading(text: str) -> bool:
+    stripped = " ".join((text or "").split())
+    if not stripped or ":" in stripped or len(stripped) > 90:
+        return False
+    letters = [character for character in stripped if character.isalpha()]
+    if not letters:
+        return False
+    return stripped == stripped.upper()
+
+
+
+
 def replace_placeholder(
     doc: DocumentObject,
     placeholder: str,
@@ -175,6 +231,8 @@ def replace_placeholder(
                 lightweight=lightweight_tables,
                 header_vertical=rule.table_header_vertical,
             )
+        elif isinstance(content, MultiImageContent):
+            insert_multi_image_after_paragraph(doc, paragraph, content, rule.width_inches)
         elif isinstance(content, ImageContent):
             insert_image_after_paragraph(doc, paragraph, content, rule.width_inches)
         else:
@@ -287,6 +345,39 @@ def insert_image_after_paragraph(
         kwargs["width"] = Inches(width_inches)
     run.add_picture(str(content.image_path), **kwargs)
     paragraph._p.addnext(image_paragraph._p)
+
+
+def insert_multi_image_after_paragraph(
+    doc: DocumentObject,
+    paragraph: Paragraph,
+    content: MultiImageContent,
+    width_inches: float | None,
+) -> None:
+    insertions = []
+    for index, image in enumerate(content.images):
+        image_paragraph = doc.add_paragraph()
+        image_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        run = image_paragraph.add_run()
+        kwargs = {}
+        if width_inches:
+            kwargs["width"] = Inches(width_inches)
+        run.add_picture(str(image.image_path), **kwargs)
+        insertions.append(image_paragraph._p)
+
+        caption = content.captions[index] if index < len(content.captions) else ""
+        if caption:
+            caption_paragraph = doc.add_paragraph()
+            caption_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            caption_run = caption_paragraph.add_run(caption)
+            caption_run.italic = True
+            caption_run.font.name = "Cambria"
+            caption_run.font.size = Pt(12)
+            caption_run._element.rPr.rFonts.set(qn("w:eastAsia"), "Cambria")
+            insertions.append(caption_paragraph._p)
+
+    anchor = paragraph._p
+    for element in reversed(insertions):
+        anchor.addnext(element)
 
 
 def format_cell(cell: _Cell, is_header: bool = False, vertical_text: bool = False) -> None:

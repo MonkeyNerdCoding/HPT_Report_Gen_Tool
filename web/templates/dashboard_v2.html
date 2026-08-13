@@ -46,14 +46,14 @@
               </div>
             </div>
 
-            <form class="generator-form" action="/api/report/generate" method="post" enctype="multipart/form-data" data-generate-form>
+            <form class="generator-form" action="/api/report/generate" method="post" enctype="multipart/form-data" accept-charset="UTF-8" data-generate-form>
               <fieldset class="form-section step-mode">
                 <legend class="section-head"><span>01</span> Report Mode</legend>
                 <p class="section-copy">Choose the report type.</p>
                 <div class="segmented-control" data-mode-selector></div>
               </fieldset>
 
-              <label class="field form-section">
+              <label class="field form-section" data-template-section>
                 <span class="section-head"><em>02</em> Word Template</span>
                 <small class="section-copy">Upload the .docx report template.</small>
                 <input class="native-file" type="file" name="template_file" accept=".docx" required data-file-input="template">
@@ -83,8 +83,31 @@
                 <span class="field-error" data-field-error="source"></span>
               </label>
 
+              <section class="form-section metadata-section" hidden data-edb360-metadata>
+                <span class="section-head"><em>04</em> Cover Metadata</span>
+                <small class="section-copy">Optional overrides. Database name, configuration, and instances are read from EDB360.</small>
+                <div class="metadata-grid">
+                  <label>
+                    <span>Creator</span>
+                    <input type="text" name="creator" placeholder="Report creator">
+                  </label>
+                  <label>
+                    <span>Approver</span>
+                    <input type="text" name="approver" placeholder="Approver">
+                  </label>
+                  <label>
+                    <span>Version</span>
+                    <input type="text" name="version" placeholder="1.0">
+                  </label>
+                  <label>
+                    <span>Collection Date</span>
+                    <input type="text" name="collection_date" placeholder="Aug-2026">
+                  </label>
+                </div>
+              </section>
+
               <label class="field form-section">
-                <span class="section-head"><em>04</em> Output File</span>
+                <span class="section-head"><em data-output-step>04</em> Output File</span>
                 <small class="section-copy">Final .docx filename.</small>
                 <input type="text" name="output_name" value="{{ output_name }}" placeholder="final_oraclehc_report.docx" data-output-name>
                 <span class="field-error" data-field-error="output"></span>
@@ -517,6 +540,7 @@
             <select data-history-mode>
               <option value="all">All modes</option>
               <option value="oraclehc">OracleHC</option>
+              <option value="edb360">EDB360 One-click</option>
               <option value="sqlhealthcheck">SQLHealthcheck</option>
             </select>
             <select data-history-status>
@@ -550,7 +574,7 @@
           </div>
           <div class="empty-state" hidden data-history-empty>
             <strong>No reports generated yet.</strong>
-            <span>Start by uploading a Word template and source data package.</span>
+            <span>Start by uploading source data, or use a Word template for manual modes.</span>
           </div>
         </details>
       </section>
@@ -560,7 +584,7 @@
           <div>
             <span class="badge">Guide</span>
             <h1>How to use</h1>
-            <p>Select mode, upload the Word template and source data package, insert placeholders when needed, generate, then download the final Word file.</p>
+            <p>Select a mode, upload the required source data, generate, then download the final Word file. EDB360 One-click uses the internal master Word template.</p>
           </div>
         </section>
         <section class="guide-grid">
@@ -568,6 +592,11 @@
             <p class="eyebrow">Expected source package</p>
             <h2>OracleHC</h2>
             <p>ZIP containing OracleHC HTML output folder.</p>
+          </article>
+          <article class="card">
+            <p class="eyebrow">Expected source package</p>
+            <h2>EDB360 One-click</h2>
+            <p>ZIP containing EDB360 HTML output. The internal master Word template is used automatically.</p>
           </article>
           <article class="card">
             <p class="eyebrow">Expected source package</p>

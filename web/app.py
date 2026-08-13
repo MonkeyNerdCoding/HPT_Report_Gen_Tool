@@ -17,7 +17,13 @@ from docx import Document
 from openpyxl import Workbook
 
 from ai_review import generate_ai_review
-from app_logic import generate_report_to_file, insert_placeholders_into_word, run_sql_pipeline
+from app_logic import (
+    DEFAULT_EDB360_MASTER_TEMPLATE,
+    generate_edb360_report_to_file,
+    generate_report_to_file,
+    insert_placeholders_into_word,
+    run_sql_pipeline,
+)
 from config import DEFAULT_MAPPING, load_mapping_rules
 from app_logic import DEFAULT_SQL_MAPPING
 from placeholder_manager import (
@@ -45,6 +51,7 @@ MAX_JOB_AGE = timedelta(hours=6)
 
 MODE_LABELS = {
     "oraclehc": "OracleHC",
+    "edb360": "EDB360 One-click",
     "sqlhealthcheck": "SQLHealthcheck",
 }
 DOCX_MEDIA_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -432,6 +439,83 @@ async def api_generate_report(
         template_path,
         zip_path,
         output_dir / safe_output_name,
+    )
+    return JSONResponse({"success": True, "job_id": job_id, "status": "processing"})
+
+
+@app.post("/api/report/generate-edb360")
+async def api_generate_edb360_report(
+    background_tasks: BackgroundTasks,
+    output_name: str = Form("final_edb360_report.docx"),
+    customer_name: str = Form(""),
+    system_name: str = Form(""),
+    database_name: str = Form(""),
+    database_display_name: str = Form(""),
+    creator: str = Form(""),
+    approver: str = Form(""),
+    version: str = Form(""),
+    collection_date: str = Form(""),
+    source_zip: UploadFile = File(...),
+) -> JSONResponse:
+    if not DEFAULT_EDB360_MASTER_TEMPLATE.is_file():
+        raise HTTPException(status_code=500, detail="Internal EDB360 master template is missing")
+    validate_upload_extension(source_zip.filename, ".zip", "EDB360 source package")
+    safe_output_name = normalize_output_name(output_name)
+
+    job_id = create_job_id()
+    upload_dir = UPLOADS_DIR / job_id
+    output_dir = OUTPUTS_DIR / job_id
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    zip_path = upload_dir / "source.zip"
+    await save_upload(source_zip, zip_path)
+    metadata = {
+        "customer_name": customer_name,
+        "system_name": system_name,
+        "database_name": database_name,
+        "database_display_name": database_display_name,
+        "creator": creator,
+        "approver": approver,
+        "version": version,
+        "collection_date": collection_date,
+    }
+
+    now = utc_now()
+    with db_connect() as conn:
+        conn.execute(
+            """
+            INSERT INTO report_jobs (
+                id, mode, output_file_name, template_file_name, source_package_name,
+                template_hash, source_hash, status, progress, current_step,
+                created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                job_id,
+                "edb360",
+                safe_output_name,
+                DEFAULT_EDB360_MASTER_TEMPLATE.name,
+                source_zip.filename,
+                hash_file(DEFAULT_EDB360_MASTER_TEMPLATE),
+                hash_file(zip_path),
+                "processing",
+                0,
+                "EDB360 job created",
+                now,
+                now,
+            ),
+        )
+    add_job_log(job_id, "info", "job_created", "EDB360 one-click job created")
+    update_job(job_id, progress=20, current_step="EDB360 source package uploaded")
+    add_job_log(job_id, "success", "upload_source", "EDB360 source package uploaded")
+
+    background_tasks.add_task(
+        process_edb360_report_job,
+        job_id,
+        zip_path,
+        output_dir / safe_output_name,
+        metadata,
     )
     return JSONResponse({"success": True, "job_id": job_id, "status": "processing"})
 
@@ -1029,6 +1113,78 @@ def process_report_job(
             job_id,
             status="failed",
             current_step="Generation failed",
+            error_message=error_text,
+            log_file_path=str(log_file),
+            completed_at=utc_now(),
+        )
+        add_job_log(job_id, "error", "failed", error_text)
+
+
+def process_edb360_report_job(
+    job_id: str,
+    zip_path: Path,
+    output_path: Path,
+    metadata: dict[str, str],
+) -> None:
+    started_at = datetime.now()
+    source_dir = UPLOADS_DIR / job_id / "source"
+    log_file = LOGS_DIR / f"{job_id}.log"
+
+    try:
+        update_job(job_id, progress=35, current_step="Extracting EDB360 package")
+        add_job_log(job_id, "info", "extract_source", "Extracting EDB360 package")
+        source_dir.mkdir(parents=True, exist_ok=True)
+        safe_extract_zip(zip_path, source_dir)
+        add_job_log(job_id, "success", "extract_source", "EDB360 package extracted")
+
+        update_job(job_id, progress=50, current_step="Scanning internal master template")
+        scan_result = scan_template_placeholders(DEFAULT_EDB360_MASTER_TEMPLATE, "oraclehc")
+        save_scan_result(job_id, hash_file(DEFAULT_EDB360_MASTER_TEMPLATE), scan_result)
+        add_job_log(
+            job_id,
+            "success",
+            "scan_template",
+            f"Detected {scan_result['summary']['total']} placeholders from internal master template",
+        )
+
+        update_job(job_id, progress=65, current_step="Parsing EDB360 data")
+        add_job_log(job_id, "info", "parse_source", "Parsing EDB360 HTML data")
+
+        update_job(job_id, progress=78, current_step="Rendering Word from master template")
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        generated_path = generate_edb360_report_to_file(
+            html_input=source_dir,
+            output_file=output_path,
+            metadata=metadata,
+            chart_output_dir=output_path.parent / "generated_charts",
+            log_callback=lambda message: add_job_log(job_id, "info", "generator", message),
+        )
+
+        update_job(job_id, progress=92, current_step="Finalizing Word report")
+        final_path = Path(generated_path)
+        if final_path.resolve() != output_path.resolve():
+            shutil.copyfile(final_path, output_path)
+        add_job_log(job_id, "success", "export_report", "Final EDB360 Word report built")
+
+        duration = (datetime.now() - started_at).total_seconds()
+        update_job(
+            job_id,
+            status="success",
+            progress=100,
+            current_step="Report ready",
+            output_file_path=str(output_path),
+            log_file_path=str(log_file),
+            duration_seconds=duration,
+            completed_at=utc_now(),
+        )
+        add_job_log(job_id, "success", "complete", "Report ready")
+    except Exception as exc:
+        error_text = str(exc)
+        log_file.write_text(traceback.format_exc(), encoding="utf-8")
+        update_job(
+            job_id,
+            status="failed",
+            current_step="EDB360 generation failed",
             error_message=error_text,
             log_file_path=str(log_file),
             completed_at=utc_now(),

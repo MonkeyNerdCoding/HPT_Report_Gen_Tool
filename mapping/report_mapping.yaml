@@ -1,4 +1,68 @@
 placeholders:
+- placeholder: <log_switch_charts>
+  source_key: log_switch_frequency_for_instance
+  content_type: chart
+  description: Log switch frequency charts for all detected instances
+  template: EDB360 one-click master
+  location: TẦN SUẤT LOG SWITCH
+  purpose: Render all log switch charts by detected instance
+  width_inches: 6.5
+- placeholder: <aas_per_wait_class_charts>
+  source_key: aas_per_wait_class_for_instance
+  content_type: chart
+  description: AAS per wait class charts for all detected instances
+  template: EDB360 one-click master
+  location: WAIT CLASS
+  purpose: Render all AAS per wait class charts by detected instance
+  width_inches: 6.5
+- placeholder: <ash_top_timed_events_charts>
+  source_key: ash_top_timed_events_for_instance
+  content_type: chart
+  description: ASH top timed events charts for all detected instances
+  template: EDB360 one-click master
+  location: WAIT EVENT
+  purpose: Render all ASH top timed events charts by detected instance
+  width_inches: 6.5
+- placeholder: <ash_top_sql_charts>
+  source_key: ash_top_sql_for_instance
+  content_type: chart
+  description: ASH top SQL charts for all detected instances
+  template: EDB360 one-click master
+  location: CÁC CÂU LỆNH TỐN NHIỀU DB TIME
+  purpose: Render all ASH top SQL charts by detected instance
+  width_inches: 6.5
+- placeholder: <cpu_busy_idle_charts>
+  source_key: cpu_busy_and_idle_times_percent_for_instance
+  content_type: chart
+  description: CPU busy and idle percent charts for all detected instances
+  template: EDB360 one-click master
+  location: ORACLE FOREGROUND PROCESS
+  purpose: Render all CPU busy and idle charts by detected instance
+  width_inches: 6.5
+- placeholder: <memory_statistics_charts>
+  source_key: memory_statistics_for_instance
+  content_type: chart
+  description: Memory statistics charts for all detected instances
+  template: EDB360 one-click master
+  location: MEMORY STATISTICS
+  purpose: Render all memory statistics charts by detected instance
+  width_inches: 6.5
+- placeholder: <sga_statistics_charts>
+  source_key: sga_statistics_for_instance
+  content_type: chart
+  description: SGA statistics charts for all detected instances
+  template: EDB360 one-click master
+  location: SGA STATISTICS
+  purpose: Render all SGA statistics charts by detected instance
+  width_inches: 6.5
+- placeholder: <pga_statistics_charts>
+  source_key: pga_statistics_for_instance
+  content_type: chart
+  description: PGA statistics charts for all detected instances
+  template: EDB360 one-click master
+  location: PGA
+  purpose: Render all PGA statistics charts by detected instance
+  width_inches: 6.5
 - placeholder: <tbs_usage>
   source_key: tablespace_usage
   content_type: table
@@ -253,6 +317,16 @@ placeholders:
   location: ALL PARAMETERS
   purpose: Render All Parameters table
   source_html: 00016_edb360_1a_6z_653179_1a_8_all_parameters.html
+  report_section: 1a.8
+- placeholder: <control_files>
+  source_key: all_parameters
+  content_type: table
+  table_index: 0
+  description: Control Files
+  template: EDB360 one-click master
+  location: CONTROL FILE
+  purpose: Render control_files parameter values
+  source_html: all_parameters.html
   report_section: 1a.8
 - placeholder: <pdb_parameter_file>
   source_key: pdb_parameter_file
@@ -740,15 +814,15 @@ placeholders:
   source_html: 00064_edb360_1a_6z_653179_2d_51_block_corruption.html
   report_section: 2d.51
 - placeholder: <rman_backup>
-  source_key: rman_backup
+  source_key: rman_backup_job_details
   content_type: table
   table_index: 0
-  description: Rman Backup
+  description: RMAN Backup Job Details
   template: OracleHC Word template
   location: RMAN BACKUP
-  purpose: Render Rman Backup table
-  source_html: 00065_edb360_1a_6z_653179_2d_52_rman_backup.html
-  report_section: 2d.52
+  purpose: Render RMAN backup job details table
+  source_html: rman_backup_job_details.html
+  report_section: 2d.54
 - placeholder: <fast_recovery_area>
   source_key: fast_recovery_area
   content_type: table

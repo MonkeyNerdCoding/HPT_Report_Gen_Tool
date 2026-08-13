@@ -77,6 +77,27 @@ class ImageContent(ExtractedContent):
 
 
 @dataclass
+class MultiImageContent(ExtractedContent):
+    images: list[ImageContent] = field(default_factory=list)
+    captions: list[str] = field(default_factory=list)
+
+    def __init__(
+        self,
+        source_path: Path,
+        images: list[ImageContent],
+        captions: list[str] | None = None,
+        title: str = "",
+        section: str = "",
+        logical_key: str = "",
+        keys: set[str] | None = None,
+        index: int = 0,
+    ) -> None:
+        super().__init__("image", source_path, title, section, logical_key, keys or set(), index)
+        self.images = images
+        self.captions = captions or []
+
+
+@dataclass
 class MappingRule:
     placeholder: str
     source_key: str = ""

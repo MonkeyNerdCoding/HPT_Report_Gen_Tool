@@ -20,6 +20,7 @@ def extract_content_from_input(
     chart_output_dir: str | Path,
     report: GenerationReport,
     chart_rules: list[MappingRule] | None = None,
+    allow_chart_fallback: bool = True,
     cancel_check: CancelCheck | None = None,
 ) -> list[ExtractedContent]:
     contents: list[ExtractedContent] = []
@@ -35,7 +36,13 @@ def extract_content_from_input(
 
         chart = None
         if _should_extract_chart(page, html, chart_rules):
-            chart = extract_rendered_chart(page, html, Path(chart_output_dir), report)
+            chart = extract_rendered_chart(
+                page,
+                html,
+                Path(chart_output_dir),
+                report,
+                allow_matplotlib_fallback=allow_chart_fallback,
+            )
         if chart:
             contents.append(chart)
 

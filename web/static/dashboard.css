@@ -325,6 +325,33 @@ legend,
   gap: 6px;
 }
 
+.metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.metadata-grid label {
+  display: grid;
+  gap: 6px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.metadata-grid input {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 12px;
+  color: var(--text);
+  font-family: "Segoe UI", "Arial", "Tahoma", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
 .native-file {
   position: absolute;
   width: 1px;
@@ -2404,6 +2431,7 @@ button:focus-visible,
   }
 
   .company-report-filters,
+  .metadata-grid,
   .modal-grid,
   .assign-summary {
     grid-template-columns: 1fr;

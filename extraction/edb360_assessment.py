@@ -1,0 +1,259 @@
+from __future__ import annotations
+
+from pathlib import Path
+from collections import defaultdict
+import re
+
+from .html_parser import parse_html_file
+from .table_extractor import extract_tables
+
+
+def build_edb360_assessment_mapping(input_root: str | Path) -> dict[str, str]:
+    root = Path(input_root)
+    mapping: dict[str, str] = {}
+
+    all_parameters = _first_table(root, "*all_parameters.html")
+    memory_configuration = _first_table(root, "*memory_configuration.html")
+    redo_log = _first_table(root, "*redo_log.html")
+    redo_log_files = _first_table(root, "*redo_log_files.html")
+    registry_sql_patch = _first_table(root, "*registry_sql_patch.html")
+    rman_backup = _first_table(root, "*rman_backup_job_details.html")
+    tablespace_usage = _first_table(root, "*tablespace_usage.html")
+    no_index = _first_table(root, "*tables_without_indexes.html")
+    no_pk = _first_table(root, "*tables_without_primary_key_constraints.html")
+    invalid_objects = _first_table(root, "*invalid_objects.html")
+    table_stats = _first_table(root, "*tables_with_stale_stats.html")
+    index_stats = _first_table(root, "*indexes_with_stale_stats.html")
+
+    mapping.update(_control_file_assessment(all_parameters))
+    mapping.update(_redo_assessment(redo_log, redo_log_files))
+    mapping.update(_memory_assessment(memory_configuration))
+    mapping.update(_patching_backup_assessment(registry_sql_patch, rman_backup))
+    mapping.update(_tablespace_assessment(tablespace_usage))
+    mapping.update(_count_assessments(no_index, no_pk, invalid_objects, table_stats, index_stats))
+    return {key: value for key, value in mapping.items() if value is not None}
+
+
+def _control_file_assessment(rows: list[list[str]]) -> dict[str, str]:
+    raw_values = [row.get("VALUE", "") for row in _dict_rows(rows) if row.get("NAME", "").lower() == "control_files"]
+    values: list[str] = []
+    for raw_value in raw_values:
+        values.extend([value.strip() for value in str(raw_value).split(",") if value.strip()])
+    if not values:
+        return {
+            "{{assessment_control_file}}": "",
+            "{{recommendation_control_file}}": "",
+        }
+
+    locations = {_storage_root(value) for value in values}
+    count = len(values)
+    if len(locations) >= 2:
+        assessment = (
+            f"Hiện tại, database đang có {count} control files và các control files này được đặt trên "
+            f"{len(locations)} vị trí lưu trữ khác nhau ({', '.join(sorted(locations))}), đảm bảo tính an toàn cho control files."
+        )
+        recommendation = "N/A"
+    else:
+        location = next(iter(locations), "")
+        assessment = (
+            f"Hiện tại, database đang có {count} control files. Tuy nhiên, các control files này đang nằm cùng một vị trí "
+            f"{location}, không đảm bảo tính an toàn nếu vị trí lưu trữ này gặp sự cố."
+        )
+        recommendation = "Đưa các control files ra nhiều phân vùng/disk group khác nhau hoặc bổ sung control file ở vị trí lưu trữ độc lập."
+    return {
+        "{{assessment_control_file}}": assessment,
+        "{{recommendation_control_file}}": recommendation,
+    }
+
+
+def _redo_assessment(redo_rows: list[list[str]], redo_file_rows: list[list[str]]) -> dict[str, str]:
+    redo = _dict_rows(redo_rows)
+    redo_files = _dict_rows(redo_file_rows)
+    if not redo and not redo_files:
+        return {"{{assessment_redo_log}}": "", "{{recommendation_redo_log}}": ""}
+
+    member_counts = []
+    for row in redo:
+        member = _to_float(row.get("MEMBERS", ""))
+        if member is not None:
+            member_counts.append(int(member))
+    if not member_counts and redo_files:
+        groups: dict[str, set[str]] = defaultdict(set)
+        for row in redo_files:
+            group = row.get("GROUP#", "")
+            member = row.get("MEMBER", "")
+            if group and member:
+                groups[group].add(member)
+        member_counts = [len(items) for items in groups.values()]
+
+    group_count = len(member_counts)
+    min_members = min(member_counts) if member_counts else 0
+    if min_members >= 2:
+        assessment = (
+            f"Theo cấu hình hiện tại, database có {group_count} redo log groups và các group đang được multiplexing "
+            f"với tối thiểu {min_members} members/group, tăng tính sẵn sàng cho redo log."
+        )
+        recommendation = "N/A"
+    else:
+        assessment = (
+            f"Theo cấu hình hiện tại, database có {group_count} redo log groups nhưng có redo log group chưa được multiplexing đầy đủ."
+        )
+        recommendation = "Bổ sung redo log member trên disk group/phân vùng khác để tăng tính sẵn sàng."
+    return {
+        "{{assessment_redo_log}}": assessment,
+        "{{recommendation_redo_log}}": recommendation,
+    }
+
+
+def _memory_assessment(rows: list[list[str]]) -> dict[str, str]:
+    data = _dict_rows(rows)
+    if not data:
+        return {"{{assessment_memory_configuration}}": "", "{{recommendation_memory_configuration}}": ""}
+
+    values: dict[str, list[str]] = defaultdict(list)
+    for row in data:
+        name = row.get("NAME", "").lower()
+        value = _preferred_memory_value(row)
+        if name and value:
+            values[name].append(value)
+
+    memory_target = _max_numeric(values.get("memory_target", []))
+    sga = _positive_values(values.get("sga_target", [])) or _positive_values(values.get("sga_max_size", []))
+    pga = values.get("pga_aggregate_target") or []
+    mode = "Automatic Memory Management (AMM)" if memory_target and memory_target > 0 else "Automatic Shared Memory Management (ASMM)"
+
+    parts = []
+    if sga:
+        parts.append(f"SGA {', '.join(dict.fromkeys(sga))}/instance")
+    if pga:
+        parts.append(f"PGA {', '.join(dict.fromkeys(pga))}/instance")
+    detail = "; ".join(parts) if parts else "chưa xác định được SGA/PGA từ EDB360"
+    return {
+        "{{assessment_memory_configuration}}": f"Cơ sở dữ liệu hiện tại đang được cấu hình vùng nhớ ở chế độ {mode}. Trong đó: {detail}.",
+        "{{recommendation_memory_configuration}}": "N/A",
+    }
+
+
+def _patching_backup_assessment(registry_rows: list[list[str]], backup_rows: list[list[str]]) -> dict[str, str]:
+    patches = _dict_rows(registry_rows)
+    backups = _dict_rows(backup_rows)
+    patch_desc = ""
+    if patches:
+        latest = patches[-1]
+        patch_desc = latest.get("DESCRIPTION") or latest.get("VERSION") or latest.get("PATCH_ID", "")
+
+    completed = [row for row in backups if "COMPLETED" in row.get("STATUS", "").upper()]
+    if completed:
+        backup_assessment = f"Đã có RMAN backup. EDB360 ghi nhận {len(completed)} backup job hoàn thành trong dữ liệu thu thập."
+        backup_recommendation = "Theo dõi lịch backup định kỳ và thực hiện restore test để kiểm chứng khả năng khôi phục."
+    else:
+        backup_assessment = "Hiện tại chưa ghi nhận RMAN backup job hoàn thành trong EDB360."
+        backup_recommendation = "Cấu hình RMAN backup định kỳ và thực hiện restore test để đảm bảo khả năng khôi phục khi có sự cố."
+
+    return {
+        "{{assessment_patching}}": f"Phiên bản/patch hiện tại: {patch_desc}" if patch_desc else "",
+        "{{recommendation_patching}}": "Đánh giá kế hoạch nâng cấp patch theo chính sách vận hành và khuyến nghị bảo mật của Oracle.",
+        "{{assessment_backup}}": backup_assessment,
+        "{{recommendation_backup}}": backup_recommendation,
+    }
+
+
+def _tablespace_assessment(rows: list[list[str]]) -> dict[str, str]:
+    data = _dict_rows(rows)
+    over_threshold = []
+    for row in data:
+        pct = _to_float(row.get("PCT_USED", "") or row.get("USED_%", "") or row.get("USED", ""))
+        name = row.get("TABLESPACE_NAME", "") or row.get("NAME", "")
+        if pct is not None and pct >= 85 and name.lower() != "total":
+            over_threshold.append(name)
+    if over_threshold:
+        return {
+            "{{assessment_tablespace_usage}}": f"Một số tablespace có dung lượng sử dụng ở mức nguy hiểm (>=85%): {', '.join(over_threshold[:10])}.",
+            "{{recommendation_tablespace_usage}}": "Cung cấp thêm datafile hoặc extend datafile có sẵn cho các tablespace trên.",
+        }
+    return {
+        "{{assessment_tablespace_usage}}": "Dung lượng của các tablespace đang ở ngưỡng an toàn.",
+        "{{recommendation_tablespace_usage}}": "N/A",
+    }
+
+
+def _count_assessments(
+    no_index: list[list[str]],
+    no_pk: list[list[str]],
+    invalid_objects: list[list[str]],
+    table_stats: list[list[str]],
+    index_stats: list[list[str]],
+) -> dict[str, str]:
+    table_count = max(0, len(table_stats) - 1)
+    index_count = max(0, len(index_stats) - 1)
+    return {
+        "{{assessment_no_index}}": f"Hệ thống đang có {max(0, len(no_index) - 1)} bảng không có index.",
+        "{{recommendation_no_index}}": "Xem xét tạo index cho các bảng cần thiết để tăng tốc độ truy vấn.",
+        "{{assessment_no_pk}}": f"Hệ thống đang có {max(0, len(no_pk) - 1)} bảng không có khóa chính.",
+        "{{recommendation_no_pk}}": "Xem xét khởi tạo khoá chính hoặc unique index cho các bảng cần thiết để tăng tốc truy xuất dữ liệu.",
+        "{{assessment_invalid_objects}}": f"Hệ thống có {max(0, len(invalid_objects) - 1)} invalid objects.",
+        "{{recommendation_invalid_objects}}": "Thực hiện recompile lại các đối tượng để hợp lệ hoá các đối tượng, tránh ảnh hưởng đến ứng dụng hoặc hệ thống.",
+        "{{assessment_stale_stats}}": f"Hệ thống có tổng cộng {table_count} tables with stale stats và {index_count} indexes with stale stats.",
+        "{{recommendation_stale_stats}}": "Thu thập lại (re-gather) statistic của các đối tượng có stale statistics.",
+    }
+
+
+def _first_table(root: Path, pattern: str) -> list[list[str]]:
+    path = next(iter(sorted(root.rglob(pattern))), None)
+    if not path:
+        return []
+    page, soup, _html = parse_html_file(path)
+    tables = extract_tables(page, soup)
+    return tables[0].rows if tables else []
+
+
+def _dict_rows(rows: list[list[str]]) -> list[dict[str, str]]:
+    if len(rows) < 2:
+        return []
+    headers = [_normalize_header(item) for item in rows[0]]
+    result = []
+    for row in rows[1:]:
+        result.append({headers[index]: row[index] for index in range(min(len(headers), len(row)))})
+    return result
+
+
+def _normalize_header(value: str) -> str:
+    return re.sub(r"\s+", "_", value.strip().upper())
+
+
+def _storage_root(value: str) -> str:
+    if value.startswith("+"):
+        return value.split("/", 1)[0]
+    normalized = value.replace("\\", "/")
+    parts = [part for part in normalized.split("/") if part]
+    if len(parts) >= 1:
+        return f"/{parts[0]}"
+    return value
+
+
+def _preferred_memory_value(row: dict[str, str]) -> str:
+    current = str(row.get("CURRENT_GB", "") or "").strip()
+    spfile = str(row.get("SPFILE_VALUE", "") or "").strip()
+    current_number = _to_float(current)
+    if current and current_number is not None and current_number > 0:
+        return current
+    if spfile:
+        return spfile
+    return current
+
+
+def _to_float(value: str) -> float | None:
+    text = str(value or "").strip().replace(",", "")
+    match = re.search(r"-?\d+(?:\.\d+)?", text)
+    if not match:
+        return None
+    return float(match.group(0))
+
+
+def _max_numeric(values: list[str]) -> float | None:
+    numbers = [number for value in values if (number := _to_float(value)) is not None]
+    return max(numbers) if numbers else None
+
+
+def _positive_values(values: list[str]) -> list[str]:
+    return [value for value in values if (number := _to_float(value)) is not None and number > 0]

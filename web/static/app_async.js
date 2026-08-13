@@ -3,11 +3,19 @@ const modeConfig = {
     label: "OracleHC",
     outputName: "final_oraclehc_report.docx",
     sourceHelper: "ZIP containing OracleHC HTML output.",
+    requiresTemplate: true,
+  },
+  edb360: {
+    label: "EDB360 One-click",
+    outputName: "final_edb360_report.docx",
+    sourceHelper: "ZIP containing EDB360 HTML output. The internal master Word template is used automatically.",
+    requiresTemplate: false,
   },
   sqlhealthcheck: {
     label: "SQLHealthcheck",
     outputName: "final_healthcheck_report.docx",
     sourceHelper: "ZIP containing SQLHealthcheck CSV output.",
+    requiresTemplate: true,
   },
 };
 
@@ -44,6 +52,7 @@ const el = {
   resetButton: document.querySelector("[data-reset-form]"),
   insertButton: document.querySelector("[data-insert-placeholders]"),
   templateInput: document.querySelector("[data-file-input='template']"),
+  templateSection: document.querySelector("[data-template-section]"),
   sourceInput: document.querySelector("[data-file-input='source']"),
   templateName: document.querySelector("[data-file-name='template']"),
   sourceName: document.querySelector("[data-file-name='source']"),
@@ -52,6 +61,8 @@ const el = {
   templateError: document.querySelector("[data-field-error='template']"),
   sourceError: document.querySelector("[data-field-error='source']"),
   outputError: document.querySelector("[data-field-error='output']"),
+  edb360Metadata: document.querySelector("[data-edb360-metadata]"),
+  outputStep: document.querySelector("[data-output-step]"),
   loadingModal: document.querySelector("[data-loading-modal]"),
   loadingTitle: document.querySelector("[data-loading-title]"),
   loadingStep: document.querySelector("[data-loading-step]"),
@@ -230,19 +241,26 @@ function renderModeSelector() {
 }
 
 function applyMode(mode, options = {}) {
+  const config = modeConfig[mode];
+  if (!config) return;
   const previousDefault = modeConfig[state.mode]?.outputName;
   const canReplaceOutput = options.forceOutput || !state.outputTouched || el.outputName.value === previousDefault;
   state.mode = mode;
   el.modeValue.value = mode;
-  el.sourceHelper.textContent = modeConfig[mode].sourceHelper;
+  el.sourceHelper.textContent = config.sourceHelper;
   if (canReplaceOutput) {
-    el.outputName.value = modeConfig[mode].outputName;
+    el.outputName.value = config.outputName;
     state.outputTouched = false;
   }
+  const requiresTemplate = config.requiresTemplate !== false;
+  if (el.templateSection) el.templateSection.hidden = !requiresTemplate;
+  if (el.templateInput) el.templateInput.required = requiresTemplate;
+  if (el.edb360Metadata) el.edb360Metadata.hidden = requiresTemplate;
+  if (el.outputStep) el.outputStep.textContent = requiresTemplate ? "04" : "05";
   el.modeSelector.querySelectorAll("[data-mode]").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.mode === mode);
   });
-  addLog("info", "select_mode", `Selected mode: ${modeConfig[mode].label}`);
+  addLog("info", "select_mode", `Selected mode: ${config.label}`);
   updateGenerateAvailability();
   loadPlaceholders();
 }
@@ -343,9 +361,15 @@ async function handleSubmit(event) {
   const formData = new FormData(el.form);
   formData.set("mode", state.mode);
   formData.set("output_name", normalizeDocxName(el.outputName.value));
+  if (modeConfig[state.mode]?.requiresTemplate === false) {
+    formData.delete("template_file");
+  }
+  const endpoint = modeConfig[state.mode]?.requiresTemplate === false
+    ? "/api/report/generate-edb360"
+    : "/api/report/generate";
 
   try {
-    const response = await fetch("/api/report/generate", { method: "POST", body: formData });
+    const response = await fetch(endpoint, { method: "POST", body: formData });
     const result = await response.json();
     if (!response.ok || !result.success) throw new Error(result.detail || "Failed to create report job");
     state.activeJobId = result.job_id;
@@ -421,10 +445,11 @@ function validateForm() {
   const template = el.templateInput.files[0];
   const source = el.sourceInput.files[0];
   const output = el.outputName.value.trim();
-  if (!template) {
+  const requiresTemplate = modeConfig[state.mode]?.requiresTemplate !== false;
+  if (requiresTemplate && !template) {
     el.templateError.textContent = "Please upload a Word template.";
     valid = false;
-  } else if (!template.name.toLowerCase().endsWith(".docx")) {
+  } else if (requiresTemplate && !template.name.toLowerCase().endsWith(".docx")) {
     el.templateError.textContent = "Word template must be a .docx file.";
     valid = false;
   }
@@ -447,7 +472,9 @@ function updateGenerateAvailability() {
   const template = el.templateInput.files[0];
   const source = el.sourceInput.files[0];
   const output = el.outputName.value.trim();
-  const ready = template && source && output && template.name.toLowerCase().endsWith(".docx") && source.name.toLowerCase().endsWith(".zip");
+  const requiresTemplate = modeConfig[state.mode]?.requiresTemplate !== false;
+  const templateReady = !requiresTemplate || (template && template.name.toLowerCase().endsWith(".docx"));
+  const ready = templateReady && source && output && source.name.toLowerCase().endsWith(".zip");
   el.submitButton.disabled = state.isGenerating || !ready;
   el.insertButton.disabled = state.isGenerating || !template || !template.name.toLowerCase().endsWith(".docx");
 }

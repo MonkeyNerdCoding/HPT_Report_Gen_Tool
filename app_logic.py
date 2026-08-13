@@ -2,12 +2,16 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from pathlib import Path
+from copy import copy
+import re
 
 from config import DEFAULT_MAPPING, load_mapping_rules
+from extraction.edb360_assessment import build_edb360_assessment_mapping
+from extraction.edb360_metadata import build_edb360_text_mapping, extract_edb360_metadata
 from extraction.extract_html import extract_content_from_input
 from mapping.content_registry import ContentRegistry
 from mapping.mapper import resolve_mappings
-from models import GenerationReport, OperationCancelled
+from models import ExtractedContent, GenerationReport, ImageContent, MappingRule, MultiImageContent, OperationCancelled, TableContent
 from placeholder_inserter import PlaceholderInsertReport, insert_mapping_placeholders
 from rpwithchart import render_excel_report
 from rendering.word_renderer import document_contains_placeholder, render_report
@@ -16,7 +20,18 @@ from sql_healthcheck.merge_sql import merge_sql_root_healthcheck
 
 LogCallback = Callable[[str], None]
 DEFAULT_SQL_MAPPING = Path(__file__).resolve().parent / "mapping" / "sql_healthcheck_mapping.yaml"
+DEFAULT_EDB360_MASTER_TEMPLATE = Path(__file__).resolve().parent / "templates" / "edb360_master.docx"
 DEFAULT_MAX_TABLE_DATA_ROWS = 50
+EDB360_CHART_GROUPS = {
+    "<log_switch_charts>": ("log_switch_frequency_for_instance", "Instance {instance}: Log switch frequency"),
+    "<aas_per_wait_class_charts>": ("aas_per_wait_class_for_instance", "Instance {instance}: AAS per Wait Class"),
+    "<ash_top_timed_events_charts>": ("ash_top_timed_events_for_instance", "Instance {instance}: ASH Top Timed Events"),
+    "<ash_top_sql_charts>": ("ash_top_sql_for_instance", "Instance {instance}: ASH Top SQL"),
+    "<cpu_busy_idle_charts>": ("cpu_busy_and_idle_times_percent_for_instance", "Instance {instance}: CPU Busy and Idle Times Percent"),
+    "<memory_statistics_charts>": ("memory_statistics_for_instance", "Instance {instance}: Memory Statistics"),
+    "<sga_statistics_charts>": ("sga_statistics_for_instance", "Instance {instance}: SGA Statistics"),
+    "<pga_statistics_charts>": ("pga_statistics_for_instance", "Instance {instance}: PGA Statistics"),
+}
 
 
 def generate_report(
@@ -44,6 +59,9 @@ def generate_report_to_file(
     output_file: str | Path,
     mapping_file: str | Path = DEFAULT_MAPPING,
     chart_output_dir: str | Path | None = None,
+    text_mapping: dict[str, str] | None = None,
+    edb360_one_click: bool = False,
+    allow_chart_fallback: bool = True,
     validate_only: bool = False,
     log_callback: LogCallback | None = None,
     cancel_check: Callable[[], bool] | None = None,
@@ -80,7 +98,14 @@ def generate_report_to_file(
     log(f"Chart placeholders in template: {len(chart_rules)}")
 
     log("Extracting tables and charts from HTML...")
-    contents = extract_content_from_input(input_path, chart_dir, report, chart_rules=chart_rules, cancel_check=cancel_check)
+    contents = extract_content_from_input(
+        input_path,
+        chart_dir,
+        report,
+        chart_rules=chart_rules,
+        allow_chart_fallback=allow_chart_fallback,
+        cancel_check=cancel_check,
+    )
     log(f"Extracted content blocks: {len(contents)}")
     _check_cancelled(cancel_check)
     if not contents:
@@ -89,6 +114,9 @@ def generate_report_to_file(
     log("Resolving mappings...")
     registry = ContentRegistry(contents)
     resolved = resolve_mappings(rules, registry, report, cancel_check=cancel_check)
+    if edb360_one_click:
+        _apply_edb360_one_click_table_transforms(resolved)
+        _apply_edb360_one_click_chart_groups(resolved, rules, contents)
     log(f"Resolved mappings: {len(resolved)} / {len(rules)}")
     _check_cancelled(cancel_check)
 
@@ -103,13 +131,153 @@ def generate_report_to_file(
             rules,
             report,
             log_callback=log_callback,
+            text_mapping=text_mapping,
             max_table_rows=DEFAULT_MAX_TABLE_DATA_ROWS + 1,
+            cleanup_unresolved_placeholders=edb360_one_click,
             cancel_check=cancel_check,
         )
         log(f"Done. Output saved to: {output_path}")
 
     _log_summary(report, log)
     return str(output_path)
+
+
+def generate_edb360_report_to_file(
+    html_input: str | Path,
+    output_file: str | Path,
+    metadata: dict[str, str] | None = None,
+    mapping_file: str | Path = DEFAULT_MAPPING,
+    master_template: str | Path = DEFAULT_EDB360_MASTER_TEMPLATE,
+    chart_output_dir: str | Path | None = None,
+    log_callback: LogCallback | None = None,
+    cancel_check: Callable[[], bool] | None = None,
+) -> str:
+    """Generate an EDB360 Word report from the internal master template."""
+    template_path = _validate_word_file(master_template)
+    input_path = _validate_html_input(html_input)
+    detected_metadata = extract_edb360_metadata(input_path)
+    merged_metadata = {**detected_metadata}
+    for key, value in (metadata or {}).items():
+        clean = str(value or "").strip()
+        if clean:
+            merged_metadata[key] = clean
+    text_mapping = build_edb360_text_mapping(merged_metadata)
+    text_mapping.update(build_edb360_assessment_mapping(input_path))
+    log = _make_logger(log_callback)
+    if detected_metadata:
+        preview = ", ".join(f"{key}={value}" for key, value in sorted(detected_metadata.items()))
+        log(f"Detected EDB360 metadata: {preview}")
+    return generate_report_to_file(
+        html_input=input_path,
+        word_file=template_path,
+        output_file=output_file,
+        mapping_file=mapping_file,
+        chart_output_dir=chart_output_dir,
+        text_mapping=text_mapping,
+        edb360_one_click=True,
+        allow_chart_fallback=False,
+        log_callback=log_callback,
+        cancel_check=cancel_check,
+    )
+
+
+def _apply_edb360_one_click_table_transforms(
+    resolved: dict[str, tuple[MappingRule, ExtractedContent]],
+) -> None:
+    if "<control_files>" in resolved:
+        rule, content = resolved["<control_files>"]
+        if isinstance(content, TableContent):
+            resolved["<control_files>"] = (rule, _filter_parameter_rows(content, {"control_files"}))
+    for placeholder, (_rule, content) in list(resolved.items()):
+        if isinstance(content, TableContent) and _is_empty_edb360_table(content):
+            del resolved[placeholder]
+
+
+def _is_empty_edb360_table(content: TableContent) -> bool:
+    if content.no_rows_selected and len(content.rows) <= 1:
+        return True
+    if not content.rows:
+        return True
+    if len(content.rows) == 1 and content.rows[0] == ["No rows selected"]:
+        return True
+    return len(content.rows) <= 1
+
+
+def _apply_edb360_one_click_chart_groups(
+    resolved: dict[str, tuple[MappingRule, ExtractedContent]],
+    rules: list[MappingRule],
+    contents: list[ExtractedContent],
+) -> None:
+    rules_by_placeholder = {rule.placeholder: rule for rule in rules}
+    for placeholder, (generic_key, caption_template) in EDB360_CHART_GROUPS.items():
+        items = _chart_group_items(contents, generic_key)
+        if not items:
+            continue
+        captions = [caption_template.format(instance=_instance_number(item) or index + 1) for index, item in enumerate(items)]
+        rule = rules_by_placeholder.get(placeholder) or MappingRule(
+            placeholder=placeholder,
+            source_key=generic_key,
+            content_type="chart",
+            width_inches=6.5,
+        )
+        resolved[placeholder] = (
+            rule,
+            MultiImageContent(
+                source_path=items[0].source_path,
+                images=items,
+                captions=captions,
+                title=generic_key,
+                logical_key=generic_key,
+                keys={generic_key},
+            ),
+        )
+
+
+def _chart_group_items(contents: list[ExtractedContent], generic_key: str) -> list[ImageContent]:
+    from utils.normalize import content_key_aliases
+
+    matches: list[ImageContent] = []
+    for content in contents:
+        if not isinstance(content, ImageContent):
+            continue
+        aliases = {alias for key in content.keys | {content.logical_key, content.source_path.stem} for alias in content_key_aliases(key)}
+        if generic_key in aliases:
+            matches.append(content)
+    return sorted(matches, key=lambda item: (_instance_number(item) or 999, item.source_path.name))
+
+
+def _instance_number(content: ExtractedContent) -> int | None:
+    text = " ".join([content.logical_key, content.title, content.source_path.stem])
+    match = re.search(r"(?:for[_ ]instance|instance)[_ ]+(\d+)", text, re.IGNORECASE)
+    return int(match.group(1)) if match else None
+
+
+def _filter_parameter_rows(content: TableContent, parameter_names: set[str]) -> TableContent:
+    if not content.rows:
+        return content
+    headers = content.rows[0]
+    normalized_headers = [header.strip().upper().replace(" ", "_") for header in headers]
+    try:
+        name_index = normalized_headers.index("NAME")
+    except ValueError:
+        return content
+    value_index = normalized_headers.index("VALUE") if "VALUE" in normalized_headers else None
+
+    output_headers = ["PARAMETER", "VALUE"] if value_index is not None else headers
+    output_rows = [output_headers]
+    for row in content.rows[1:]:
+        if name_index >= len(row) or row[name_index].strip().lower() not in parameter_names:
+            continue
+        if value_index is not None:
+            values = [value.strip() for value in row[value_index].split(",") if value.strip()]
+            output_rows.extend([[row[name_index], value] for value in values] or [[row[name_index], ""]])
+        else:
+            output_rows.append(row)
+
+    transformed = copy(content)
+    transformed.rows = output_rows
+    transformed.no_rows_selected = len(output_rows) == 1
+    return transformed
 
 
 def _chart_rules_present_in_template(template_path: Path, rules):
