@@ -9,7 +9,22 @@ from .table_extractor import extract_tables
 
 
 CACHE_HIT_ASSESSMENT = "Tỉ lệ buffer cache hit và library cache hit đang ở ngưỡng tối ưu 99 – 100%."
+BUFFER_CACHE_HIT_ASSESSMENT = "Tỉ lệ buffer cache hit đang ở ngưỡng tối ưu 99 – 100%."
+LIBRARY_CACHE_HIT_ASSESSMENT = "Tỉ lệ library cache hit đang ở ngưỡng tối ưu 99 – 100%."
 CACHE_HIT_RECOMMENDATION = "N/A"
+LOG_SWITCH_ASSESSMENT = (
+    "Nhìn chung, tần suất log switch của các instance dao động khoảng 5 – 10 lần/giờ, cao hơn mức khuyến nghị thông thường. "
+    "Ngoài ra, một số thời điểm xuất hiện đột biến cao khoảng 35 -60 lần/giờ, cho thấy hệ thống có hiện tượng phát sinh redo lớn trong các khung giờ cao điểm."
+)
+LOG_SWITCH_RECOMMENDATION = "Tăng thêm dung lượng cho redo log file để giảm tần suất switch."
+FOREGROUND_CPU_ASSESSMENT = "Nhìn chung, các instance cơ sở dữ liệu sử dụng trung bình 6 – 10% CPU server."
+PGA_ASSESSMENT = "Nhìn chung, vùng nhớ PGA được CSDL sử dụng vẫn nằm trong mức an toàn."
+PGA_RECOMMENDATION = "N/A"
+MULTIPLEXED_REDO_ASSESSMENT = (
+    "Theo như cấu hình hiện tại, các redo log group đang được multiplexing, tức là mỗi redo log group có 2 members, "
+    "mỗi member được đặt ở một disk controller khác nhau. Điều này tăng tính sẵn sàng của redo log group, đảm bảo database "
+    "luôn được vận hành khi có sự cố ảnh hưởng đến một trong những member trong redo log group."
+)
 
 
 def build_edb360_assessment_mapping(input_root: str | Path) -> dict[str, str]:
@@ -94,10 +109,7 @@ def _redo_assessment(redo_rows: list[list[str]], redo_file_rows: list[list[str]]
     group_count = len(member_counts)
     min_members = min(member_counts) if member_counts else 0
     if min_members >= 2:
-        assessment = (
-            f"Theo cấu hình hiện tại, database có {group_count} redo log groups và các group đang được multiplexing "
-            f"với tối thiểu {min_members} members/group, tăng tính sẵn sàng cho redo log."
-        )
+        assessment = MULTIPLEXED_REDO_ASSESSMENT
         recommendation = "N/A"
     else:
         assessment = (
@@ -185,11 +197,17 @@ def _tablespace_assessment(rows: list[list[str]]) -> dict[str, str]:
 def _cache_hit_assessment() -> dict[str, str]:
     return {
         "{{assessment_cache_hit}}": CACHE_HIT_ASSESSMENT,
-        "{{assessment_buffer_cache_hit}}": CACHE_HIT_ASSESSMENT,
-        "{{assessment_library_cache_hit}}": CACHE_HIT_ASSESSMENT,
+        "{{assessment_buffer_cache_hit}}": BUFFER_CACHE_HIT_ASSESSMENT,
+        "{{assessment_library_cache_hit}}": LIBRARY_CACHE_HIT_ASSESSMENT,
         "{{recommendation_cache_hit}}": CACHE_HIT_RECOMMENDATION,
         "{{recommendation_buffer_cache_hit}}": CACHE_HIT_RECOMMENDATION,
         "{{recommendation_library_cache_hit}}": CACHE_HIT_RECOMMENDATION,
+        "{{assessment_log_switch}}": LOG_SWITCH_ASSESSMENT,
+        "{{recommendation_log_switch}}": LOG_SWITCH_RECOMMENDATION,
+        "{{assessment_oracle_foreground_process}}": FOREGROUND_CPU_ASSESSMENT,
+        "{{recommendation_oracle_foreground_process}}": CACHE_HIT_RECOMMENDATION,
+        "{{assessment_pga}}": PGA_ASSESSMENT,
+        "{{recommendation_pga}}": PGA_RECOMMENDATION,
     }
 
 

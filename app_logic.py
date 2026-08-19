@@ -26,7 +26,7 @@ EDB360_CHART_GROUPS = {
     "<log_switch_charts>": ("log_switch_frequency_for_instance", "Instance {instance}: Log switch frequency"),
     "<aas_per_wait_class_charts>": ("aas_per_wait_class_for_instance", "Instance {instance}: AAS per Wait Class"),
     "<ash_top_timed_events_charts>": ("ash_top_timed_events_for_instance", "Instance {instance}: ASH Top Timed Events"),
-    "<ash_top_sql_charts>": ("ash_top_sql_for_instance", "Instance {instance}: ASH Top SQL"),
+    "<ash_top_sql_charts>": ("ash_top_sql_for_cluster", "ASH Top SQL for Cluster"),
     "<cpu_busy_idle_charts>": ("cpu_busy_and_idle_times_percent_for_instance", "Instance {instance}: CPU Busy and Idle Times Percent"),
     "<memory_statistics_charts>": ("memory_statistics_for_instance", "Instance {instance}: Memory Statistics"),
     "<sga_statistics_charts>": ("sga_statistics_for_instance", "Instance {instance}: SGA Statistics"),
@@ -243,7 +243,11 @@ def _chart_group_items(contents: list[ExtractedContent], generic_key: str) -> li
         aliases = {alias for key in content.keys | {content.logical_key, content.source_path.stem} for alias in content_key_aliases(key)}
         if generic_key in aliases:
             matches.append(content)
-    return sorted(matches, key=lambda item: (_instance_number(item) or 999, item.source_path.name))
+    matches = sorted(matches, key=lambda item: (_instance_number(item) or 999, item.source_path.name))
+    if generic_key == "ash_top_sql_for_cluster":
+        pie_matches = [item for item in matches if "pie_chart" in item.source_path.stem.lower()]
+        return (pie_matches or matches)[:1]
+    return matches
 
 
 def _instance_number(content: ExtractedContent) -> int | None:

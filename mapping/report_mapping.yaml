@@ -24,7 +24,7 @@ placeholders:
   purpose: Render all ASH top timed events charts by detected instance
   width_inches: 6.5
 - placeholder: <ash_top_sql_charts>
-  source_key: ash_top_sql_for_instance
+  source_key: ash_top_sql_for_cluster
   content_type: chart
   description: ASH top SQL charts for all detected instances
   template: EDB360 one-click master

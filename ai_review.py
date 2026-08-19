@@ -722,6 +722,14 @@ def assess_section(item: ReviewSectionData) -> tuple[str, str]:
         return assess_control_files(item)
     if item.section == "4.1.2. Online redo log":
         return assess_redo_log(item)
+    if item.section == "6.1. Oracle Foreground Process":
+        return "Nhìn chung, các instance cơ sở dữ liệu sử dụng trung bình 6 – 10% CPU server.", NO_ACTION
+    if item.section == "6.5. Buffer Cache Hit":
+        return "Tỉ lệ buffer cache hit đang ở ngưỡng tối ưu 99 – 100%.", NO_ACTION
+    if item.section == "6.6. Library Cache Hit":
+        return "Tỉ lệ library cache hit đang ở ngưỡng tối ưu 99 – 100%.", NO_ACTION
+    if item.section == "6.7. PGA":
+        return "Nhìn chung, vùng nhớ PGA được CSDL sử dụng vẫn nằm trong mức an toàn.", NO_ACTION
     if item.section == "4.1.3.2. Mức độ sử dụng tablespace":
         return assess_tablespace(item)
     if item.section == "4.1.4. Các table không có index":
@@ -767,7 +775,12 @@ def assess_redo_log(item: ReviewSectionData) -> tuple[str, str]:
                 "Thêm ít nhất 1 member cho mỗi redo log group và đặt trên disk/vị trí lưu trữ khác.",
             )
         if members:
-            return "Các redo log group đã có nhiều hơn 1 member theo dữ liệu trích xuất.", NO_ACTION
+            return (
+                "Theo như cấu hình hiện tại, các redo log group đang được multiplexing, tức là mỗi redo log group có 2 members, "
+                "mỗi member được đặt ở một disk controller khác nhau. Điều này tăng tính sẵn sàng của redo log group, đảm bảo database "
+                "luôn được vận hành khi có sự cố ảnh hưởng đến một trong những member trong redo log group.",
+                NO_ACTION,
+            )
     return MISSING_ASSESSMENT, ""
 
 

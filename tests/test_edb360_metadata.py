@@ -29,7 +29,7 @@ class Edb360MetadataTests(unittest.TestCase):
         mapping = build_edb360_assessment_mapping(SAMPLE_EDB360_ROOT)
 
         self.assertIn("4 control files", mapping["{{assessment_control_file}}"])
-        self.assertIn("10 redo log groups", mapping["{{assessment_redo_log}}"])
+        self.assertIn("redo log group đang được multiplexing", mapping["{{assessment_redo_log}}"])
         self.assertIn("SGA 180.000G/instance", mapping["{{assessment_memory_configuration}}"])
         self.assertIn("1146 bảng không có index", mapping["{{assessment_no_index}}"])
         self.assertIn("1678 bảng không có khóa chính", mapping["{{assessment_no_pk}}"])
