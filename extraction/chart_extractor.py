@@ -112,7 +112,7 @@ def render_google_chart_from_dom_svg(
 
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
+            browser = _launch_chromium_browser(p)
             try:
                 page_browser = browser.new_page(viewport={"width": 1000, "height": 700})
                 page_browser.goto(
@@ -156,6 +156,43 @@ def render_google_chart_from_dom_svg(
         keys=keys,
         variant=variant,
     )
+
+
+def _launch_chromium_browser(playwright):
+    attempts = []
+    for executable_path in (
+        Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"),
+        Path(r"C:\Program Files\Microsoft\Edge\Application\msedge.exe"),
+        Path(r"C:\Program Files\Google\Chrome\Application\chrome.exe"),
+        Path(r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"),
+    ):
+        if executable_path.exists():
+            attempts.append(
+                (
+                    str(executable_path),
+                    lambda executable_path=executable_path: playwright.chromium.launch(
+                        executable_path=str(executable_path),
+                        headless=True,
+                    ),
+                )
+            )
+
+    attempts.extend(
+        [
+            ("msedge channel", lambda: playwright.chromium.launch(channel="msedge", headless=True)),
+            ("chrome channel", lambda: playwright.chromium.launch(channel="chrome", headless=True)),
+            ("playwright chromium", lambda: playwright.chromium.launch(headless=True)),
+        ]
+    )
+
+    errors = []
+    for label, launch in attempts:
+        try:
+            return launch()
+        except Exception as exc:
+            errors.append(f"{label}: {exc}")
+
+    raise RuntimeError("Could not launch a Chromium-compatible browser. " + " | ".join(errors))
 
 
 def _wait_for_chart_element(page_browser, timeout_error_type):

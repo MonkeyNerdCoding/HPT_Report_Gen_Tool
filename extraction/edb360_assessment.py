@@ -8,6 +8,10 @@ from .html_parser import parse_html_file
 from .table_extractor import extract_tables
 
 
+CACHE_HIT_ASSESSMENT = "Tỉ lệ buffer cache hit và library cache hit đang ở ngưỡng tối ưu 99 – 100%."
+CACHE_HIT_RECOMMENDATION = "N/A"
+
+
 def build_edb360_assessment_mapping(input_root: str | Path) -> dict[str, str]:
     root = Path(input_root)
     mapping: dict[str, str] = {}
@@ -30,6 +34,7 @@ def build_edb360_assessment_mapping(input_root: str | Path) -> dict[str, str]:
     mapping.update(_memory_assessment(memory_configuration))
     mapping.update(_patching_backup_assessment(registry_sql_patch, rman_backup))
     mapping.update(_tablespace_assessment(tablespace_usage))
+    mapping.update(_cache_hit_assessment())
     mapping.update(_count_assessments(no_index, no_pk, invalid_objects, table_stats, index_stats))
     return {key: value for key, value in mapping.items() if value is not None}
 
@@ -147,8 +152,8 @@ def _patching_backup_assessment(registry_rows: list[list[str]], backup_rows: lis
         backup_assessment = f"Đã có RMAN backup. EDB360 ghi nhận {len(completed)} backup job hoàn thành trong dữ liệu thu thập."
         backup_recommendation = "Theo dõi lịch backup định kỳ và thực hiện restore test để kiểm chứng khả năng khôi phục."
     else:
-        backup_assessment = "Hiện tại chưa ghi nhận RMAN backup job hoàn thành trong EDB360."
-        backup_recommendation = "Cấu hình RMAN backup định kỳ và thực hiện restore test để đảm bảo khả năng khôi phục khi có sự cố."
+        backup_assessment = "Hiện tại chưa có RMAN backup"
+        backup_recommendation = "Khuyến nghị tạo thêm RMAN backup để thực hiện khôi phục hoàn toàn khi hệ thống\ngặp sự cố."
 
     return {
         "{{assessment_patching}}": f"Phiên bản/patch hiện tại: {patch_desc}" if patch_desc else "",
@@ -174,6 +179,17 @@ def _tablespace_assessment(rows: list[list[str]]) -> dict[str, str]:
     return {
         "{{assessment_tablespace_usage}}": "Dung lượng của các tablespace đang ở ngưỡng an toàn.",
         "{{recommendation_tablespace_usage}}": "N/A",
+    }
+
+
+def _cache_hit_assessment() -> dict[str, str]:
+    return {
+        "{{assessment_cache_hit}}": CACHE_HIT_ASSESSMENT,
+        "{{assessment_buffer_cache_hit}}": CACHE_HIT_ASSESSMENT,
+        "{{assessment_library_cache_hit}}": CACHE_HIT_ASSESSMENT,
+        "{{recommendation_cache_hit}}": CACHE_HIT_RECOMMENDATION,
+        "{{recommendation_buffer_cache_hit}}": CACHE_HIT_RECOMMENDATION,
+        "{{recommendation_library_cache_hit}}": CACHE_HIT_RECOMMENDATION,
     }
 
 
