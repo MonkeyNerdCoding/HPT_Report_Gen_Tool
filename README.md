@@ -18,6 +18,8 @@ Tool web nội bộ hỗ trợ tạo báo cáo Health Check/Tuning/Security từ
 ## Clone repo
 
 ```bash
+clone branch
+git clone -b feature/hpt-report-generator-updates https://github.com/MonkeyNerdCoding/HPT_Report_Gen_Tool.git
 git clone https://github.com/MonkeyNerdCoding/HPT_Report_Gen_Tool/tree/feature/hpt-report-generator-updates
 cd HPT_Report_Gen_Tool
 ```
