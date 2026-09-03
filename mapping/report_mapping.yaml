@@ -814,14 +814,14 @@ placeholders:
   source_html: 00064_edb360_1a_6z_653179_2d_51_block_corruption.html
   report_section: 2d.51
 - placeholder: <rman_backup>
-  source_key: rman_backup_job_details
+  source_key: rman_backup
   content_type: table
   table_index: 0
   description: RMAN Backup Job Details
   template: OracleHC Word template
   location: RMAN BACKUP
   purpose: Render RMAN backup job details table
-  source_html: rman_backup_job_details.html
+  source_html: rman_backup.html
   report_section: 2d.54
 - placeholder: <fast_recovery_area>
   source_key: fast_recovery_area
