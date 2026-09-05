@@ -15,6 +15,11 @@ CACHE_HIT_RECOMMENDATION = "N/A"
 LOG_SWITCH_RECOMMENDATION = "Tăng thêm dung lượng cho redo log file để giảm tần suất switch."
 PGA_ASSESSMENT = "Nhìn chung, vùng nhớ PGA được CSDL sử dụng vẫn nằm trong mức an toàn."
 PGA_RECOMMENDATION = "N/A"
+EN_CACHE_HIT_ASSESSMENT = "The buffer cache hit and library cache hit ratios are currently at an optimal level of 99 - 100%."
+EN_BUFFER_CACHE_HIT_ASSESSMENT = "The buffer cache hit ratio is currently at an optimal level of 99 - 100%."
+EN_LIBRARY_CACHE_HIT_ASSESSMENT = "The library cache hit ratio is currently at an optimal level of 99 - 100%."
+EN_LOG_SWITCH_RECOMMENDATION = "Increase the redo log file size to reduce log switch frequency."
+EN_PGA_ASSESSMENT = "Overall, PGA memory usage remains within a safe range."
 ASM_FREE_WARNING_GB = 500
 ASM_FREE_WARNING_PERCENT = 10
 MULTIPLEXED_REDO_ASSESSMENT = (
@@ -22,10 +27,16 @@ MULTIPLEXED_REDO_ASSESSMENT = (
     "mỗi member được đặt ở một disk controller khác nhau. Điều này tăng tính sẵn sàng của redo log group, đảm bảo database "
     "luôn được vận hành khi có sự cố ảnh hưởng đến một trong những member trong redo log group."
 )
+EN_MULTIPLEXED_REDO_ASSESSMENT = (
+    "Based on the current configuration, the redo log groups are multiplexed. Each redo log group has 2 members, "
+    "and each member is placed on a different disk controller. This improves redo log availability and helps ensure "
+    "the database can continue operating if one redo log member is affected."
+)
 
 
-def build_edb360_assessment_mapping(input_root: str | Path) -> dict[str, str]:
+def build_edb360_assessment_mapping(input_root: str | Path, language: str = "vi") -> dict[str, str]:
     root = Path(input_root)
+    english = _is_english(language)
     mapping: dict[str, str] = {}
 
     all_parameters = _first_table(root, "*all_parameters.html")
@@ -45,19 +56,19 @@ def build_edb360_assessment_mapping(input_root: str | Path) -> dict[str, str]:
     table_stats = _first_table(root, "*tables_with_stale_stats.html")
     index_stats = _first_table(root, "*indexes_with_stale_stats.html")
 
-    mapping.update(_control_file_assessment(all_parameters))
-    mapping.update(_redo_assessment(redo_log, redo_log_files))
-    mapping.update(_memory_assessment(memory_configuration))
-    mapping.update(_patching_backup_assessment(registry_sql_patch, rman_backup))
-    mapping.update(_tablespace_assessment(tablespace_usage))
-    mapping.update(_cache_hit_assessment(log_switch_tables, cpu_busy_tables))
-    mapping.update(_asm_assessment(asm_disk_group))
-    mapping.update(_scheduler_jobs_assessment(scheduler_jobs))
-    mapping.update(_count_assessments(no_index, no_pk, invalid_objects, table_stats, index_stats))
+    mapping.update(_control_file_assessment(all_parameters, english))
+    mapping.update(_redo_assessment(redo_log, redo_log_files, english))
+    mapping.update(_memory_assessment(memory_configuration, english))
+    mapping.update(_patching_backup_assessment(registry_sql_patch, rman_backup, english))
+    mapping.update(_tablespace_assessment(tablespace_usage, english))
+    mapping.update(_cache_hit_assessment(log_switch_tables, cpu_busy_tables, english))
+    mapping.update(_asm_assessment(asm_disk_group, english))
+    mapping.update(_scheduler_jobs_assessment(scheduler_jobs, english))
+    mapping.update(_count_assessments(no_index, no_pk, invalid_objects, table_stats, index_stats, english))
     return {key: value for key, value in mapping.items() if value is not None}
 
 
-def _control_file_assessment(rows: list[list[str]]) -> dict[str, str]:
+def _control_file_assessment(rows: list[list[str]], english: bool = False) -> dict[str, str]:
     raw_values = [row.get("VALUE", "") for row in _dict_rows(rows) if row.get("NAME", "").lower() == "control_files"]
     values: list[str] = []
     for raw_value in raw_values:
@@ -71,25 +82,38 @@ def _control_file_assessment(rows: list[list[str]]) -> dict[str, str]:
     locations = {_storage_root(value) for value in values}
     count = len(values)
     if len(locations) >= 2:
-        assessment = (
-            f"Hiện tại, database đang có {count} control files và các control files này được đặt trên "
-            f"{len(locations)} vị trí lưu trữ khác nhau ({', '.join(sorted(locations))}), đảm bảo tính an toàn cho control files."
-        )
+        if english:
+            assessment = (
+                f"The database currently has {count} control files, and these control files are located on "
+                f"{len(locations)} separate storage locations ({', '.join(sorted(locations))}), ensuring control file protection."
+            )
+        else:
+            assessment = (
+                f"Hiện tại, database đang có {count} control files và các control files này được đặt trên "
+                f"{len(locations)} vị trí lưu trữ khác nhau ({', '.join(sorted(locations))}), đảm bảo tính an toàn cho control files."
+            )
         recommendation = "N/A"
     else:
         location = next(iter(locations), "")
-        assessment = (
-            f"Hiện tại, database đang có {count} control files. Tuy nhiên, các control files này đang nằm cùng một vị trí "
-            f"{location}, không đảm bảo tính an toàn nếu vị trí lưu trữ này gặp sự cố."
-        )
-        recommendation = "Đưa các control files ra nhiều phân vùng/disk group khác nhau hoặc bổ sung control file ở vị trí lưu trữ độc lập."
+        if english:
+            assessment = (
+                f"The database currently has {count} control files. However, these control files are located in the same storage location "
+                f"{location}, which does not provide sufficient protection if that storage location has an incident."
+            )
+            recommendation = "Place the control files on different partitions/disk groups or add a control file on independent storage."
+        else:
+            assessment = (
+                f"Hiện tại, database đang có {count} control files. Tuy nhiên, các control files này đang nằm cùng một vị trí "
+                f"{location}, không đảm bảo tính an toàn nếu vị trí lưu trữ này gặp sự cố."
+            )
+            recommendation = "Đưa các control files ra nhiều phân vùng/disk group khác nhau hoặc bổ sung control file ở vị trí lưu trữ độc lập."
     return {
         "{{assessment_control_file}}": assessment,
         "{{recommendation_control_file}}": recommendation,
     }
 
 
-def _redo_assessment(redo_rows: list[list[str]], redo_file_rows: list[list[str]]) -> dict[str, str]:
+def _redo_assessment(redo_rows: list[list[str]], redo_file_rows: list[list[str]], english: bool = False) -> dict[str, str]:
     redo = _dict_rows(redo_rows)
     redo_files = _dict_rows(redo_file_rows)
     if not redo and not redo_files:
@@ -112,20 +136,24 @@ def _redo_assessment(redo_rows: list[list[str]], redo_file_rows: list[list[str]]
     group_count = len(member_counts)
     min_members = min(member_counts) if member_counts else 0
     if min_members >= 2:
-        assessment = MULTIPLEXED_REDO_ASSESSMENT
+        assessment = EN_MULTIPLEXED_REDO_ASSESSMENT if english else MULTIPLEXED_REDO_ASSESSMENT
         recommendation = "N/A"
     else:
-        assessment = (
-            f"Theo cấu hình hiện tại, database có {group_count} redo log groups nhưng có redo log group chưa được multiplexing đầy đủ."
-        )
-        recommendation = "Bổ sung redo log member trên disk group/phân vùng khác để tăng tính sẵn sàng."
+        if english:
+            assessment = f"Based on the current configuration, the database has {group_count} redo log groups, but at least one redo log group is not fully multiplexed."
+            recommendation = "Add redo log members on another disk group/partition to improve availability."
+        else:
+            assessment = (
+                f"Theo cấu hình hiện tại, database có {group_count} redo log groups nhưng có redo log group chưa được multiplexing đầy đủ."
+            )
+            recommendation = "Bổ sung redo log member trên disk group/phân vùng khác để tăng tính sẵn sàng."
     return {
         "{{assessment_redo_log}}": assessment,
         "{{recommendation_redo_log}}": recommendation,
     }
 
 
-def _memory_assessment(rows: list[list[str]]) -> dict[str, str]:
+def _memory_assessment(rows: list[list[str]], english: bool = False) -> dict[str, str]:
     data = _dict_rows(rows)
     if not data:
         return {"{{assessment_memory_configuration}}": "", "{{recommendation_memory_configuration}}": ""}
@@ -147,14 +175,19 @@ def _memory_assessment(rows: list[list[str]]) -> dict[str, str]:
         parts.append(f"SGA {', '.join(dict.fromkeys(sga))}/instance")
     if pga:
         parts.append(f"PGA {', '.join(dict.fromkeys(pga))}/instance")
-    detail = "; ".join(parts) if parts else "chưa xác định được SGA/PGA từ EDB360"
+    detail = "; ".join(parts) if parts else ("SGA/PGA could not be identified from EDB360" if english else "chưa xác định được SGA/PGA từ EDB360")
+    assessment = (
+        f"The database memory is currently configured in {mode} mode. Details: {detail}."
+        if english
+        else f"Cơ sở dữ liệu hiện tại đang được cấu hình vùng nhớ ở chế độ {mode}. Trong đó: {detail}."
+    )
     return {
-        "{{assessment_memory_configuration}}": f"Cơ sở dữ liệu hiện tại đang được cấu hình vùng nhớ ở chế độ {mode}. Trong đó: {detail}.",
+        "{{assessment_memory_configuration}}": assessment,
         "{{recommendation_memory_configuration}}": "N/A",
     }
 
 
-def _patching_backup_assessment(registry_rows: list[list[str]], backup_rows: list[list[str]]) -> dict[str, str]:
+def _patching_backup_assessment(registry_rows: list[list[str]], backup_rows: list[list[str]], english: bool = False) -> dict[str, str]:
     patches = _dict_rows(registry_rows)
     backups = _dict_rows(backup_rows)
     patch_desc = ""
@@ -164,25 +197,41 @@ def _patching_backup_assessment(registry_rows: list[list[str]], backup_rows: lis
 
     completed = [row for row in backups if "COMPLETED" in row.get("STATUS", "").upper()]
     if backups:
-        completed_text = f" Trong đó có {len(completed)} backup job hoàn thành." if completed else ""
-        backup_assessment = f"Đã có RMAN backup. EDB360 ghi nhận {len(backups)} backup job trong dữ liệu thu thập.{completed_text}"
-        backup_recommendation = (
-            "Khuyến nghị chuẩn bị môi trường thực hiện kiểm thử restore các bản backup. "
-            "Việc không có môi trường khôi phục kiểm thử bản backup sẽ không đảm bảo bản backup có thể khôi phục thành công khi cần thiết."
-        )
+        if english:
+            completed_text = f" {len(completed)} backup job(s) completed." if completed else ""
+            backup_assessment = f"RMAN backup data is available. EDB360 recorded {len(backups)} backup job(s) in the collected data.{completed_text}"
+            backup_recommendation = (
+                "Prepare an environment to perform backup restore testing. "
+                "Without a restore test environment, backup recoverability cannot be confirmed when needed."
+            )
+        else:
+            completed_text = f" Trong đó có {len(completed)} backup job hoàn thành." if completed else ""
+            backup_assessment = f"Đã có RMAN backup. EDB360 ghi nhận {len(backups)} backup job trong dữ liệu thu thập.{completed_text}"
+            backup_recommendation = (
+                "Khuyến nghị chuẩn bị môi trường thực hiện kiểm thử restore các bản backup. "
+                "Việc không có môi trường khôi phục kiểm thử bản backup sẽ không đảm bảo bản backup có thể khôi phục thành công khi cần thiết."
+            )
     else:
-        backup_assessment = "Hiện tại chưa có RMAN backup"
-        backup_recommendation = "Khuyến nghị tạo thêm RMAN backup để thực hiện khôi phục hoàn toàn khi hệ thống\ngặp sự cố."
+        backup_assessment = "No RMAN backup is currently available" if english else "Hiện tại chưa có RMAN backup"
+        backup_recommendation = (
+            "Create RMAN backups to enable full recovery when the system encounters an incident."
+            if english
+            else "Khuyến nghị tạo thêm RMAN backup để thực hiện khôi phục hoàn toàn khi hệ thống\ngặp sự cố."
+        )
 
     return {
-        "{{assessment_patching}}": f"Phiên bản/patch hiện tại: {patch_desc}" if patch_desc else "",
-        "{{recommendation_patching}}": "Đánh giá kế hoạch nâng cấp patch theo chính sách vận hành và khuyến nghị bảo mật của Oracle.",
+        "{{assessment_patching}}": (f"Current version/patch: {patch_desc}" if english else f"Phiên bản/patch hiện tại: {patch_desc}") if patch_desc else "",
+        "{{recommendation_patching}}": (
+            "Review the patch upgrade plan according to operational policy and Oracle security recommendations."
+            if english
+            else "Đánh giá kế hoạch nâng cấp patch theo chính sách vận hành và khuyến nghị bảo mật của Oracle."
+        ),
         "{{assessment_backup}}": backup_assessment,
         "{{recommendation_backup}}": backup_recommendation,
     }
 
 
-def _tablespace_assessment(rows: list[list[str]]) -> dict[str, str]:
+def _tablespace_assessment(rows: list[list[str]], english: bool = False) -> dict[str, str]:
     data = _dict_rows(rows)
     over_threshold = []
     for row in data:
@@ -195,35 +244,43 @@ def _tablespace_assessment(rows: list[list[str]]) -> dict[str, str]:
             over_threshold.append(name)
     if over_threshold:
         return {
-            "{{assessment_tablespace_usage}}": f"Một số tablespace có dung lượng sử dụng ở mức nguy hiểm (>=85%): {', '.join(over_threshold[:10])}.",
-            "{{recommendation_tablespace_usage}}": "Cung cấp thêm datafile hoặc extend datafile có sẵn cho các tablespace trên.",
+            "{{assessment_tablespace_usage}}": (
+                f"Some tablespaces are at a critical usage level (>=85%): {', '.join(over_threshold[:10])}."
+                if english
+                else f"Một số tablespace có dung lượng sử dụng ở mức nguy hiểm (>=85%): {', '.join(over_threshold[:10])}."
+            ),
+            "{{recommendation_tablespace_usage}}": (
+                "Add datafiles or extend existing datafiles for the tablespaces above."
+                if english
+                else "Cung cấp thêm datafile hoặc extend datafile có sẵn cho các tablespace trên."
+            ),
         }
     return {
-        "{{assessment_tablespace_usage}}": "Dung lượng của các tablespace đang ở ngưỡng an toàn.",
+        "{{assessment_tablespace_usage}}": "Tablespace usage is within a safe range." if english else "Dung lượng của các tablespace đang ở ngưỡng an toàn.",
         "{{recommendation_tablespace_usage}}": "N/A",
     }
 
 
-def _cache_hit_assessment(log_switch_tables: list[list[list[str]]], cpu_busy_tables: list[list[list[str]]]) -> dict[str, str]:
-    log_switch_assessment = _log_switch_assessment(log_switch_tables)
-    foreground_cpu_assessment = _foreground_cpu_assessment(cpu_busy_tables)
+def _cache_hit_assessment(log_switch_tables: list[list[list[str]]], cpu_busy_tables: list[list[list[str]]], english: bool = False) -> dict[str, str]:
+    log_switch_assessment = _log_switch_assessment(log_switch_tables, english)
+    foreground_cpu_assessment = _foreground_cpu_assessment(cpu_busy_tables, english)
     return {
-        "{{assessment_cache_hit}}": CACHE_HIT_ASSESSMENT,
-        "{{assessment_buffer_cache_hit}}": BUFFER_CACHE_HIT_ASSESSMENT,
-        "{{assessment_library_cache_hit}}": LIBRARY_CACHE_HIT_ASSESSMENT,
+        "{{assessment_cache_hit}}": EN_CACHE_HIT_ASSESSMENT if english else CACHE_HIT_ASSESSMENT,
+        "{{assessment_buffer_cache_hit}}": EN_BUFFER_CACHE_HIT_ASSESSMENT if english else BUFFER_CACHE_HIT_ASSESSMENT,
+        "{{assessment_library_cache_hit}}": EN_LIBRARY_CACHE_HIT_ASSESSMENT if english else LIBRARY_CACHE_HIT_ASSESSMENT,
         "{{recommendation_cache_hit}}": CACHE_HIT_RECOMMENDATION,
         "{{recommendation_buffer_cache_hit}}": CACHE_HIT_RECOMMENDATION,
         "{{recommendation_library_cache_hit}}": CACHE_HIT_RECOMMENDATION,
         "{{assessment_log_switch}}": log_switch_assessment,
-        "{{recommendation_log_switch}}": LOG_SWITCH_RECOMMENDATION,
+        "{{recommendation_log_switch}}": EN_LOG_SWITCH_RECOMMENDATION if english else LOG_SWITCH_RECOMMENDATION,
         "{{assessment_oracle_foreground_process}}": foreground_cpu_assessment,
         "{{recommendation_oracle_foreground_process}}": CACHE_HIT_RECOMMENDATION,
-        "{{assessment_pga}}": PGA_ASSESSMENT,
+        "{{assessment_pga}}": EN_PGA_ASSESSMENT if english else PGA_ASSESSMENT,
         "{{recommendation_pga}}": PGA_RECOMMENDATION,
     }
 
 
-def _log_switch_assessment(tables: list[list[list[str]]]) -> str:
+def _log_switch_assessment(tables: list[list[list[str]]], english: bool = False) -> str:
     rows = _numeric_column_rows(tables, "LOG_SWITCHES")
     values = [value for value, _row in rows]
     if not values:
@@ -232,36 +289,57 @@ def _log_switch_assessment(tables: list[list[list[str]]]) -> str:
     minimum = min(values)
     maximum = max(values)
     display_minimum = 1 if minimum == 0 and maximum > 0 else minimum
-    assessment = (
-        f"Nhìn chung, tần suất log switch của các instance dao động khoảng {_format_number(display_minimum)} - {_format_number(maximum)} lần/giờ, "
-        f"trung bình {_format_integer(average)} lần/giờ."
-    )
+    if english:
+        assessment = (
+            f"Overall, log switch frequency across instances ranges from {_format_number(display_minimum)} to {_format_number(maximum)} times/hour, "
+            f"averaging {_format_integer(average)} times/hour."
+        )
+    else:
+        assessment = (
+            f"Nhìn chung, tần suất log switch của các instance dao động khoảng {_format_number(display_minimum)} - {_format_number(maximum)} lần/giờ, "
+            f"trung bình {_format_integer(average)} lần/giờ."
+        )
     if maximum >= 30:
         peak_windows = _log_switch_peak_windows(rows)
         if peak_windows:
-            assessment += (
-                f" Một số thời điểm xuất hiện đột biến cao tại {', '.join(peak_windows)}, "
-                "cho thấy hệ thống có hiện tượng phát sinh redo lớn trong các khung giờ cao điểm."
-            )
+            if english:
+                assessment += (
+                    f" Several peak periods were observed at {', '.join(peak_windows)}, "
+                    "indicating high redo generation during peak hours."
+                )
+            else:
+                assessment += (
+                    f" Một số thời điểm xuất hiện đột biến cao tại {', '.join(peak_windows)}, "
+                    "cho thấy hệ thống có hiện tượng phát sinh redo lớn trong các khung giờ cao điểm."
+                )
         else:
-            assessment += " Một số thời điểm xuất hiện đột biến cao, cho thấy hệ thống có hiện tượng phát sinh redo lớn trong các khung giờ cao điểm."
+            assessment += (
+                " Several peak periods were observed, indicating high redo generation during peak hours."
+                if english
+                else " Một số thời điểm xuất hiện đột biến cao, cho thấy hệ thống có hiện tượng phát sinh redo lớn trong các khung giờ cao điểm."
+            )
     return assessment
 
 
-def _foreground_cpu_assessment(tables: list[list[list[str]]]) -> str:
+def _foreground_cpu_assessment(tables: list[list[list[str]]], english: bool = False) -> str:
     values = _numeric_column_values(tables, "BUSY_TIME_PERC")
     if not values:
         return ""
     average = sum(values) / len(values)
     minimum = min(values)
     maximum = max(values)
+    if english:
+        return (
+            f"Overall, database instances use an average of {_format_number(average)}% server CPU, "
+            f"ranging from {_format_number(minimum)}% to {_format_number(maximum)}%."
+        )
     return (
         f"Nhìn chung, các instance cơ sở dữ liệu sử dụng CPU server trung bình {_format_number(average)}%, "
         f"dao động khoảng {_format_number(minimum)}% - {_format_number(maximum)}%."
     )
 
 
-def _asm_assessment(rows: list[list[str]]) -> dict[str, str]:
+def _asm_assessment(rows: list[list[str]], english: bool = False) -> dict[str, str]:
     warnings = []
     for row in _dict_rows(rows):
         name = row.get("NAME", "").strip()
@@ -278,17 +356,26 @@ def _asm_assessment(rows: list[list[str]]) -> dict[str, str]:
     group, free_gb = next((item for item in warnings if item[0].upper() == "DATA"), sorted(warnings, key=lambda item: item[1])[0])
     return {
         "{{assessment_asm_disk_group}}": (
-            f"Disk group {group} chỉ còn trống {_format_number(free_gb)}GB. "
-            "Nếu không đủ dung lượng cung cấp cho hệ thống sẽ gây gián đoạn và ảnh hưởng đến hoạt động hệ thống."
+            f"Disk group {group} has only {_format_number(free_gb)}GB free. "
+            "Insufficient capacity may interrupt and affect system operations."
+            if english
+            else (
+                f"Disk group {group} chỉ còn trống {_format_number(free_gb)}GB. "
+                "Nếu không đủ dung lượng cung cấp cho hệ thống sẽ gây gián đoạn và ảnh hưởng đến hoạt động hệ thống."
+            )
         ),
         "{{recommendation_asm_disk_group}}": (
-            f"Cấp thêm đĩa 500GB cho disk group {group}. "
-            f"Sau đó HPT sẽ tiến hành thêm đĩa mới vào disk group {group}."
+            f"Add 500GB of disk capacity to disk group {group}. HPT will then add the new disk to disk group {group}."
+            if english
+            else (
+                f"Cấp thêm đĩa 500GB cho disk group {group}. "
+                f"Sau đó HPT sẽ tiến hành thêm đĩa mới vào disk group {group}."
+            )
         ),
     }
 
 
-def _scheduler_jobs_assessment(rows: list[list[str]]) -> dict[str, str]:
+def _scheduler_jobs_assessment(rows: list[list[str]], english: bool = False) -> dict[str, str]:
     failed_enabled_jobs = []
     for row in _dict_rows(rows):
         enabled = _first_present(row, ("ENABLED", "ENABLE", "ENABL"))
@@ -298,9 +385,11 @@ def _scheduler_jobs_assessment(rows: list[list[str]]) -> dict[str, str]:
     if not failed_enabled_jobs:
         return {"{{assessment_sche_job}}": "", "{{recommendation_sche_job}}": ""}
     return {
-        "{{assessment_sche_job}}": "Một số job đang enable nhưng có ghi nhận lỗi trong quá trình chạy.",
+        "{{assessment_sche_job}}": "Some enabled jobs have recorded failures during execution." if english else "Một số job đang enable nhưng có ghi nhận lỗi trong quá trình chạy.",
         "{{recommendation_sche_job}}": (
-            "Kiểm tra lại các job đang enable và có FAILURE_COUNT > 0 để tránh ảnh hưởng đến hoạt động của hệ thống/ ứng dụng."
+            "Review enabled jobs with FAILURE_COUNT > 0 to avoid impact on system/application operations."
+            if english
+            else "Kiểm tra lại các job đang enable và có FAILURE_COUNT > 0 để tránh ảnh hưởng đến hoạt động của hệ thống/ ứng dụng."
         ),
     }
 
@@ -311,9 +400,21 @@ def _count_assessments(
     invalid_objects: list[list[str]],
     table_stats: list[list[str]],
     index_stats: list[list[str]],
+    english: bool = False,
 ) -> dict[str, str]:
     table_count = max(0, len(table_stats) - 1)
     index_count = max(0, len(index_stats) - 1)
+    if english:
+        return {
+            "{{assessment_no_index}}": f"The system currently has {max(0, len(no_index) - 1)} table(s) without indexes.",
+            "{{recommendation_no_index}}": "Consider creating indexes for necessary tables to improve query performance.",
+            "{{assessment_no_pk}}": f"The system currently has {max(0, len(no_pk) - 1)} table(s) without primary keys.",
+            "{{recommendation_no_pk}}": "Consider creating primary keys or unique indexes for necessary tables to improve data access performance.",
+            "{{assessment_invalid_objects}}": f"The system has {max(0, len(invalid_objects) - 1)} invalid object(s).",
+            "{{recommendation_invalid_objects}}": "Recompile invalid objects to validate them and avoid impact on applications or the system.",
+            "{{assessment_stale_stats}}": f"The system has a total of {table_count} tables with stale stats and {index_count} indexes with stale stats.",
+            "{{recommendation_stale_stats}}": "Re-gather statistics for objects with stale statistics.",
+        }
     return {
         "{{assessment_no_index}}": f"Hệ thống đang có {max(0, len(no_index) - 1)} bảng không có index.",
         "{{recommendation_no_index}}": "Xem xét tạo index cho các bảng cần thiết để tăng tốc độ truy vấn.",
@@ -324,6 +425,10 @@ def _count_assessments(
         "{{assessment_stale_stats}}": f"Hệ thống có tổng cộng {table_count} tables with stale stats và {index_count} indexes with stale stats.",
         "{{recommendation_stale_stats}}": "Thu thập lại (re-gather) statistic của các đối tượng có stale statistics.",
     }
+
+
+def _is_english(language: str | None) -> bool:
+    return str(language or "").strip().lower() in {"en", "eng", "english"}
 
 
 def _first_table(root: Path, pattern: str) -> list[list[str]]:

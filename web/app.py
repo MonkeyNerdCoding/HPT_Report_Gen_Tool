@@ -19,10 +19,13 @@ from openpyxl import Workbook
 from ai_review import generate_ai_review
 from app_logic import (
     DEFAULT_EDB360_MASTER_TEMPLATE,
+    DEFAULT_EDB360_MASTER_TEMPLATE_EN,
     DEFAULT_SQL_MASTER_TEMPLATE,
+    DEFAULT_SQL_MASTER_TEMPLATE_EN,
     generate_edb360_report_to_file,
     generate_report_to_file,
     insert_placeholders_into_word,
+    normalize_report_language,
     run_sql_one_click_pipeline,
     run_sql_pipeline,
 )
@@ -450,6 +453,7 @@ async def api_generate_report(
 async def api_generate_edb360_report(
     background_tasks: BackgroundTasks,
     output_name: str = Form("final_edb360_report.docx"),
+    report_language: str = Form("vi"),
     customer_name: str = Form(""),
     system_name: str = Form(""),
     database_name: str = Form(""),
@@ -460,7 +464,9 @@ async def api_generate_edb360_report(
     collection_date: str = Form(""),
     source_zip: UploadFile = File(...),
 ) -> JSONResponse:
-    if not DEFAULT_EDB360_MASTER_TEMPLATE.is_file():
+    language = normalize_report_language(report_language)
+    master_template = master_template_for_mode("edb360", language)
+    if not master_template.is_file():
         raise HTTPException(status_code=500, detail="Internal EDB360 master template is missing")
     validate_upload_extension(source_zip.filename, ".zip", "EDB360 source package")
     safe_output_name = normalize_output_name(output_name)
@@ -482,6 +488,7 @@ async def api_generate_edb360_report(
         "approver": approver,
         "version": version,
         "collection_date": collection_date,
+        "report_language": language,
     }
 
     now = utc_now()
@@ -498,9 +505,9 @@ async def api_generate_edb360_report(
                 job_id,
                 "edb360",
                 safe_output_name,
-                DEFAULT_EDB360_MASTER_TEMPLATE.name,
+                master_template.name,
                 source_zip.filename,
-                hash_file(DEFAULT_EDB360_MASTER_TEMPLATE),
+                hash_file(master_template),
                 hash_file(zip_path),
                 "processing",
                 0,
@@ -519,6 +526,8 @@ async def api_generate_edb360_report(
         zip_path,
         output_dir / safe_output_name,
         metadata,
+        master_template,
+        language,
     )
     return JSONResponse({"success": True, "job_id": job_id, "status": "processing"})
 
@@ -527,13 +536,16 @@ async def api_generate_edb360_report(
 async def api_generate_sqlhealthcheck_report(
     background_tasks: BackgroundTasks,
     output_name: str = Form("sqlhealthcheck_reports.zip"),
+    report_language: str = Form("vi"),
     creator: str = Form(""),
     approver: str = Form(""),
     version: str = Form(""),
     collection_date: str = Form(""),
     source_zip: UploadFile = File(...),
 ) -> JSONResponse:
-    if not DEFAULT_SQL_MASTER_TEMPLATE.is_file():
+    language = normalize_report_language(report_language)
+    master_template = master_template_for_mode("sqlhealthcheck", language)
+    if not master_template.is_file():
         raise HTTPException(status_code=500, detail="Internal SQLHealthcheck master template is missing")
     validate_upload_extension(source_zip.filename, ".zip", "SQLHealthcheck source package")
     safe_output_name = normalize_zip_output_name(output_name, "sqlhealthcheck_reports.zip")
@@ -551,6 +563,7 @@ async def api_generate_sqlhealthcheck_report(
         "approver": approver,
         "version": version,
         "collection_date": collection_date,
+        "report_language": language,
     }
 
     now = utc_now()
@@ -567,9 +580,9 @@ async def api_generate_sqlhealthcheck_report(
                 job_id,
                 "sqlhealthcheck",
                 safe_output_name,
-                DEFAULT_SQL_MASTER_TEMPLATE.name,
+                master_template.name,
                 source_zip.filename,
-                hash_file(DEFAULT_SQL_MASTER_TEMPLATE),
+                hash_file(master_template),
                 hash_file(zip_path),
                 "processing",
                 0,
@@ -588,6 +601,8 @@ async def api_generate_sqlhealthcheck_report(
         zip_path,
         output_dir / safe_output_name,
         metadata,
+        master_template,
+        language,
     )
     return JSONResponse({"success": True, "job_id": job_id, "status": "processing"})
 
@@ -1047,6 +1062,14 @@ def mapping_path_for_mode(mode: str) -> Path:
     return DEFAULT_SQL_MAPPING if mode == "sqlhealthcheck" else DEFAULT_MAPPING
 
 
+def master_template_for_mode(mode: str, language: str) -> Path:
+    if mode == "sqlhealthcheck":
+        return DEFAULT_SQL_MASTER_TEMPLATE_EN if language == "en" else DEFAULT_SQL_MASTER_TEMPLATE
+    if mode == "edb360":
+        return DEFAULT_EDB360_MASTER_TEMPLATE_EN if language == "en" else DEFAULT_EDB360_MASTER_TEMPLATE
+    return DEFAULT_EDB360_MASTER_TEMPLATE
+
+
 def normalize_output_name(output_name: str) -> str:
     clean_name = Path(output_name.strip() or "final_healthcheck_report.docx").name
     if not clean_name:
@@ -1215,6 +1238,8 @@ def process_edb360_report_job(
     zip_path: Path,
     output_path: Path,
     metadata: dict[str, str],
+    master_template: Path = DEFAULT_EDB360_MASTER_TEMPLATE,
+    report_language: str = "vi",
 ) -> None:
     started_at = datetime.now()
     source_dir = UPLOADS_DIR / job_id / "source"
@@ -1228,8 +1253,8 @@ def process_edb360_report_job(
         add_job_log(job_id, "success", "extract_source", "EDB360 package extracted")
 
         update_job(job_id, progress=50, current_step="Scanning internal master template")
-        scan_result = scan_template_placeholders(DEFAULT_EDB360_MASTER_TEMPLATE, "oraclehc")
-        save_scan_result(job_id, hash_file(DEFAULT_EDB360_MASTER_TEMPLATE), scan_result)
+        scan_result = scan_template_placeholders(master_template, "oraclehc")
+        save_scan_result(job_id, hash_file(master_template), scan_result)
         add_job_log(
             job_id,
             "success",
@@ -1246,6 +1271,8 @@ def process_edb360_report_job(
             html_input=source_dir,
             output_file=output_path,
             metadata=metadata,
+            master_template=master_template,
+            report_language=report_language,
             chart_output_dir=output_path.parent / "generated_charts",
             log_callback=lambda message: add_job_log(job_id, "info", "generator", message),
         )
@@ -1287,6 +1314,8 @@ def process_sqlhealthcheck_report_job(
     zip_path: Path,
     output_path: Path,
     metadata: dict[str, str],
+    master_template: Path = DEFAULT_SQL_MASTER_TEMPLATE,
+    report_language: str = "vi",
 ) -> None:
     started_at = datetime.now()
     source_dir = UPLOADS_DIR / job_id / "source"
@@ -1301,8 +1330,8 @@ def process_sqlhealthcheck_report_job(
         add_job_log(job_id, "success", "extract_source", "SQLHealthcheck package extracted")
 
         update_job(job_id, progress=50, current_step="Scanning internal SQLHealthcheck template")
-        scan_result = scan_template_placeholders(DEFAULT_SQL_MASTER_TEMPLATE, "sqlhealthcheck")
-        save_scan_result(job_id, hash_file(DEFAULT_SQL_MASTER_TEMPLATE), scan_result)
+        scan_result = scan_template_placeholders(master_template, "sqlhealthcheck")
+        save_scan_result(job_id, hash_file(master_template), scan_result)
         add_job_log(
             job_id,
             "success",
@@ -1316,7 +1345,9 @@ def process_sqlhealthcheck_report_job(
         generated_files = run_sql_one_click_pipeline(
             input_root=source_dir,
             output_root=work_dir,
+            master_template=master_template,
             metadata=metadata,
+            report_language=report_language,
             log_callback=lambda message: add_job_log(job_id, "info", "generator", message),
         )
 

@@ -7,6 +7,7 @@ import pandas as pd
 from sql_healthcheck.merge_sql import merge_sql_csv
 from sql_healthcheck.merge_sql import merge_sql_root_healthcheck
 from sql_healthcheck.merge_sql import merge_sql_root_csv
+from rpwithchart import build_sql_summary_rows
 
 
 class MergeSqlTests(unittest.TestCase):
@@ -145,6 +146,37 @@ class MergeSqlTests(unittest.TestCase):
             self.assertEqual(result, str(output))
             workbook = pd.read_excel(output, sheet_name=None)
             self.assertIn("Database Info", workbook)
+
+    def test_builds_sql_summary_rows_in_english(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output = Path(temp_dir) / "merged.xlsx"
+            with pd.ExcelWriter(output) as writer:
+                pd.DataFrame(
+                    {
+                        "volume_mount_point": ["M:\\"],
+                        "Available Size (GB)": [164.83],
+                        "Space Free %": [9.5],
+                    }
+                ).to_excel(writer, sheet_name="Volume Info", index=False)
+                pd.DataFrame({"Database Name": ["master"], "Short Query Text": ["SELECT 1"]}).to_excel(
+                    writer,
+                    sheet_name="Top Worker Time Queries",
+                    index=False,
+                )
+                pd.DataFrame({"Database Name": ["app"], "Table Name": ["dbo.Customer"]}).to_excel(
+                    writer,
+                    sheet_name="Missing Indexes",
+                    index=False,
+                )
+
+            with pd.ExcelFile(output) as workbook:
+                rows = build_sql_summary_rows(workbook, language="en")
+
+        self.assertEqual(rows[0]["category"], "3.1 Hard disk capacity")
+        self.assertIn("Server hard disk", rows[0]["assessment"])
+        self.assertEqual(rows[0]["risk"], "May affect storage capacity and operations if disk usage continues to grow.")
+        self.assertEqual(rows[1]["category"], "5.1 Queries consuming the most resources")
+        self.assertEqual(rows[2]["recommendation"], "Create additional indexes for the tables suggested in section 5.2.")
 
 if __name__ == "__main__":
     unittest.main()

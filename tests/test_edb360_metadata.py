@@ -71,6 +71,7 @@ class Edb360AssessmentRuleTests(unittest.TestCase):
             )
 
             mapping = build_edb360_assessment_mapping(root)
+            english_mapping = build_edb360_assessment_mapping(root, language="en")
 
         self.assertIn("2 backup job", mapping["{{assessment_backup}}"])
         self.assertEqual(
@@ -78,7 +79,7 @@ class Edb360AssessmentRuleTests(unittest.TestCase):
             "Khuyến nghị chuẩn bị môi trường thực hiện kiểm thử restore các bản backup. "
             "Việc không có môi trường khôi phục kiểm thử bản backup sẽ không đảm bảo bản backup có thể khôi phục thành công khi cần thiết.",
         )
-        self.assertIn("dao động khoảng 1 - 40 lần/giờ", mapping["{{assessment_log_switch}}"])
+        self.assertIn("dao động khoảng 4 - 40 lần/giờ", mapping["{{assessment_log_switch}}"])
         self.assertIn("trung bình 18 lần/giờ", mapping["{{assessment_log_switch}}"])
         self.assertIn("2026-08-17 03:00:00 - 2026-08-17 04:00:00 (40 lần/giờ)", mapping["{{assessment_log_switch}}"])
         self.assertIn("trung bình 6.2%", mapping["{{assessment_oracle_foreground_process}}"])
@@ -87,6 +88,13 @@ class Edb360AssessmentRuleTests(unittest.TestCase):
         self.assertEqual(
             mapping["{{recommendation_sche_job}}"],
             "Kiểm tra lại các job đang enable và có FAILURE_COUNT > 0 để tránh ảnh hưởng đến hoạt động của hệ thống/ ứng dụng.",
+        )
+        self.assertIn("RMAN backup data is available", english_mapping["{{assessment_backup}}"])
+        self.assertIn("averaging 18 times/hour", english_mapping["{{assessment_log_switch}}"])
+        self.assertIn("Disk group DATA has only 211GB free", english_mapping["{{assessment_asm_disk_group}}"])
+        self.assertEqual(
+            english_mapping["{{recommendation_sche_job}}"],
+            "Review enabled jobs with FAILURE_COUNT > 0 to avoid impact on system/application operations.",
         )
 
 

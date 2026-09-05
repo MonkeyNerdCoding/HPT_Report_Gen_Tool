@@ -22,6 +22,8 @@ LogCallback = Callable[[str], None]
 DEFAULT_SQL_MAPPING = Path(__file__).resolve().parent / "mapping" / "sql_healthcheck_mapping.yaml"
 DEFAULT_EDB360_MASTER_TEMPLATE = Path(__file__).resolve().parent / "templates" / "edb360_master.docx"
 DEFAULT_SQL_MASTER_TEMPLATE = Path(__file__).resolve().parent / "templates" / "sql_healthcheck_master.docx"
+DEFAULT_EDB360_MASTER_TEMPLATE_EN = Path(__file__).resolve().parent / "templates" / "edb360_master_en.docx"
+DEFAULT_SQL_MASTER_TEMPLATE_EN = Path(__file__).resolve().parent / "templates" / "sql_healthcheck_master_en.docx"
 DEFAULT_MAX_TABLE_DATA_ROWS = 50
 EDB360_CHART_GROUPS = {
     "<log_switch_charts>": ("log_switch_frequency_for_instance", "Instance {instance}: Log switch frequency"),
@@ -149,11 +151,15 @@ def generate_edb360_report_to_file(
     metadata: dict[str, str] | None = None,
     mapping_file: str | Path = DEFAULT_MAPPING,
     master_template: str | Path = DEFAULT_EDB360_MASTER_TEMPLATE,
+    report_language: str = "vi",
     chart_output_dir: str | Path | None = None,
     log_callback: LogCallback | None = None,
     cancel_check: Callable[[], bool] | None = None,
 ) -> str:
     """Generate an EDB360 Word report from the internal master template."""
+    language = normalize_report_language(report_language)
+    if language == "en" and Path(master_template) == DEFAULT_EDB360_MASTER_TEMPLATE:
+        master_template = DEFAULT_EDB360_MASTER_TEMPLATE_EN
     template_path = _validate_word_file(master_template)
     input_path = _validate_html_input(html_input)
     detected_metadata = extract_edb360_metadata(input_path)
@@ -163,11 +169,12 @@ def generate_edb360_report_to_file(
         if clean:
             merged_metadata[key] = clean
     text_mapping = build_edb360_text_mapping(merged_metadata)
-    text_mapping.update(build_edb360_assessment_mapping(input_path))
+    text_mapping.update(build_edb360_assessment_mapping(input_path, language=language))
     log = _make_logger(log_callback)
     if detected_metadata:
         preview = ", ".join(f"{key}={value}" for key, value in sorted(detected_metadata.items()))
         log(f"Detected EDB360 metadata: {preview}")
+    log(f"Report language: {language}")
     return generate_report_to_file(
         html_input=input_path,
         word_file=template_path,
@@ -387,6 +394,7 @@ def run_sql_one_click_pipeline(
     master_template: str | Path = DEFAULT_SQL_MASTER_TEMPLATE,
     mapping_file: str | Path | None = DEFAULT_SQL_MAPPING,
     metadata: dict[str, str] | None = None,
+    report_language: str = "vi",
     log_callback: LogCallback | None = None,
     cancel_check: Callable[[], bool] | None = None,
 ) -> list[str]:
@@ -397,6 +405,9 @@ def run_sql_one_click_pipeline(
     if not input_path.is_dir():
         raise NotADirectoryError(f"SQL source must be a folder: {input_path}")
 
+    language = normalize_report_language(report_language)
+    if language == "en" and Path(master_template) == DEFAULT_SQL_MASTER_TEMPLATE:
+        master_template = DEFAULT_SQL_MASTER_TEMPLATE_EN
     template_path = _validate_word_file(master_template)
     output_root_path = _validate_or_create_output_root(output_root)
     log = _make_logger(log_callback)
@@ -406,6 +417,7 @@ def run_sql_one_click_pipeline(
         raise ValueError(f"No SQLHealthcheck CSV folders were found under: {input_path}")
 
     log("Running SQLHealthcheck one-click pipeline...")
+    log(f"Report language: {language}")
     log(f"Detected SQLHealthcheck folders: {len(sql_roots)}")
     generated_files: list[str] = []
 
@@ -420,7 +432,7 @@ def run_sql_one_click_pipeline(
             template_file=template_path,
             output_root=report_output_root,
             mapping_file=mapping_file,
-            text_mapping=_sql_report_text_mapping(metadata),
+            text_mapping=_sql_report_text_mapping(metadata, language=language),
             log_callback=log_callback,
             cancel_check=cancel_check,
         )
@@ -458,14 +470,23 @@ def _safe_report_stem(value: str) -> str:
     return clean or "sqlhealthcheck"
 
 
-def _sql_report_text_mapping(metadata: dict[str, str] | None) -> dict[str, str]:
+def _sql_report_text_mapping(metadata: dict[str, str] | None, language: str = "vi") -> dict[str, str]:
     values = {
         "creator": "Trần Đinh Nhất Đăng",
         "approver": "Hồ Quốc Trí",
         "version": "1.0",
+        "report_language": normalize_report_language(language),
         **(metadata or {}),
     }
+    values["report_language"] = normalize_report_language(values.get("report_language", language))
     return {key: str(value).strip() for key, value in values.items() if str(value or "").strip()}
+
+
+def normalize_report_language(value: str | None) -> str:
+    text = str(value or "").strip().lower()
+    if text in {"en", "eng", "english"}:
+        return "en"
+    return "vi"
 
 
 def _check_cancelled(cancel_check: Callable[[], bool] | None) -> None:

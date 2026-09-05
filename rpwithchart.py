@@ -325,7 +325,7 @@ def generate_sql_healthcheck_report(
         log(f"Could not update SQLHealthcheck hardware sections: {exc}")
 
     try:
-        update_sql_summary_table(doc, xls, log)
+        update_sql_summary_table(doc, xls, log, report_context.get("report_language", "vi"))
     except Exception as exc:
         log(f"Could not update SQLHealthcheck summary section: {exc}")
 
@@ -343,6 +343,10 @@ def generate_sql_healthcheck_report(
                 temp_image.unlink(missing_ok=True)
             except Exception:
                 pass
+        try:
+            xls.close()
+        except Exception:
+            pass
 
     return str(output_path)
 
@@ -359,6 +363,7 @@ def build_sql_report_context(xls: pd.ExcelFile, text_mapping: dict[str, str]) ->
         "approver": text_mapping.get("approver") or "Hồ Quốc Trí",
         "version": text_mapping.get("version") or "1.0",
         "collection_date": text_mapping.get("collection_date") or datetime.now().strftime("%m.%Y"),
+        "report_language": _normalize_report_language(text_mapping.get("report_language")),
     }
 
 
@@ -634,8 +639,8 @@ def build_sql_hardware_values(xls: pd.ExcelFile) -> dict[str, str]:
     }
 
 
-def update_sql_summary_table(doc: DocumentObject, xls: pd.ExcelFile, log: LogCallback) -> None:
-    rows = build_sql_summary_rows(xls)
+def update_sql_summary_table(doc: DocumentObject, xls: pd.ExcelFile, log: LogCallback, language: str = "vi") -> None:
+    rows = build_sql_summary_rows(xls, language)
     placeholder_updates = replace_sql_summary_placeholders(doc, rows)
 
     for table in doc.tables:
@@ -705,17 +710,18 @@ def replace_sql_summary_placeholders(doc: DocumentObject, rows: list[dict[str, s
     return updated
 
 
-def build_sql_summary_rows(xls: pd.ExcelFile) -> list[dict[str, str]]:
+def build_sql_summary_rows(xls: pd.ExcelFile, language: str = "vi") -> list[dict[str, str]]:
+    english = _is_english(language)
     rows: list[dict[str, str]] = []
-    disk = _disk_summary(xls)
+    disk = _disk_summary(xls, language)
     if disk:
         disk_low_space = _disk_has_low_space(xls, threshold=10)
         rows.append(
             {
-                "category": "3.1 Dung lượng hard disk",
+                "category": "3.1 Hard disk capacity" if english else "3.1 Dung lượng hard disk",
                 "assessment": disk,
-                "risk": "Có thể ảnh hưởng đến khả năng lưu trữ và vận hành nếu dung lượng tiếp tục tăng." if disk_low_space else "N/A",
-                "recommendation": "Theo dõi tăng trưởng dung lượng và mở rộng disk khi gần ngưỡng cảnh báo." if disk_low_space else "N/A",
+                "risk": "May affect storage capacity and operations if disk usage continues to grow." if disk_low_space and english else ("Có thể ảnh hưởng đến khả năng lưu trữ và vận hành nếu dung lượng tiếp tục tăng." if disk_low_space else "N/A"),
+                "recommendation": "Monitor capacity growth and expand the disk when it approaches the warning threshold." if disk_low_space and english else ("Theo dõi tăng trưởng dung lượng và mở rộng disk khi gần ngưỡng cảnh báo." if disk_low_space else "N/A"),
             }
         )
 
@@ -723,10 +729,10 @@ def build_sql_summary_rows(xls: pd.ExcelFile) -> list[dict[str, str]]:
     if query_count:
         rows.append(
             {
-                "category": "51. Các câu lệnh khi chạy chiếm nhiều tài nguyên",
-                "assessment": "Các câu lệnh thuộc các database và các câu lệnh dùng chung, khi chạy tốn nhiều tài nguyên",
-                "risk": "Ảnh hưởng performance",
-                "recommendation": "Tuning lại câu lệnh",
+                "category": "5.1 Queries consuming the most resources" if english else "51. Các câu lệnh khi chạy chiếm nhiều tài nguyên",
+                "assessment": "Database queries consume significant resources during execution." if english else "Các câu lệnh của các database khi chạy chiếm nhiều tài nguyên khi thực hiện",
+                "risk": "Performance impact" if english else "Ảnh hưởng performance",
+                "recommendation": "Tune the queries." if english else "Tuning lại câu lệnh",
             }
         )
 
@@ -735,26 +741,35 @@ def build_sql_summary_rows(xls: pd.ExcelFile) -> list[dict[str, str]]:
         rows.append(
             {
                 "category": "5.2 Missing Indexes",
-                "assessment": "Một số table của database không được đánh index",
-                "risk": "Ảnh hưởng đến performance",
-                "recommendation": "Tạo thêm index cho các table được gợi ý trong phần 5.2",
+                "assessment": "Some database tables do not have indexes." if english else "Một số table của database không được đánh index",
+                "risk": "Performance impact" if english else "Ảnh hưởng đến performance",
+                "recommendation": "Create additional indexes for the tables suggested in section 5.2." if english else "Tạo thêm index cho các table được gợi ý trong phần 5.2",
             }
         )
 
     backup_count, missing_backup_count = _backup_summary_counts(xls)
     if backup_count or missing_backup_count:
         if backup_count and missing_backup_count:
-            backup_assessment = f"Ghi nhận có thông tin backup, tuy nhiên có {missing_backup_count} database chưa ghi nhận Last Full Backup trong dữ liệu SQLHealthcheck."
+            backup_assessment = (
+                f"Backup information was recorded; however, {missing_backup_count} database(s) do not have Last Full Backup recorded."
+                if english
+                else f"Ghi nhận có thông tin backup, tuy nhiên có {missing_backup_count} database chưa ghi nhận Last Full Backup."
+            )
         elif backup_count:
-            backup_assessment = f"Ghi nhận {backup_count} bản full backup trong dữ liệu SQLHealthcheck."
+            backup_assessment = "All databases are fully backed up." if english else "Ghi nhận các database backup đầy đủ."
         else:
-            backup_assessment = "Các Database không được backup đầy đủ"
+            backup_assessment = "Databases are not fully backed up." if english else "Các Database không được backup đầy đủ"
+        backup_recommendation = (
+            "Prepare an environment to perform backup restore testing. Without a restore test environment, backup recoverability cannot be confirmed when needed."
+            if english
+            else "Khuyến nghị chuẩn bị môi trường thực hiện kiểm thử restore các bản backup. Việc không có môi trường khôi phục kiểm thử bản backup sẽ không đảm bảo bản backup có thể khôi phục thành công khi cần thiết."
+        )
         rows.append(
             {
-                "category": "6 Sao lưu và phục hồi",
+                "category": "6 Backup and recovery" if english else "6 Sao lưu và phục hồi",
                 "assessment": backup_assessment,
-                "risk": "Mất dữ liệu khi cần restore" if missing_backup_count else "N/A",
-                "recommendation": "Backup đầy đủ cho các databases" if missing_backup_count else "N/A",
+                "risk": "Data loss when restore is required" if missing_backup_count and english else ("Mất dữ liệu khi cần restore" if missing_backup_count else "N/A"),
+                "recommendation": "Perform complete backups for all databases." if missing_backup_count and english else ("Backup đầy đủ cho các databases" if missing_backup_count else backup_recommendation),
             }
         )
 
@@ -763,9 +778,9 @@ def build_sql_summary_rows(xls: pd.ExcelFile) -> list[dict[str, str]]:
         rows.append(
             {
                 "category": "3.2 I/O warning",
-                "assessment": f"Ghi nhận {io_warning_count} cảnh báo I/O trong dữ liệu SQLHealthcheck.",
-                "risk": "Có thể ảnh hưởng hiệu năng đọc/ghi",
-                "recommendation": "Kiểm tra storage, latency và các database phát sinh cảnh báo",
+                "assessment": f"{io_warning_count} I/O warning(s) were recorded." if english else f"Ghi nhận {io_warning_count} cảnh báo I/O.",
+                "risk": "May affect read/write performance" if english else "Có thể ảnh hưởng hiệu năng đọc/ghi",
+                "recommendation": "Check storage, latency, and databases that generated warnings." if english else "Kiểm tra storage, latency và các database phát sinh cảnh báo",
             }
         )
     return rows
@@ -826,7 +841,8 @@ def _backup_summary_counts(xls: pd.ExcelFile) -> tuple[int, int]:
     return backup_count, 0 if backup_names else 0
 
 
-def _disk_summary(xls: pd.ExcelFile) -> str:
+def _disk_summary(xls: pd.ExcelFile, language: str = "vi") -> str:
+    english = _is_english(language)
     if "Volume Info" not in xls.sheet_names:
         return ""
     dataframe = pd.read_excel(xls, sheet_name="Volume Info")
@@ -849,9 +865,15 @@ def _disk_summary(xls: pd.ExcelFile) -> str:
         mount = _clean_text(dataframe.loc[index, mount_col]) if mount_col else ""
         location = f" {mount}" if mount and len(numeric_percent.dropna()) > 1 else ""
         if available is not None:
-            parts.append(f"- Dung lượng ổ cứng{location} của server hiện tại còn {_format_decimal(float(free_percent))}% trống (~{_format_decimal(available)}GB)")
+            if english:
+                parts.append(f"- Server hard disk{location} currently has {_format_decimal(float(free_percent))}% free (~{_format_decimal(available)}GB)")
+            else:
+                parts.append(f"- Dung lượng ổ cứng{location} của server hiện tại còn {_format_decimal(float(free_percent))}% trống (~{_format_decimal(available)}GB)")
         else:
-            parts.append(f"- Dung lượng ổ cứng{location} của server hiện tại còn {_format_decimal(float(free_percent))}% trống")
+            if english:
+                parts.append(f"- Server hard disk{location} currently has {_format_decimal(float(free_percent))}% free")
+            else:
+                parts.append(f"- Dung lượng ổ cứng{location} của server hiện tại còn {_format_decimal(float(free_percent))}% trống")
     return "\n".join(parts)
 
 
@@ -866,6 +888,14 @@ def _disk_has_low_space(xls: pd.ExcelFile, threshold: float = 10) -> bool:
         return False
     numeric_percent = pd.to_numeric(dataframe[percent_col], errors="coerce")
     return bool((numeric_percent < threshold).any())
+
+
+def _normalize_report_language(value: str | None) -> str:
+    return "en" if _is_english(value) else "vi"
+
+
+def _is_english(value: str | None) -> bool:
+    return str(value or "").strip().lower() in {"en", "eng", "english"}
 
 
 def _column_named(dataframe: pd.DataFrame, expected: str) -> str | None:
