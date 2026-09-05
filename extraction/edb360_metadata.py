@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from .html_parser import read_html
 
 
-DEFAULT_REPORT_CREATOR = "Phan Ngọc Phương Nhi"
+DEFAULT_REPORT_CREATOR = "Trần Đinh Nhất Đăng"
 DEFAULT_REPORT_APPROVER = "Hồ Quốc Trí"
 DEFAULT_REPORT_VERSION = "1.0"
 

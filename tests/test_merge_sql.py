@@ -43,6 +43,65 @@ class MergeSqlTests(unittest.TestCase):
             self.assertIn("Database Info", workbook)
             self.assertIn("Wait Events", workbook)
 
+    def test_volume_info_uses_only_latest_snapshot(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            folder = Path(temp_dir)
+            old_snapshot = pd.DataFrame({
+                "volume_mount_point": ["D:\\"],
+                "Total Size (GB)": [199.87],
+                "Available Size (GB)": [80.18],
+                "Space Free %": [40.12],
+            })
+            new_snapshot = pd.DataFrame({
+                "volume_mount_point": ["D:\\"],
+                "Total Size (GB)": [199.87],
+                "Available Size (GB)": [77.76],
+                "Space Free %": [38.90],
+            })
+            old_snapshot.to_csv(
+                folder / "SERVER$INSTANCE-DQ-26-Volume Info-202606091531523152.csv",
+                index=False,
+            )
+            new_snapshot.to_csv(
+                folder / "SERVER$INSTANCE-DQ-26-Volume Info-202608280921302130.csv",
+                index=False,
+            )
+
+            output = folder / "merged.xlsx"
+            merge_sql_csv(folder, output)
+            volume_info = pd.read_excel(output, sheet_name="Volume Info")
+
+            self.assertEqual(len(volume_info), 1)
+            self.assertEqual(volume_info.loc[0, "volume_mount_point"], "D:\\")
+            self.assertAlmostEqual(volume_info.loc[0, "Available Size (GB)"], 77.76)
+            self.assertAlmostEqual(volume_info.loc[0, "Space Free %"], 38.90)
+
+    def test_volume_info_keeps_all_latest_files_and_removes_exact_duplicates(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            folder = Path(temp_dir)
+            first = pd.DataFrame({
+                "volume_mount_point": ["D:\\", "E:\\"],
+                "Available Size (GB)": [77.76, 120.0],
+            })
+            second = pd.DataFrame({
+                "volume_mount_point": ["D:\\", "F:\\"],
+                "Available Size (GB)": [77.76, 200.0],
+            })
+            first.to_csv(
+                folder / "SERVER$INSTANCE-DQ-26-Volume Info-202608280921302130.csv",
+                index=False,
+            )
+            second.to_csv(
+                folder / "SERVER$INSTANCE-DQ-026-Volume Info-202608280921302130.csv",
+                index=False,
+            )
+
+            output = folder / "merged.xlsx"
+            merge_sql_csv(folder, output)
+            volume_info = pd.read_excel(output, sheet_name="Volume Info")
+
+            self.assertCountEqual(volume_info["volume_mount_point"].tolist(), ["D:\\", "E:\\", "F:\\"])
+
     def test_root_merge_combines_db_subfolders(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)

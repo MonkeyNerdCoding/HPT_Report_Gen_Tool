@@ -21,6 +21,7 @@ from sql_healthcheck.merge_sql import merge_sql_root_healthcheck
 LogCallback = Callable[[str], None]
 DEFAULT_SQL_MAPPING = Path(__file__).resolve().parent / "mapping" / "sql_healthcheck_mapping.yaml"
 DEFAULT_EDB360_MASTER_TEMPLATE = Path(__file__).resolve().parent / "templates" / "edb360_master.docx"
+DEFAULT_SQL_MASTER_TEMPLATE = Path(__file__).resolve().parent / "templates" / "sql_healthcheck_master.docx"
 DEFAULT_MAX_TABLE_DATA_ROWS = 50
 EDB360_CHART_GROUPS = {
     "<log_switch_charts>": ("log_switch_frequency_for_instance", "Instance {instance}: Log switch frequency"),
@@ -335,6 +336,7 @@ def run_sql_pipeline(
     template_file: str | Path,
     output_root: str | Path | None = None,
     mapping_file: str | Path | None = DEFAULT_SQL_MAPPING,
+    text_mapping: dict[str, str] | None = None,
     log_callback: LogCallback | None = None,
     cancel_check: Callable[[], bool] | None = None,
 ) -> list[str]:
@@ -367,6 +369,7 @@ def run_sql_pipeline(
         template_path=template_path,
         output_path=report_file,
         mapping_path=mapping_path,
+        text_mapping=text_mapping,
         log_callback=log_callback,
     )
     _check_cancelled(cancel_check)
@@ -376,6 +379,93 @@ def run_sql_pipeline(
     log(f"Merged Excel file: {merged_excel}")
     log(f"Word report: {generated_report}")
     return [str(merged_excel), str(generated_report)]
+
+
+def run_sql_one_click_pipeline(
+    input_root: str | Path,
+    output_root: str | Path,
+    master_template: str | Path = DEFAULT_SQL_MASTER_TEMPLATE,
+    mapping_file: str | Path | None = DEFAULT_SQL_MAPPING,
+    metadata: dict[str, str] | None = None,
+    log_callback: LogCallback | None = None,
+    cancel_check: Callable[[], bool] | None = None,
+) -> list[str]:
+    """Run SQLHealthcheck reports from an extracted source root using the internal template."""
+    input_path = Path(input_root)
+    if not input_path.exists():
+        raise FileNotFoundError(f"SQL source folder does not exist: {input_path}")
+    if not input_path.is_dir():
+        raise NotADirectoryError(f"SQL source must be a folder: {input_path}")
+
+    template_path = _validate_word_file(master_template)
+    output_root_path = _validate_or_create_output_root(output_root)
+    log = _make_logger(log_callback)
+
+    sql_roots = _discover_sql_healthcheck_roots(input_path)
+    if not sql_roots:
+        raise ValueError(f"No SQLHealthcheck CSV folders were found under: {input_path}")
+
+    log("Running SQLHealthcheck one-click pipeline...")
+    log(f"Detected SQLHealthcheck folders: {len(sql_roots)}")
+    generated_files: list[str] = []
+
+    for index, sql_root in enumerate(sql_roots, start=1):
+        _check_cancelled(cancel_check)
+        report_name = _safe_report_stem(sql_root.name or f"sqlhealthcheck_{index}")
+        report_output_root = output_root_path / report_name if len(sql_roots) > 1 else output_root_path
+        log("")
+        log(f"[{index}/{len(sql_roots)}] SQLHealthcheck folder: {sql_root}")
+        report_files = run_sql_pipeline(
+            input_root=sql_root,
+            template_file=template_path,
+            output_root=report_output_root,
+            mapping_file=mapping_file,
+            text_mapping=_sql_report_text_mapping(metadata),
+            log_callback=log_callback,
+            cancel_check=cancel_check,
+        )
+        generated_files.extend(report_files)
+
+        generated_docx = report_output_root / "final_healthcheck_report.docx"
+        named_docx = report_output_root / f"SGC_SQL_HEALTHCHECK_{report_name}.docx"
+        if generated_docx.is_file() and generated_docx != named_docx:
+            generated_docx.replace(named_docx)
+            generated_files = [str(named_docx) if Path(path) == generated_docx else path for path in generated_files]
+
+    log("")
+    log("SQLHealthcheck one-click completed.")
+    return generated_files
+
+
+def _discover_sql_healthcheck_roots(input_path: Path) -> list[Path]:
+    direct_csv_roots = sorted(
+        {csv_file.parent for csv_file in input_path.rglob("*.csv") if csv_file.is_file()},
+        key=lambda path: str(path).lower(),
+    )
+    if not direct_csv_roots:
+        return []
+
+    selected: list[Path] = []
+    for candidate in direct_csv_roots:
+        if any(parent in direct_csv_roots for parent in candidate.parents):
+            continue
+        selected.append(candidate)
+    return selected
+
+
+def _safe_report_stem(value: str) -> str:
+    clean = re.sub(r"[^A-Za-z0-9_.-]+", "_", value).strip("._")
+    return clean or "sqlhealthcheck"
+
+
+def _sql_report_text_mapping(metadata: dict[str, str] | None) -> dict[str, str]:
+    values = {
+        "creator": "Trần Đinh Nhất Đăng",
+        "approver": "Hồ Quốc Trí",
+        "version": "1.0",
+        **(metadata or {}),
+    }
+    return {key: str(value).strip() for key, value in values.items() if str(value or "").strip()}
 
 
 def _check_cancelled(cancel_check: Callable[[], bool] | None) -> None:

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HPT OracleHC Report Generator</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/dashboard.css') }}?v=sqlhc-20260904">
   </head>
   <body>
     <header class="topbar">
@@ -85,7 +85,7 @@
 
               <section class="form-section metadata-section" hidden data-edb360-metadata>
                 <span class="section-head"><em>04</em> Cover Metadata</span>
-                <small class="section-copy">Optional overrides. Database name, configuration, and instances are read from EDB360.</small>
+                <small class="section-copy">Optional overrides. One-click modes use these values in the internal Word master template.</small>
                 <div class="metadata-grid">
                   <label>
                     <span>Creator</span>
@@ -108,7 +108,7 @@
 
               <label class="field form-section">
                 <span class="section-head"><em data-output-step>04</em> Output File</span>
-                <small class="section-copy">Final .docx filename.</small>
+                <small class="section-copy">Final output filename.</small>
                 <input type="text" name="output_name" value="{{ output_name }}" placeholder="final_oraclehc_report.docx" data-output-name>
                 <span class="field-error" data-field-error="output"></span>
               </label>
@@ -541,7 +541,7 @@
               <option value="all">All modes</option>
               <option value="oraclehc">OracleHC</option>
               <option value="edb360">EDB360 One-click</option>
-              <option value="sqlhealthcheck">SQLHealthcheck</option>
+              <option value="sqlhealthcheck">SQLHealthcheck One-click</option>
             </select>
             <select data-history-status>
               <option value="all">All statuses</option>
@@ -584,7 +584,7 @@
           <div>
             <span class="badge">Guide</span>
             <h1>How to use</h1>
-            <p>Select a mode, upload the required source data, generate, then download the final Word file. EDB360 One-click uses the internal master Word template.</p>
+            <p>Select a mode, upload the required source data, generate, then download the final output. One-click modes use internal master Word templates.</p>
           </div>
         </section>
         <section class="guide-grid">
@@ -600,8 +600,8 @@
           </article>
           <article class="card">
             <p class="eyebrow">Expected source package</p>
-            <h2>SQLHealthcheck</h2>
-            <p>ZIP containing SQLHealthcheck CSV output folder.</p>
+            <h2>SQLHealthcheck One-click</h2>
+            <p>ZIP containing one SQLHealthcheck CSV folder or a parent folder with multiple SQLHealthcheck reports. The internal SQLHealthcheck Word template is used automatically.</p>
           </article>
           <article class="card">
             <p class="eyebrow">Placeholder workflow</p>
@@ -691,6 +691,6 @@
         <strong data-loading-percent>0%</strong>
       </div>
     </div>
-    <script src="{{ url_for('static', path='/app_async.js') }}"></script>
+    <script src="{{ url_for('static', path='/app_async.js') }}?v=sqlhc-20260904"></script>
   </body>
 </html>

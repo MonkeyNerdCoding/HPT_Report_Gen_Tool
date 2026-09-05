@@ -12,10 +12,10 @@ const modeConfig = {
     requiresTemplate: false,
   },
   sqlhealthcheck: {
-    label: "SQLHealthcheck",
-    outputName: "final_healthcheck_report.docx",
-    sourceHelper: "ZIP containing SQLHealthcheck CSV output.",
-    requiresTemplate: true,
+    label: "SQLHealthcheck One-click",
+    outputName: "sqlhealthcheck_reports.zip",
+    sourceHelper: "ZIP containing SQLHealthcheck CSV output. The internal SQLHealthcheck Word template is used automatically.",
+    requiresTemplate: false,
   },
 };
 
@@ -255,7 +255,7 @@ function applyMode(mode, options = {}) {
   const requiresTemplate = config.requiresTemplate !== false;
   if (el.templateSection) el.templateSection.hidden = !requiresTemplate;
   if (el.templateInput) el.templateInput.required = requiresTemplate;
-  if (el.edb360Metadata) el.edb360Metadata.hidden = requiresTemplate;
+  if (el.edb360Metadata) el.edb360Metadata.hidden = !["edb360", "sqlhealthcheck"].includes(mode);
   if (el.outputStep) el.outputStep.textContent = requiresTemplate ? "04" : "05";
   el.modeSelector.querySelectorAll("[data-mode]").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.mode === mode);
@@ -360,13 +360,15 @@ async function handleSubmit(event) {
 
   const formData = new FormData(el.form);
   formData.set("mode", state.mode);
-  formData.set("output_name", normalizeDocxName(el.outputName.value));
+  formData.set("output_name", normalizeOutputName(el.outputName.value));
   if (modeConfig[state.mode]?.requiresTemplate === false) {
     formData.delete("template_file");
   }
-  const endpoint = modeConfig[state.mode]?.requiresTemplate === false
+  const endpoint = state.mode === "edb360"
     ? "/api/report/generate-edb360"
-    : "/api/report/generate";
+    : state.mode === "sqlhealthcheck"
+      ? "/api/report/generate-sqlhealthcheck"
+      : "/api/report/generate";
 
   try {
     const response = await fetch(endpoint, { method: "POST", body: formData });
@@ -1391,9 +1393,16 @@ function detectSourceType() {
   return state.mode === "sqlhealthcheck" ? "Detected source type: SQLHealthcheck CSV" : "Detected source type: OracleHC HTML";
 }
 
-function normalizeDocxName(value) {
+function normalizeOutputName(value) {
   const clean = value.trim() || modeConfig[state.mode].outputName;
-  return clean.toLowerCase().endsWith(".docx") ? clean : `${clean}.docx`;
+  if (state.mode === "sqlhealthcheck") {
+    return clean.toLowerCase().endsWith(".zip") ? clean : `${stripKnownExtension(clean)}.zip`;
+  }
+  return clean.toLowerCase().endsWith(".docx") ? clean : `${stripKnownExtension(clean)}.docx`;
+}
+
+function stripKnownExtension(value) {
+  return value.replace(/\.(docx|zip)$/i, "");
 }
 
 function formatBytes(bytes) {

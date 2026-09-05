@@ -19,9 +19,11 @@ from openpyxl import Workbook
 from ai_review import generate_ai_review
 from app_logic import (
     DEFAULT_EDB360_MASTER_TEMPLATE,
+    DEFAULT_SQL_MASTER_TEMPLATE,
     generate_edb360_report_to_file,
     generate_report_to_file,
     insert_placeholders_into_word,
+    run_sql_one_click_pipeline,
     run_sql_pipeline,
 )
 from config import DEFAULT_MAPPING, load_mapping_rules
@@ -52,10 +54,11 @@ MAX_JOB_AGE = timedelta(hours=6)
 MODE_LABELS = {
     "oraclehc": "OracleHC",
     "edb360": "EDB360 One-click",
-    "sqlhealthcheck": "SQLHealthcheck",
+    "sqlhealthcheck": "SQLHealthcheck One-click",
 }
 DOCX_MEDIA_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 XLSX_MEDIA_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+ZIP_MEDIA_TYPE = "application/zip"
 SUPPORTED_PLACEHOLDER_SCAN_SUFFIXES = {".docx", ".pdf", ".html", ".htm"}
 SUPPORTED_AI_REVIEW_SUFFIXES = {".zip", ".docx", ".html", ".htm"}
 REPORT_TYPES = {
@@ -520,6 +523,75 @@ async def api_generate_edb360_report(
     return JSONResponse({"success": True, "job_id": job_id, "status": "processing"})
 
 
+@app.post("/api/report/generate-sqlhealthcheck")
+async def api_generate_sqlhealthcheck_report(
+    background_tasks: BackgroundTasks,
+    output_name: str = Form("sqlhealthcheck_reports.zip"),
+    creator: str = Form(""),
+    approver: str = Form(""),
+    version: str = Form(""),
+    collection_date: str = Form(""),
+    source_zip: UploadFile = File(...),
+) -> JSONResponse:
+    if not DEFAULT_SQL_MASTER_TEMPLATE.is_file():
+        raise HTTPException(status_code=500, detail="Internal SQLHealthcheck master template is missing")
+    validate_upload_extension(source_zip.filename, ".zip", "SQLHealthcheck source package")
+    safe_output_name = normalize_zip_output_name(output_name, "sqlhealthcheck_reports.zip")
+
+    job_id = create_job_id()
+    upload_dir = UPLOADS_DIR / job_id
+    output_dir = OUTPUTS_DIR / job_id
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    zip_path = upload_dir / "source.zip"
+    await save_upload(source_zip, zip_path)
+    metadata = {
+        "creator": creator,
+        "approver": approver,
+        "version": version,
+        "collection_date": collection_date,
+    }
+
+    now = utc_now()
+    with db_connect() as conn:
+        conn.execute(
+            """
+            INSERT INTO report_jobs (
+                id, mode, output_file_name, template_file_name, source_package_name,
+                template_hash, source_hash, status, progress, current_step,
+                created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                job_id,
+                "sqlhealthcheck",
+                safe_output_name,
+                DEFAULT_SQL_MASTER_TEMPLATE.name,
+                source_zip.filename,
+                hash_file(DEFAULT_SQL_MASTER_TEMPLATE),
+                hash_file(zip_path),
+                "processing",
+                0,
+                "SQLHealthcheck one-click job created",
+                now,
+                now,
+            ),
+        )
+    add_job_log(job_id, "info", "job_created", "SQLHealthcheck one-click job created")
+    update_job(job_id, progress=20, current_step="SQLHealthcheck source package uploaded")
+    add_job_log(job_id, "success", "upload_source", "SQLHealthcheck source package uploaded")
+
+    background_tasks.add_task(
+        process_sqlhealthcheck_report_job,
+        job_id,
+        zip_path,
+        output_dir / safe_output_name,
+        metadata,
+    )
+    return JSONResponse({"success": True, "job_id": job_id, "status": "processing"})
+
+
 @app.get("/api/report/status/{job_id}")
 async def api_report_status(job_id: str) -> JSONResponse:
     job = get_job(job_id)
@@ -539,7 +611,7 @@ async def api_report_download(job_id: str) -> FileResponse:
     output_path = Path(job["output_file_path"])
     if not output_path.is_file():
         raise HTTPException(status_code=404, detail="Output file is missing")
-    return FileResponse(output_path, media_type=DOCX_MEDIA_TYPE, filename=job["output_file_name"])
+    return FileResponse(output_path, media_type=media_type_for_path(output_path), filename=job["output_file_name"])
 
 
 @app.post("/api/ai-review/generate")
@@ -984,6 +1056,24 @@ def normalize_output_name(output_name: str) -> str:
     return clean_name
 
 
+def normalize_zip_output_name(output_name: str, default_name: str) -> str:
+    clean_name = Path(output_name.strip() or default_name).name
+    if not clean_name:
+        clean_name = default_name
+    if Path(clean_name).suffix.lower() != ".zip":
+        clean_name = f"{Path(clean_name).stem or Path(default_name).stem}.zip"
+    return clean_name
+
+
+def media_type_for_path(path: Path) -> str:
+    suffix = path.suffix.lower()
+    if suffix == ".xlsx":
+        return XLSX_MEDIA_TYPE
+    if suffix == ".zip":
+        return ZIP_MEDIA_TYPE
+    return DOCX_MEDIA_TYPE
+
+
 async def save_upload(upload: UploadFile, destination: Path) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("wb") as handle:
@@ -1190,6 +1280,88 @@ def process_edb360_report_job(
             completed_at=utc_now(),
         )
         add_job_log(job_id, "error", "failed", error_text)
+
+
+def process_sqlhealthcheck_report_job(
+    job_id: str,
+    zip_path: Path,
+    output_path: Path,
+    metadata: dict[str, str],
+) -> None:
+    started_at = datetime.now()
+    source_dir = UPLOADS_DIR / job_id / "source"
+    work_dir = OUTPUTS_DIR / job_id / "sqlhealthcheck_work"
+    log_file = LOGS_DIR / f"{job_id}.log"
+
+    try:
+        update_job(job_id, progress=35, current_step="Extracting SQLHealthcheck package")
+        add_job_log(job_id, "info", "extract_source", "Extracting SQLHealthcheck package")
+        source_dir.mkdir(parents=True, exist_ok=True)
+        safe_extract_zip(zip_path, source_dir)
+        add_job_log(job_id, "success", "extract_source", "SQLHealthcheck package extracted")
+
+        update_job(job_id, progress=50, current_step="Scanning internal SQLHealthcheck template")
+        scan_result = scan_template_placeholders(DEFAULT_SQL_MASTER_TEMPLATE, "sqlhealthcheck")
+        save_scan_result(job_id, hash_file(DEFAULT_SQL_MASTER_TEMPLATE), scan_result)
+        add_job_log(
+            job_id,
+            "success",
+            "scan_template",
+            f"Detected {scan_result['summary']['total']} placeholders from internal SQLHealthcheck template",
+        )
+
+        update_job(job_id, progress=65, current_step="Merging SQLHealthcheck CSV files")
+        add_job_log(job_id, "info", "parse_source", "Merging SQLHealthcheck CSV data")
+        work_dir.mkdir(parents=True, exist_ok=True)
+        generated_files = run_sql_one_click_pipeline(
+            input_root=source_dir,
+            output_root=work_dir,
+            metadata=metadata,
+            log_callback=lambda message: add_job_log(job_id, "info", "generator", message),
+        )
+
+        update_job(job_id, progress=90, current_step="Packaging SQLHealthcheck output")
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        package_generated_files(generated_files, work_dir, output_path)
+        add_job_log(job_id, "success", "export_report", "SQLHealthcheck Word and Excel files packaged")
+
+        duration = (datetime.now() - started_at).total_seconds()
+        update_job(
+            job_id,
+            status="success",
+            progress=100,
+            current_step="Report package ready",
+            output_file_path=str(output_path),
+            log_file_path=str(log_file),
+            duration_seconds=duration,
+            completed_at=utc_now(),
+        )
+        add_job_log(job_id, "success", "complete", "Report package ready")
+    except Exception as exc:
+        error_text = str(exc)
+        log_file.write_text(traceback.format_exc(), encoding="utf-8")
+        update_job(
+            job_id,
+            status="failed",
+            current_step="SQLHealthcheck generation failed",
+            error_message=error_text,
+            log_file_path=str(log_file),
+            completed_at=utc_now(),
+        )
+        add_job_log(job_id, "error", "failed", error_text)
+
+
+def package_generated_files(generated_files: list[str], base_dir: Path, output_path: Path) -> None:
+    with zipfile.ZipFile(output_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        for file_name in generated_files:
+            path = Path(file_name)
+            if not path.is_file():
+                continue
+            try:
+                archive_name = path.relative_to(base_dir)
+            except ValueError:
+                archive_name = Path(path.name)
+            archive.write(path, archive_name.as_posix())
 
 
 def process_template_insert_job(job_id: str, template_path: Path, output_path: Path) -> None:
