@@ -20,7 +20,6 @@ EN_BUFFER_CACHE_HIT_ASSESSMENT = "The buffer cache hit ratio is currently at an 
 EN_LIBRARY_CACHE_HIT_ASSESSMENT = "The library cache hit ratio is currently at an optimal level of 99 - 100%."
 EN_LOG_SWITCH_RECOMMENDATION = "Increase the redo log file size to reduce log switch frequency."
 EN_PGA_ASSESSMENT = "Overall, PGA memory usage remains within a safe range."
-ASM_FREE_WARNING_GB = 500
 ASM_FREE_WARNING_PERCENT = 10
 MULTIPLEXED_REDO_ASSESSMENT = (
     "Theo như cấu hình hiện tại, các redo log group đang được multiplexing, tức là mỗi redo log group có 2 members, "
@@ -44,7 +43,7 @@ def build_edb360_assessment_mapping(input_root: str | Path, language: str = "vi"
     redo_log = _first_table(root, "*redo_log.html")
     redo_log_files = _first_table(root, "*redo_log_files.html")
     registry_sql_patch = _first_table(root, "*registry_sql_patch.html")
-    rman_backup = _first_table_any(root, ["*rman_backup_job_details.html", "*_rman_backup.html", "*rman_backup.html"])
+    rman_backup = _rman_backup_table(root)
     tablespace_usage = _first_table(root, "*tablespace_usage.html")
     log_switch_tables = _tables_for(root, "*log_switch_frequency_for_instance_*.html", exclude=("_line_chart",))
     cpu_busy_tables = _tables_for(root, "*cpu_busy_and_idle_times_percent_for_instance_*.html", exclude=("_line_chart",))
@@ -175,7 +174,7 @@ def _memory_assessment(rows: list[list[str]], english: bool = False) -> dict[str
         parts.append(f"SGA {', '.join(dict.fromkeys(sga))}/instance")
     if pga:
         parts.append(f"PGA {', '.join(dict.fromkeys(pga))}/instance")
-    detail = "; ".join(parts) if parts else ("SGA/PGA could not be identified from EDB360" if english else "chưa xác định được SGA/PGA từ EDB360")
+    detail = "; ".join(parts) if parts else ("SGA/PGA could not be identified from the system data" if english else "chưa xác định được SGA/PGA từ hệ thống")
     assessment = (
         f"The database memory is currently configured in {mode} mode. Details: {detail}."
         if english
@@ -199,14 +198,14 @@ def _patching_backup_assessment(registry_rows: list[list[str]], backup_rows: lis
     if backups:
         if english:
             completed_text = f" {len(completed)} backup job(s) completed." if completed else ""
-            backup_assessment = f"RMAN backup data is available. EDB360 recorded {len(backups)} backup job(s) in the collected data.{completed_text}"
+            backup_assessment = f"RMAN backup data is available. The system recorded {len(backups)} backup job(s) in the collected data.{completed_text}"
             backup_recommendation = (
                 "Prepare an environment to perform backup restore testing. "
                 "Without a restore test environment, backup recoverability cannot be confirmed when needed."
             )
         else:
             completed_text = f" Trong đó có {len(completed)} backup job hoàn thành." if completed else ""
-            backup_assessment = f"Đã có RMAN backup. EDB360 ghi nhận {len(backups)} backup job trong dữ liệu thu thập.{completed_text}"
+            backup_assessment = f"Đã có RMAN backup. Hệ thống ghi nhận {len(backups)} backup job trong dữ liệu thu thập.{completed_text}"
             backup_recommendation = (
                 "Khuyến nghị chuẩn bị môi trường thực hiện kiểm thử restore các bản backup. "
                 "Việc không có môi trường khôi phục kiểm thử bản backup sẽ không đảm bảo bản backup có thể khôi phục thành công khi cần thiết."
@@ -282,61 +281,49 @@ def _cache_hit_assessment(log_switch_tables: list[list[list[str]]], cpu_busy_tab
 
 def _log_switch_assessment(tables: list[list[list[str]]], english: bool = False) -> str:
     rows = _numeric_column_rows(tables, "LOG_SWITCHES")
-    values = [value for value, _row in rows]
-    if not values:
+    if not rows:
         return ""
-    average = sum(values) / len(values)
-    minimum = min(values)
-    maximum = max(values)
-    display_minimum = 1 if minimum == 0 and maximum > 0 else minimum
-    if english:
-        assessment = (
-            f"Overall, log switch frequency across instances ranges from {_format_number(display_minimum)} to {_format_number(maximum)} times/hour, "
-            f"averaging {_format_integer(average)} times/hour."
+
+    summaries = _log_switch_instance_summaries(rows)
+    if not summaries:
+        return ""
+    assessment = _log_switch_combined_summary_text(summaries, english)
+    notable_windows = _log_switch_peak_windows(rows)
+    if notable_windows:
+        assessment += (
+            f" Notable peak windows: {', '.join(notable_windows)}."
+            if english
+            else f" Các khung giờ nổi bật: {', '.join(notable_windows)}."
         )
-    else:
-        assessment = (
-            f"Nhìn chung, tần suất log switch của các instance dao động khoảng {_format_number(display_minimum)} - {_format_number(maximum)} lần/giờ, "
-            f"trung bình {_format_integer(average)} lần/giờ."
-        )
-    if maximum >= 30:
-        peak_windows = _log_switch_peak_windows(rows)
-        if peak_windows:
-            if english:
-                assessment += (
-                    f" Several peak periods were observed at {', '.join(peak_windows)}, "
-                    "indicating high redo generation during peak hours."
-                )
-            else:
-                assessment += (
-                    f" Một số thời điểm xuất hiện đột biến cao tại {', '.join(peak_windows)}, "
-                    "cho thấy hệ thống có hiện tượng phát sinh redo lớn trong các khung giờ cao điểm."
-                )
-        else:
-            assessment += (
-                " Several peak periods were observed, indicating high redo generation during peak hours."
-                if english
-                else " Một số thời điểm xuất hiện đột biến cao, cho thấy hệ thống có hiện tượng phát sinh redo lớn trong các khung giờ cao điểm."
-            )
     return assessment
 
 
 def _foreground_cpu_assessment(tables: list[list[list[str]]], english: bool = False) -> str:
-    values = _numeric_column_values(tables, "BUSY_TIME_PERC")
-    if not values:
+    rows = _foreground_cpu_rows(tables)
+    if not rows:
         return ""
-    average = sum(values) / len(values)
-    minimum = min(values)
-    maximum = max(values)
+    values_by_instance: dict[str, list[float]] = defaultdict(list)
+    for value, row in rows:
+        instance = _log_switch_instance_label(row) or "instance không xác định"
+        values_by_instance[instance].append(value)
+
+    parts = []
+    for instance, values in sorted(values_by_instance.items()):
+        average = sum(values) / len(values)
+        minimum = min(values)
+        maximum = max(values)
+        if english:
+            parts.append(
+                f"{instance}: average {_format_number(average)}%, ranging from {_format_number(minimum)}% to {_format_number(maximum)}%"
+            )
+        else:
+            parts.append(
+                f"{instance}: trung bình {_format_number(average)}%, dao động khoảng {_format_number(minimum)}% - {_format_number(maximum)}%"
+            )
+
     if english:
-        return (
-            f"Overall, database instances use an average of {_format_number(average)}% server CPU, "
-            f"ranging from {_format_number(minimum)}% to {_format_number(maximum)}%."
-        )
-    return (
-        f"Nhìn chung, các instance cơ sở dữ liệu sử dụng CPU server trung bình {_format_number(average)}%, "
-        f"dao động khoảng {_format_number(minimum)}% - {_format_number(maximum)}%."
-    )
+        return f"Overall, server CPU used by database foreground processes by instance is {', '.join(parts)}."
+    return f"Nhìn chung, CPU server do các foreground process cơ sở dữ liệu sử dụng theo từng instance như sau: {', '.join(parts)}."
 
 
 def _asm_assessment(rows: list[list[str]], english: bool = False) -> dict[str, str]:
@@ -349,27 +336,30 @@ def _asm_assessment(rows: list[list[str]], english: bool = False) -> dict[str, s
             continue
         free_gb = free_mb / 1024
         free_percent = (free_mb / total_mb * 100) if total_mb and total_mb > 0 else None
-        if free_gb <= ASM_FREE_WARNING_GB or (free_percent is not None and free_percent <= ASM_FREE_WARNING_PERCENT):
+        if free_percent is not None and free_percent <= ASM_FREE_WARNING_PERCENT:
             warnings.append((name, free_gb))
     if not warnings:
         return {"{{assessment_asm_disk_group}}": "", "{{recommendation_asm_disk_group}}": ""}
-    group, free_gb = next((item for item in warnings if item[0].upper() == "DATA"), sorted(warnings, key=lambda item: item[1])[0])
+    warnings = sorted(warnings, key=lambda item: item[0].upper())
+    group_names = ", ".join(group for group, _free_gb in warnings)
+    english_details = ", ".join(f"disk group {group} has only {_format_number(free_gb)}GB free" for group, free_gb in warnings)
+    vietnamese_details = ", ".join(f"Disk group {group} chỉ còn trống {_format_number(free_gb)}GB" for group, free_gb in warnings)
     return {
         "{{assessment_asm_disk_group}}": (
-            f"Disk group {group} has only {_format_number(free_gb)}GB free. "
+            f"{english_details}. "
             "Insufficient capacity may interrupt and affect system operations."
             if english
             else (
-                f"Disk group {group} chỉ còn trống {_format_number(free_gb)}GB. "
+                f"{vietnamese_details}. "
                 "Nếu không đủ dung lượng cung cấp cho hệ thống sẽ gây gián đoạn và ảnh hưởng đến hoạt động hệ thống."
             )
         ),
         "{{recommendation_asm_disk_group}}": (
-            f"Add 500GB of disk capacity to disk group {group}. HPT will then add the new disk to disk group {group}."
+            f"Add disk capacity to disk group {group_names}. HPT will then add the new disk to disk group {group_names}."
             if english
             else (
-                f"Cấp thêm đĩa 500GB cho disk group {group}. "
-                f"Sau đó HPT sẽ tiến hành thêm đĩa mới vào disk group {group}."
+                f"Cấp thêm đĩa cho disk group {group_names}. "
+                f"Sau đó HPT sẽ tiến hành thêm đĩa mới vào disk group {group_names}."
             )
         ),
     }
@@ -448,6 +438,28 @@ def _first_table_any(root: Path, patterns: list[str]) -> list[list[str]]:
     return []
 
 
+def _rman_backup_table(root: Path) -> list[list[str]]:
+    candidates = []
+    for path in sorted(root.rglob("*rman_backup*.html")):
+        name = path.name.lower()
+        if name.endswith("_line_chart.html"):
+            continue
+        page, soup, _html = parse_html_file(path)
+        title = page.title.strip().lower()
+        stem = path.stem.lower()
+        is_backup_page = stem.endswith("_rman_backup") or stem.endswith("_rman_backup_job_details")
+        is_backup_title = title in {"rman backup", "rman backup job details"}
+        if not is_backup_page and not is_backup_title:
+            continue
+        tables = extract_tables(page, soup)
+        if tables:
+            priority = 0 if "job_details" in stem or title == "rman backup job details" else 1
+            candidates.append((priority, path.name, tables[0].rows))
+    if not candidates:
+        return []
+    return sorted(candidates, key=lambda item: (item[0], item[1]))[0][2]
+
+
 def _tables_for(root: Path, pattern: str, exclude: tuple[str, ...] = ()) -> list[list[list[str]]]:
     result = []
     for path in sorted(root.rglob(pattern)):
@@ -457,7 +469,7 @@ def _tables_for(root: Path, pattern: str, exclude: tuple[str, ...] = ()) -> list
         page, soup, _html = parse_html_file(path)
         tables = extract_tables(page, soup)
         if tables:
-            result.append(tables[0].rows)
+            result.append(_rows_with_source_file(tables[0].rows, path.name))
     return result
 
 
@@ -498,7 +510,7 @@ def _preferred_memory_value(row: dict[str, str]) -> str:
 
 def _to_float(value: str) -> float | None:
     text = str(value or "").strip().replace(",", "")
-    match = re.search(r"-?\d+(?:\.\d+)?", text)
+    match = re.search(r"-?(?:\d+(?:\.\d+)?|\.\d+)", text)
     if not match:
         return None
     return float(match.group(0))
@@ -521,6 +533,12 @@ def _first_present(row: dict[str, str], keys: tuple[str, ...]) -> str:
     return ""
 
 
+def _value_at(row: list[str], index: int | None) -> str:
+    if index is None or index >= len(row):
+        return ""
+    return row[index]
+
+
 def _numeric_column_values(tables: list[list[list[str]]], column_name: str) -> list[float]:
     return [value for value, _row in _numeric_column_rows(tables, column_name)]
 
@@ -535,6 +553,45 @@ def _numeric_column_rows(tables: list[list[list[str]]], column_name: str) -> lis
     return result
 
 
+def _foreground_cpu_rows(tables: list[list[list[str]]]) -> list[tuple[float, dict[str, str]]]:
+    result = []
+    for rows in tables:
+        if len(rows) < 2:
+            continue
+        headers = [_normalize_header(item) for item in rows[0]]
+        if "BUSY_TIME_PERC" not in headers:
+            continue
+        busy_index = headers.index("BUSY_TIME_PERC")
+        idle_index = headers.index("IDLE_TIME_PERC") if "IDLE_TIME_PERC" in headers else None
+        source_index = headers.index("SOURCE_FILE") if "SOURCE_FILE" in headers else None
+        instance_indexes = {
+            header: headers.index(header)
+            for header in ("INSTANCE_NUMBER", "INSTANCE_NAME", "INSTANCE", "INST_ID", "INSTANCE_ID")
+            if header in headers
+        }
+        for row_values in rows[1:]:
+            busy = _to_float(_value_at(row_values, busy_index))
+            idle = _to_float(_value_at(row_values, idle_index))
+            if busy is None:
+                continue
+            if idle is not None and busy >= 90 and idle <= 10 and abs((busy + idle) - 100) <= 1:
+                busy = idle
+            row = {key: _value_at(row_values, index) for key, index in instance_indexes.items()}
+            if source_index is not None:
+                row["SOURCE_FILE"] = _value_at(row_values, source_index)
+            result.append((busy, row))
+    return result
+
+
+def _rows_with_source_file(rows: list[list[str]], source_file: str) -> list[list[str]]:
+    if not rows:
+        return rows
+    headers = [_normalize_header(item) for item in rows[0]]
+    if "SOURCE_FILE" in headers:
+        return rows
+    return [rows[0] + ["SOURCE_FILE"]] + [row + [source_file] for row in rows[1:]]
+
+
 def _format_number(value: float) -> str:
     if abs(value - round(value)) < 0.05:
         return str(int(round(value)))
@@ -545,14 +602,353 @@ def _format_integer(value: float) -> str:
     return str(int(round(value)))
 
 
+def _format_switch_range(minimum: float, maximum: float, english: bool = False) -> str:
+    unit = "times/hour" if english else "lần/giờ"
+    minimum = _display_log_switch_value(minimum, maximum)
+    maximum = _display_log_switch_value(maximum, maximum)
+    if abs(minimum - maximum) < 0.05:
+        return f"{_format_number(maximum)} {unit}"
+    return f"{_format_number(minimum)} - {_format_number(maximum)} {unit}"
+
+
+def _display_log_switch_value(value: float, maximum: float) -> float:
+    if value == 0 and maximum >= 0:
+        return 1
+    return value
+
+
+def _log_switch_level(value: float) -> str:
+    if value <= 6:
+        return "optimal"
+    if value <= 10:
+        return "stable"
+    if value <= 20:
+        return "elevated"
+    return "high"
+
+
+def _log_switch_level_label(level: str, english: bool = False) -> str:
+    labels = {
+        "optimal": ("optimal", "tối ưu"),
+        "stable": ("stable", "ổn định"),
+        "elevated": ("quite high, should be monitored", "khá cao, nên theo dõi"),
+        "high": ("high, should be checked", "cao, nên kiểm tra"),
+    }
+    english_label, vietnamese_label = labels[level]
+    return english_label if english else vietnamese_label
+
+
+def _log_switch_instance_summaries(rows: list[tuple[float, dict[str, str]]]) -> list[dict[str, object]]:
+    values_by_instance: dict[str, list[float]] = defaultdict(list)
+    for value, row in rows:
+        instance = _log_switch_instance_label(row) or "instance không xác định"
+        values_by_instance[instance].append(value)
+
+    summaries = []
+    for instance, values in sorted(values_by_instance.items()):
+        grouped_values: dict[str, list[float]] = defaultdict(list)
+        for value in values:
+            grouped_values[_log_switch_level(value)].append(value)
+        total_hours = len(values)
+        ratios = {
+            level: len(grouped_values[level]) / total_hours
+            for level in ("optimal", "stable", "elevated", "high")
+        }
+        healthy_ratio = ratios["optimal"] + ratios["stable"]
+        risk_ratio = ratios["elevated"] + ratios["high"]
+        if ratios["optimal"] >= 0.70:
+            overall = "optimal"
+        elif ratios["stable"] >= 0.70:
+            overall = "stable"
+        elif ratios["elevated"] >= 0.70:
+            overall = "elevated"
+        elif ratios["high"] >= 0.70:
+            overall = "high"
+        elif healthy_ratio >= 0.70:
+            overall = "optimal_to_stable"
+        elif risk_ratio >= 0.50:
+            overall = "frequent_elevated"
+        else:
+            overall = "mixed"
+
+        summaries.append(
+            {
+                "instance": instance,
+                "overall": overall,
+                "max": max(values),
+                "ratios": ratios,
+                "ranges": {
+                    level: _range_for_values(grouped_values[level])
+                    for level in ("optimal", "stable", "elevated", "high")
+                },
+                "healthy_range": _range_for_values(grouped_values["optimal"] + grouped_values["stable"]),
+                "risk_range": _range_for_values(grouped_values["elevated"] + grouped_values["high"]),
+            }
+        )
+    return summaries
+
+
 def _log_switch_peak_windows(rows: list[tuple[float, dict[str, str]]]) -> list[str]:
-    peak_rows = sorted((item for item in rows if item[0] >= 30), key=lambda item: item[0], reverse=True)
+    peak_rows = sorted(rows, key=lambda item: item[0], reverse=True)
     windows = []
     for value, row in peak_rows[:3]:
         begin_time = row.get("BEGIN_TIME", "").strip()
         end_time = row.get("END_TIME", "").strip()
+        instance = _log_switch_instance_label(row)
+        prefix = f"{instance} " if instance else ""
         if begin_time and end_time:
-            windows.append(f"{begin_time} - {end_time} ({_format_integer(value)} lần/giờ)")
+            windows.append(f"{prefix}{begin_time} - {end_time} ({_format_integer(value)} lần/giờ)")
         elif begin_time:
-            windows.append(f"{begin_time} ({_format_integer(value)} lần/giờ)")
+            windows.append(f"{prefix}{begin_time} ({_format_integer(value)} lần/giờ)")
     return windows
+
+
+def _range_for_values(values: list[float]) -> tuple[float, float] | None:
+    if not values:
+        return None
+    return min(values), max(values)
+
+
+def _format_switch_range_value(value_range: tuple[float, float] | None, english: bool = False) -> str:
+    if value_range is None:
+        return ""
+    return _format_switch_range(value_range[0], value_range[1], english)
+
+
+def _log_switch_combined_summary_text(summaries: list[dict[str, object]], english: bool = False) -> str:
+    if not summaries:
+        return ""
+    if len(summaries) == 1:
+        return _log_switch_summary_text(summaries[0], english)
+
+    overall_groups: dict[str, list[dict[str, object]]] = defaultdict(list)
+    for summary in summaries:
+        overall_groups[str(summary["overall"])].append(summary)
+
+    if len(overall_groups) == 1:
+        overall = next(iter(overall_groups))
+        return _log_switch_same_pattern_text(overall, summaries, english)
+    return _log_switch_mixed_pattern_text(overall_groups, english)
+
+
+def _log_switch_same_pattern_text(overall: str, summaries: list[dict[str, object]], english: bool = False) -> str:
+    primary_range_parts = _log_switch_range_parts(summaries, _primary_log_switch_range_key(overall), english)
+    risk_summaries = [summary for summary in summaries if summary.get("risk_range")]
+    risk_range_parts = _log_switch_range_parts(risk_summaries, "risk_range", english)
+    max_summary = max(summaries, key=lambda item: float(item["max"]))
+    max_text = _format_switch_range(float(max_summary["max"]), float(max_summary["max"]), english)
+    max_instance = str(max_summary["instance"])
+
+    if english:
+        subject = "database instances"
+        if overall == "optimal":
+            text = f"Overall, log switch frequency of the {subject} is optimal for most of the time, {primary_range_parts}."
+        elif overall == "stable":
+            text = f"Overall, log switch frequency of the {subject} is stable for most of the time, {primary_range_parts}."
+        elif overall == "elevated":
+            text = f"Overall, log switch frequency of the {subject} is quite high for most of the time, {primary_range_parts}."
+        elif overall == "high":
+            return f"Log switch frequency of the {subject} remains high for most of the time, {primary_range_parts}. Review online redo log size, redo-generating workload, and signs of overly frequent log switches."
+        elif overall == "optimal_to_stable":
+            text = f"Overall, log switch frequency of the {subject} remains optimal to stable for most of the time, {primary_range_parts}."
+        elif overall == "frequent_elevated":
+            text = f"Overall, log switch frequency of the {subject} frequently reaches quite high to high levels, {primary_range_parts}. Review redo log size and redo-generating workload."
+        else:
+            text = "Overall, log switch frequency of the database instances varies across time windows, without a clearly dominant level."
+        if risk_range_parts and overall not in {"elevated", "high", "frequent_elevated"}:
+            text += f" During higher-load periods, log switch frequency increased to {risk_range_parts} and should continue to be monitored."
+        if float(max_summary["max"]) > 20:
+            text += f" The highest recorded value is {max_text} at {max_instance}; periods above 20 times/hour should be checked if they repeat or persist."
+        else:
+            text += f" The highest recorded value is {max_text} at {max_instance}."
+        return text
+
+    if overall == "optimal":
+        text = f"Nhìn chung, tần suất log switch của các instance trong phần lớn thời gian ở mức tối ưu, {primary_range_parts}."
+    elif overall == "stable":
+        text = f"Nhìn chung, tần suất log switch của các instance trong phần lớn thời gian ở mức ổn định, {primary_range_parts}."
+    elif overall == "elevated":
+        text = f"Nhìn chung, tần suất log switch của các instance trong phần lớn thời gian ở mức khá cao, {primary_range_parts}. Tần suất này nên được tiếp tục theo dõi và đối chiếu với kích thước redo log cũng như workload phát sinh redo."
+    elif overall == "high":
+        return f"Tần suất log switch của các instance duy trì ở mức cao trong phần lớn thời gian, {primary_range_parts}. Nên kiểm tra kích thước online redo log, workload phát sinh redo và các dấu hiệu log switch quá thường xuyên."
+    elif overall == "optimal_to_stable":
+        text = f"Nhìn chung, tần suất log switch của các instance trong phần lớn thời gian duy trì ở mức tối ưu đến ổn định, {primary_range_parts}."
+    elif overall == "frequent_elevated":
+        text = f"Nhìn chung, tần suất log switch của các instance ghi nhận mức khá cao đến cao xuất hiện thường xuyên, {primary_range_parts}. Nên kiểm tra kích thước redo log và workload phát sinh redo."
+    else:
+        text = "Nhìn chung, tần suất log switch của các instance có sự biến động giữa các khung giờ, không có mức nào chiếm ưu thế rõ."
+
+    if risk_range_parts and overall not in {"elevated", "high", "frequent_elevated"}:
+        text += f" Tại một số khung giờ tải cao, tần suất log switch tăng lên {risk_range_parts}, thuộc mức khá cao và nên tiếp tục theo dõi."
+    if float(max_summary["max"]) > 20:
+        text += f" Mức cao nhất ghi nhận là {max_text} tại {max_instance}; các thời điểm vượt 20 lần/giờ nên được kiểm tra thêm nếu xuất hiện lặp lại hoặc kéo dài."
+    else:
+        text += f" Mức cao nhất ghi nhận là {max_text} tại {max_instance}."
+    return text
+
+
+def _log_switch_mixed_pattern_text(overall_groups: dict[str, list[dict[str, object]]], english: bool = False) -> str:
+    parts = []
+    for overall in ("optimal", "stable", "optimal_to_stable", "elevated", "high", "frequent_elevated", "mixed"):
+        summaries = overall_groups.get(overall)
+        if not summaries:
+            continue
+        range_parts = _log_switch_range_parts(summaries, _primary_log_switch_range_key(overall), english)
+        names = _join_display_list([str(summary["instance"]) for summary in summaries], english)
+        label = _log_switch_overall_label(overall, english)
+        if english:
+            parts.append(f"{names} is {label}, {range_parts}")
+        else:
+            parts.append(f"{names} ở mức {label}, {range_parts}")
+
+    all_summaries = [summary for summaries in overall_groups.values() for summary in summaries]
+    max_summary = max(all_summaries, key=lambda item: float(item["max"]))
+    max_text = _format_switch_range(float(max_summary["max"]), float(max_summary["max"]), english)
+    max_instance = str(max_summary["instance"])
+    if english:
+        text = f"Overall, log switch frequency differs between instances: {'; '.join(parts)}."
+        text += f" The highest recorded value is {max_text} at {max_instance}."
+    else:
+        text = f"Nhìn chung, tần suất log switch có sự khác biệt giữa các instance: {'; '.join(parts)}."
+        text += f" Mức cao nhất ghi nhận là {max_text} tại {max_instance}."
+    return text
+
+
+def _primary_log_switch_range_key(overall: str) -> str:
+    return {
+        "optimal": "optimal",
+        "stable": "stable",
+        "elevated": "elevated",
+        "high": "high",
+        "optimal_to_stable": "healthy_range",
+        "frequent_elevated": "risk_range",
+        "mixed": "healthy_range",
+    }.get(overall, "healthy_range")
+
+
+def _log_switch_range_parts(summaries: list[dict[str, object]], range_key: str, english: bool = False) -> str:
+    if not summaries:
+        return ""
+    grouped: dict[str, list[str]] = defaultdict(list)
+    for summary in summaries:
+        value_range = _log_switch_summary_range(summary, range_key)
+        if value_range is None:
+            continue
+        grouped[_format_switch_range_value(value_range, english)].append(str(summary["instance"]))
+    if not grouped:
+        return ""
+    parts = []
+    for range_text, instances in grouped.items():
+        names = _join_display_list(instances, english)
+        if len(instances) > 1:
+            parts.append(f"{names} {'around' if english else 'dao động khoảng'} {range_text}")
+        else:
+            parts.append(f"{names}: {range_text}")
+    return _join_display_list(parts, english)
+
+
+def _log_switch_summary_range(summary: dict[str, object], range_key: str) -> tuple[float, float] | None:
+    if range_key in {"healthy_range", "risk_range"}:
+        return summary.get(range_key)  # type: ignore[return-value]
+    ranges = summary["ranges"]
+    assert isinstance(ranges, dict)
+    return ranges.get(range_key)
+
+
+def _join_display_list(items: list[str], english: bool = False) -> str:
+    if not items:
+        return ""
+    if len(items) == 1:
+        return items[0]
+    separator = " and " if english else " và "
+    return ", ".join(items[:-1]) + separator + items[-1]
+
+
+def _log_switch_overall_label(overall: str, english: bool = False) -> str:
+    labels = {
+        "optimal": ("optimal for most of the time", "tối ưu trong phần lớn thời gian"),
+        "stable": ("stable for most of the time", "ổn định trong phần lớn thời gian"),
+        "elevated": ("quite high for most of the time", "khá cao trong phần lớn thời gian"),
+        "high": ("high for most of the time", "cao trong phần lớn thời gian"),
+        "optimal_to_stable": ("optimal to stable for most of the time", "tối ưu đến ổn định trong phần lớn thời gian"),
+        "frequent_elevated": ("frequently quite high to high", "khá cao đến cao xuất hiện thường xuyên"),
+        "mixed": ("mixed across time windows", "biến động giữa nhiều mức"),
+    }
+    english_label, vietnamese_label = labels[overall]
+    return english_label if english else vietnamese_label
+
+
+def _log_switch_summary_text(summary: dict[str, object], english: bool = False) -> str:
+    instance = str(summary["instance"])
+    overall = str(summary["overall"])
+    maximum = float(summary["max"])
+    ranges = summary["ranges"]
+    healthy_range = summary["healthy_range"]
+    risk_range = summary["risk_range"]
+    ratios = summary["ratios"]
+    assert isinstance(ranges, dict)
+    assert isinstance(ratios, dict)
+
+    optimal_range = _format_switch_range_value(ranges.get("optimal"), english)
+    stable_range = _format_switch_range_value(ranges.get("stable"), english)
+    elevated_range = _format_switch_range_value(ranges.get("elevated"), english)
+    high_range = _format_switch_range_value(ranges.get("high"), english)
+    healthy_range_text = _format_switch_range_value(healthy_range, english)
+    risk_range_text = _format_switch_range_value(risk_range, english)
+    max_text = _format_switch_range(maximum, maximum, english)
+
+    if english:
+        if overall == "optimal":
+            text = f"Overall, log switch frequency of {instance} is optimal for most of the time, around {optimal_range}."
+        elif overall == "stable":
+            text = f"Overall, log switch frequency of {instance} is stable for most of the time, mainly around {stable_range}."
+        elif overall == "elevated":
+            text = f"Overall, log switch frequency of {instance} is quite high for most of the time, mainly around {elevated_range}."
+        elif overall == "high":
+            return f"Log switch frequency of {instance} remains high for most of the time, with recorded values around {high_range}. Review online redo log size, redo-generating workload, and signs of overly frequent log switches."
+        elif overall == "optimal_to_stable":
+            text = f"Overall, log switch frequency of {instance} remains optimal to stable for most of the time, mainly around {healthy_range_text}."
+        elif overall == "frequent_elevated":
+            text = f"Overall, log switch frequency of {instance} frequently reaches quite high to high levels, around {risk_range_text}."
+        else:
+            text = f"Overall, log switch frequency of {instance} varies across time windows, without a clearly dominant level."
+
+        if maximum > 20 and overall != "high":
+            text += f" However, some periods increased significantly, with the maximum recorded at {max_text}. Periods above 20 times/hour should be checked if they repeat or persist."
+        elif ranges.get("elevated") and overall not in {"elevated", "frequent_elevated"}:
+            text += f" Some higher-load periods reached {elevated_range} and should continue to be monitored."
+        return text
+
+    if overall == "optimal":
+        text = f"Nhìn chung, tần suất log switch của {instance} trong phần lớn thời gian ở mức tối ưu, khoảng {optimal_range}."
+    elif overall == "stable":
+        text = f"Nhìn chung, tần suất log switch của {instance} trong phần lớn thời gian ở mức ổn định, chủ yếu dao động khoảng {stable_range}."
+    elif overall == "elevated":
+        text = f"Nhìn chung, tần suất log switch của {instance} trong phần lớn thời gian ở mức khá cao, chủ yếu dao động khoảng {elevated_range}. Tần suất này nên được tiếp tục theo dõi và đối chiếu với kích thước redo log cũng như workload phát sinh redo."
+    elif overall == "high":
+        return f"Tần suất log switch của {instance} duy trì ở mức cao trong phần lớn thời gian, với khoảng ghi nhận {high_range}. Nên kiểm tra kích thước online redo log, workload phát sinh redo và các dấu hiệu log switch quá thường xuyên."
+    elif overall == "optimal_to_stable":
+        text = f"Nhìn chung, tần suất log switch của {instance} trong phần lớn thời gian duy trì ở mức tối ưu đến ổn định, chủ yếu trong khoảng {healthy_range_text}."
+    elif overall == "frequent_elevated":
+        text = f"Nhìn chung, tần suất log switch của {instance} ghi nhận mức khá cao đến cao xuất hiện thường xuyên, trong khoảng {risk_range_text}. Nên kiểm tra kích thước redo log và workload phát sinh redo."
+    else:
+        dominant = "vùng tối ưu đến ổn định" if float(ratios.get("optimal", 0)) + float(ratios.get("stable", 0)) >= float(ratios.get("elevated", 0)) + float(ratios.get("high", 0)) else "vùng khá cao đến cao"
+        text = f"Nhìn chung, tần suất log switch của {instance} có sự biến động giữa các khung giờ, chủ yếu tập trung trong {dominant}."
+
+    if maximum > 20 and overall != "high":
+        text += f" Tuy nhiên, một số thời điểm ghi nhận tần suất tăng cao, với mức tối đa {max_text}. Các thời điểm vượt 20 lần/giờ nên được kiểm tra thêm nếu xuất hiện lặp lại hoặc kéo dài."
+    elif ranges.get("elevated") and overall not in {"elevated", "frequent_elevated"}:
+        text += f" Một số khung giờ tải cao ghi nhận tần suất {elevated_range}, thuộc mức khá cao và nên tiếp tục theo dõi."
+    return text
+
+
+def _log_switch_instance_label(row: dict[str, str]) -> str:
+    for key in ("INSTANCE_NUMBER", "INSTANCE_NAME", "INSTANCE", "INST_ID", "INSTANCE_ID"):
+        value = row.get(key, "").strip()
+        if value:
+            return f"instance {value}"
+    source_file = row.get("SOURCE_FILE", "")
+    match = re.search(r"instance[_-](\d+)", source_file, flags=re.IGNORECASE)
+    if match:
+        return f"instance {match.group(1)}"
+    return ""

@@ -4,6 +4,7 @@ import unittest
 
 from extraction.edb360_metadata import build_edb360_text_mapping, extract_edb360_metadata
 from extraction.edb360_assessment import build_edb360_assessment_mapping
+from utils.normalize import content_key_aliases
 
 
 SAMPLE_EDB360_ROOT = Path(r"D:\HPT\CGV\edb360_082026")
@@ -37,11 +38,31 @@ class Edb360MetadataTests(unittest.TestCase):
 
 
 class Edb360AssessmentRuleTests(unittest.TestCase):
+    def test_rman_backup_job_details_matches_rman_backup_alias(self):
+        self.assertIn("rman_backup", content_key_aliases("RMAN Backup Job Details"))
+
+    def test_log_switch_displays_zero_lower_bound_as_one(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            _write_table(
+                root / "00070_edb360_2d_57_log_switch_frequency_for_instance_1.html",
+                ["#", "SNAP_ID", "BEGIN_TIME", "END_TIME", "LOG_SWITCHES"],
+                [
+                    ["1", "1", "2026-08-17 01:00:00", "2026-08-17 02:00:00", "0"],
+                    ["2", "2", "2026-08-17 02:00:00", "2026-08-17 03:00:00", "4"],
+                ],
+            )
+
+            mapping = build_edb360_assessment_mapping(root)
+
+        self.assertIn("1 - 4 lần/giờ", mapping["{{assessment_log_switch}}"])
+        self.assertNotIn("0 - 4 lần/giờ", mapping["{{assessment_log_switch}}"])
+
     def test_reads_dynamic_backup_cpu_log_switch_and_asm_values(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
             _write_table(
-                root / "00065_edb360_2d_52_rman_backup.html",
+                root / "00065_edb360_2d_52_rman_backup_job_details.html",
                 ["#", "SESSION_KEY", "INPUT_TYPE", "STATUS"],
                 [["1", "5275", "ARCHIVELOG", "COMPLETED"], ["2", "5276", "DB FULL", "FAILED"]],
             )
@@ -57,12 +78,15 @@ class Edb360AssessmentRuleTests(unittest.TestCase):
             _write_table(
                 root / "00081_edb360_3e_67_cpu_busy_and_idle_times_percent_for_instance_1.html",
                 ["#", "SNAP_ID", "BUSY_TIME_PERC", "IDLE_TIME_PERC"],
-                [["1", "1", "5"], ["2", "2", "7.5"]],
+                [["1", "1", ".99", "99.01"], ["2", "2", "5", "95"], ["3", "3", "99", "1"], ["4", "4", "7.5", "92.5"]],
             )
             _write_table(
                 root / "00063_edb360_2c_50_asm_disk_group.html",
                 ["#", "GROUP_NUMBER", "NAME", "TOTAL_MB", "FREE_MB", "USABLE_FILE_MB"],
-                [["1", "1", "DATA", "8192000", "216064", "216064"]],
+                [
+                    ["1", "1", "DATA", "8192000", "216064", "216064"],
+                    ["2", "2", "FRA", "2048000", "184320", "184320"],
+                ],
             )
             _write_table(
                 root / "00039_edb360_2a_26_scheduler_jobs.html",
@@ -79,19 +103,27 @@ class Edb360AssessmentRuleTests(unittest.TestCase):
             "Khuyến nghị chuẩn bị môi trường thực hiện kiểm thử restore các bản backup. "
             "Việc không có môi trường khôi phục kiểm thử bản backup sẽ không đảm bảo bản backup có thể khôi phục thành công khi cần thiết.",
         )
-        self.assertIn("dao động khoảng 4 - 40 lần/giờ", mapping["{{assessment_log_switch}}"])
-        self.assertIn("trung bình 18 lần/giờ", mapping["{{assessment_log_switch}}"])
-        self.assertIn("2026-08-17 03:00:00 - 2026-08-17 04:00:00 (40 lần/giờ)", mapping["{{assessment_log_switch}}"])
-        self.assertIn("trung bình 6.2%", mapping["{{assessment_oracle_foreground_process}}"])
+        self.assertIn("instance 1 có sự biến động giữa các khung giờ", mapping["{{assessment_log_switch}}"])
+        self.assertIn("mức tối đa 40 lần/giờ", mapping["{{assessment_log_switch}}"])
+        self.assertIn("instance 1 2026-08-17 03:00:00 - 2026-08-17 04:00:00 (40 lần/giờ)", mapping["{{assessment_log_switch}}"])
+        self.assertNotIn("trong phần lớn thời gian", mapping["{{assessment_log_switch}}"])
+        self.assertIn("instance 1: trung bình 3.6%, dao động khoảng 1% - 7.5%", mapping["{{assessment_oracle_foreground_process}}"])
         self.assertIn("Disk group DATA chỉ còn trống 211GB", mapping["{{assessment_asm_disk_group}}"])
+        self.assertIn("Disk group FRA chỉ còn trống 180GB", mapping["{{assessment_asm_disk_group}}"])
+        self.assertEqual(
+            mapping["{{recommendation_asm_disk_group}}"],
+            "Cấp thêm đĩa cho disk group DATA, FRA. Sau đó HPT sẽ tiến hành thêm đĩa mới vào disk group DATA, FRA.",
+        )
         self.assertEqual(mapping["{{assessment_sche_job}}"], "Một số job đang enable nhưng có ghi nhận lỗi trong quá trình chạy.")
         self.assertEqual(
             mapping["{{recommendation_sche_job}}"],
             "Kiểm tra lại các job đang enable và có FAILURE_COUNT > 0 để tránh ảnh hưởng đến hoạt động của hệ thống/ ứng dụng.",
         )
         self.assertIn("RMAN backup data is available", english_mapping["{{assessment_backup}}"])
-        self.assertIn("averaging 18 times/hour", english_mapping["{{assessment_log_switch}}"])
-        self.assertIn("Disk group DATA has only 211GB free", english_mapping["{{assessment_asm_disk_group}}"])
+        self.assertIn("instance 1 varies across time windows", english_mapping["{{assessment_log_switch}}"])
+        self.assertIn("maximum recorded at 40 times/hour", english_mapping["{{assessment_log_switch}}"])
+        self.assertIn("disk group DATA has only 211GB free", english_mapping["{{assessment_asm_disk_group}}"])
+        self.assertIn("disk group FRA has only 180GB free", english_mapping["{{assessment_asm_disk_group}}"])
         self.assertEqual(
             english_mapping["{{recommendation_sche_job}}"],
             "Review enabled jobs with FAILURE_COUNT > 0 to avoid impact on system/application operations.",

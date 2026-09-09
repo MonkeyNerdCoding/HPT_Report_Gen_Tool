@@ -47,6 +47,8 @@ def content_key_aliases(value: str | None) -> set[str]:
                 next_aliases.add(item.replace("for_cluster_for_9_days_of_history", "for_instance_1_for_9_days_of_history"))
             if "for_instance_1_for_9_days_of_history" in item:
                 next_aliases.add(item.replace("for_instance_1_for_9_days_of_history", "for_cluster_for_9_days_of_history"))
+            if item == "rman_backup_job_details":
+                next_aliases.add("rman_backup")
             if not next_aliases.issubset(aliases):
                 aliases.update(next_aliases)
                 changed = True
