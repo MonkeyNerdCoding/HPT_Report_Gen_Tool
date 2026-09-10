@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from collections import defaultdict
+from datetime import datetime
 import re
 
 from .html_parser import parse_html_file
@@ -323,7 +324,7 @@ def _foreground_cpu_assessment(tables: list[list[list[str]]], english: bool = Fa
 
     if english:
         return f"Overall, server CPU used by database foreground processes by instance is {', '.join(parts)}."
-    return f"Nhìn chung, CPU server do các foreground process cơ sở dữ liệu sử dụng theo từng instance như sau: {', '.join(parts)}."
+    return f"Nhìn chung, các instance cơ sở dữ liệu sử dụng CPU server theo từng instance như sau: {', '.join(parts)}."
 
 
 def _asm_assessment(rows: list[list[str]], english: bool = False) -> dict[str, str]:
@@ -697,9 +698,9 @@ def _log_switch_peak_windows(rows: list[tuple[float, dict[str, str]]]) -> list[s
         instance = _log_switch_instance_label(row)
         prefix = f"{instance} " if instance else ""
         if begin_time and end_time:
-            windows.append(f"{prefix}{begin_time} - {end_time} ({_format_integer(value)} lần/giờ)")
+            windows.append(f"{prefix}{_format_log_switch_window(begin_time, end_time)} ({_format_integer(value)} lần/giờ)")
         elif begin_time:
-            windows.append(f"{prefix}{begin_time} ({_format_integer(value)} lần/giờ)")
+            windows.append(f"{prefix}{_format_log_switch_time(begin_time)} ({_format_integer(value)} lần/giờ)")
     return windows
 
 
@@ -707,6 +708,40 @@ def _range_for_values(values: list[float]) -> tuple[float, float] | None:
     if not values:
         return None
     return min(values), max(values)
+
+
+def _format_log_switch_window(begin_time: str, end_time: str) -> str:
+    begin = _parse_log_switch_datetime(begin_time)
+    end = _parse_log_switch_datetime(end_time)
+    if not begin:
+        return f"{begin_time} - {end_time}"
+    date_text = f"{begin.day}/{begin.month}/{begin:%y}"
+    begin_hour = _format_hour_minute(begin)
+    if not end:
+        return f"{date_text} ({begin_hour})"
+    end_hour = _format_hour_minute(end)
+    return f"{date_text} ({begin_hour}-{end_hour})"
+
+
+def _format_log_switch_time(value: str) -> str:
+    parsed = _parse_log_switch_datetime(value)
+    if not parsed:
+        return value
+    return f"{parsed.day}/{parsed.month}/{parsed:%y} ({_format_hour_minute(parsed)})"
+
+
+def _parse_log_switch_datetime(value: str) -> datetime | None:
+    text = value.strip()
+    for pattern in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S", "%m/%d/%y %H:%M", "%m/%d/%Y %H:%M"):
+        try:
+            return datetime.strptime(text, pattern)
+        except ValueError:
+            continue
+    return None
+
+
+def _format_hour_minute(value: datetime) -> str:
+    return f"{value.hour}h{value.minute:02d}"
 
 
 def _format_switch_range_value(value_range: tuple[float, float] | None, english: bool = False) -> str:
@@ -735,6 +770,7 @@ def _log_switch_same_pattern_text(overall: str, summaries: list[dict[str, object
     primary_range_parts = _log_switch_range_parts(summaries, _primary_log_switch_range_key(overall), english)
     risk_summaries = [summary for summary in summaries if summary.get("risk_range")]
     risk_range_parts = _log_switch_range_parts(risk_summaries, "risk_range", english)
+    vietnamese_risk_range_parts = _log_switch_range_parts_by_range_first(risk_summaries) if not english else ""
     max_summary = max(summaries, key=lambda item: float(item["max"]))
     max_text = _format_switch_range(float(max_summary["max"]), float(max_summary["max"]), english)
     max_instance = str(max_summary["instance"])
@@ -779,7 +815,7 @@ def _log_switch_same_pattern_text(overall: str, summaries: list[dict[str, object
         text = "Nhìn chung, tần suất log switch của các instance có sự biến động giữa các khung giờ, không có mức nào chiếm ưu thế rõ."
 
     if risk_range_parts and overall not in {"elevated", "high", "frequent_elevated"}:
-        text += f" Tại một số khung giờ tải cao, tần suất log switch tăng lên {risk_range_parts}, thuộc mức khá cao và nên tiếp tục theo dõi."
+        text += f" Tại một số khung giờ tải cao, tần suất log switch tăng lên: {vietnamese_risk_range_parts}, thuộc mức khá cao và nên tiếp tục theo dõi."
     if float(max_summary["max"]) > 20:
         text += f" Mức cao nhất ghi nhận là {max_text} tại {max_instance}; các thời điểm vượt 20 lần/giờ nên được kiểm tra thêm nếu xuất hiện lặp lại hoặc kéo dài."
     else:
@@ -845,6 +881,16 @@ def _log_switch_range_parts(summaries: list[dict[str, object]], range_key: str, 
         else:
             parts.append(f"{names}: {range_text}")
     return _join_display_list(parts, english)
+
+
+def _log_switch_range_parts_by_range_first(summaries: list[dict[str, object]]) -> str:
+    parts = []
+    for summary in summaries:
+        value_range = _log_switch_summary_range(summary, "risk_range")
+        if value_range is None:
+            continue
+        parts.append(f"{_format_switch_range_value(value_range)} tại {summary['instance']}")
+    return _join_display_list(parts)
 
 
 def _log_switch_summary_range(summary: dict[str, object], range_key: str) -> tuple[float, float] | None:

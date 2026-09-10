@@ -105,7 +105,7 @@ class Edb360AssessmentRuleTests(unittest.TestCase):
         )
         self.assertIn("instance 1 có sự biến động giữa các khung giờ", mapping["{{assessment_log_switch}}"])
         self.assertIn("mức tối đa 40 lần/giờ", mapping["{{assessment_log_switch}}"])
-        self.assertIn("instance 1 2026-08-17 03:00:00 - 2026-08-17 04:00:00 (40 lần/giờ)", mapping["{{assessment_log_switch}}"])
+        self.assertIn("instance 1 17/8/26 (3h00-4h00) (40 lần/giờ)", mapping["{{assessment_log_switch}}"])
         self.assertNotIn("trong phần lớn thời gian", mapping["{{assessment_log_switch}}"])
         self.assertIn("instance 1: trung bình 3.6%, dao động khoảng 1% - 7.5%", mapping["{{assessment_oracle_foreground_process}}"])
         self.assertIn("Disk group DATA chỉ còn trống 211GB", mapping["{{assessment_asm_disk_group}}"])
