@@ -7,10 +7,11 @@ from models import MappingRule
 
 
 BASE_DIR = Path(__file__).resolve().parent
+RESOURCES_DIR = BASE_DIR / "resources"
 DEFAULT_INPUT = BASE_DIR / "badinh1_0925"
-DEFAULT_TEMPLATE = BASE_DIR / "BADINH_VES081.docx"
+DEFAULT_TEMPLATE = RESOURCES_DIR / "templates" / "edb360_master.docx"
 DEFAULT_OUTPUT = BASE_DIR / "output.docx"
-DEFAULT_MAPPING = BASE_DIR / "mapping" / "report_mapping.yaml"
+DEFAULT_MAPPING = RESOURCES_DIR / "mappings" / "report_mapping.yaml"
 DEFAULT_CHART_OUTPUT_DIR = BASE_DIR / "generated_charts"
 
 

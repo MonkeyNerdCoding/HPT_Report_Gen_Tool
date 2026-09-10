@@ -1,1 +1,1 @@
-"""SQLHealcheck preprocessing and Excel adapters."""
+"""SQLHealthcheck preprocessing and Excel adapters."""

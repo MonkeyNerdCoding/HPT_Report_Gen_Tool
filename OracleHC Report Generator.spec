@@ -5,7 +5,7 @@ a = Analysis(
     ['gui.py'],
     pathex=[],
     binaries=[],
-    datas=[('assets\\tachnen_hpt.png', 'assets'), ('mapping\\report_mapping.yaml', 'mapping')],
+    datas=[('assets\\tachnen_hpt.png', 'assets'), ('resources', 'resources')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

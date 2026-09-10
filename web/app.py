@@ -970,7 +970,7 @@ def render_index(
 ) -> HTMLResponse:
     return templates.TemplateResponse(
         request,
-        "dashboard_v2.html",
+        "dashboard.html",
         {
             "error_message": error_message,
             "error_reason": error_reason,

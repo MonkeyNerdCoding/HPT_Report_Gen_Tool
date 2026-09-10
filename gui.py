@@ -118,7 +118,7 @@ class ReportGeneratorApp(ctk.CTk):
 
         self.mode_selector = ctk.CTkSegmentedButton(
             header,
-            values=["OracleHC", "SQLHealcheck Tool"],
+            values=["OracleHC", "SQLHealthcheck Tool"],
             variable=self.mode_var,
             selected_color=PRIMARY_COLOR,
             selected_hover_color=PRIMARY_HOVER,
@@ -459,7 +459,7 @@ class ReportGeneratorApp(ctk.CTk):
         return ctk.CTkImage(light_image=image, dark_image=image, size=(120, 54))
 
     def _is_sql_mode(self) -> bool:
-        return self.mode_var.get() == "SQLHealcheck Tool"
+        return self.mode_var.get() in {"SQLHealthcheck Tool", "SQLHealcheck Tool"}
 
     def _on_mode_changed(self) -> None:
         source_label = self.source_row_widgets[0]
@@ -564,7 +564,7 @@ class ReportGeneratorApp(ctk.CTk):
         self.create_button.configure(state="disabled", text="Processing...")
         self.placeholder_button.configure(state="disabled")
         self._append_log("")
-        self._append_log("Starting SQLHealcheck generation...")
+        self._append_log("Starting SQLHealthcheck generation...")
         self._append_log(f"SQL root folder: {input_folder}")
         self._append_log(f"Selected output folder: {output_folder}")
         self._append_log(f"Merged Excel output: {Path(output_folder).resolve() / 'merged_healthcheck_info.xlsx'}")
@@ -812,10 +812,10 @@ class ReportGeneratorApp(ctk.CTk):
             self.last_output_folder = str(Path(output_files[0]).parent) if output_files else self.last_output_folder
             self.open_file_button.configure(state="normal" if self.last_output_file else "disabled")
             self.open_folder_button.configure(state="normal")
-            self._append_log("Success. SQLHealcheck files created:")
+            self._append_log("Success. SQLHealthcheck files created:")
             for output_file in output_files:
                 self._append_log(f"  {output_file}")
-            messagebox.showinfo(APP_TITLE, "Created SQLHealcheck Excel and Word report.")
+            messagebox.showinfo(APP_TITLE, "Created SQLHealthcheck Excel and Word report.")
             return
 
         output_file = str(result)

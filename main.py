@@ -12,7 +12,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--mode",
-        choices=["oracleHC", "sqlHealcheck"],
+        choices=["oracleHC", "sqlHealthcheck", "sqlHealcheck"],
         default="oracleHC",
         help="Pipeline mode to run.",
     )
@@ -22,13 +22,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-root",
         default=None,
-        help="SQLHealcheck output folder for merged_healthcheck_info.xlsx and final_healthcheck_report.docx.",
+        help="SQLHealthcheck output folder for merged_healthcheck_info.xlsx and final_healthcheck_report.docx.",
     )
     parser.add_argument("--mapping", default=str(DEFAULT_MAPPING), help="YAML mapping file path.")
     parser.add_argument(
         "--sql-mapping",
         default=str(DEFAULT_SQL_MAPPING),
-        help="SQLHealcheck YAML mapping file path. Empty mapping enables auto-placeholders.",
+        help="SQLHealthcheck YAML mapping file path. Empty mapping enables auto-placeholders.",
     )
     parser.add_argument(
         "--chart-output-dir",
@@ -45,7 +45,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if args.mode == "sqlHealcheck":
+    if args.mode in {"sqlHealthcheck", "sqlHealcheck"}:
         run_sql_pipeline(
             input_root=args.input,
             template_file=args.template,

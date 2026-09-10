@@ -7,7 +7,7 @@ import pandas as pd
 from sql_healthcheck.merge_sql import merge_sql_csv
 from sql_healthcheck.merge_sql import merge_sql_root_healthcheck
 from sql_healthcheck.merge_sql import merge_sql_root_csv
-from rpwithchart import build_sql_summary_rows
+from sql_report_renderer import build_sql_summary_rows
 
 
 class MergeSqlTests(unittest.TestCase):

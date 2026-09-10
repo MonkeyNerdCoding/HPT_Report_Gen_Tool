@@ -193,7 +193,7 @@ def render_excel_report(
     lightweight_tables: bool = True,
     slow_step_seconds: float = 10.0,
 ) -> str:
-    """Render SQLHealcheck Excel data into the Word template using SQL-specific mappings."""
+    """Render SQLHealthcheck Excel data into the Word template using SQL-specific mappings."""
     del mapping_path, lightweight_tables, slow_step_seconds
 
     excel = Path(excel_path)
@@ -211,9 +211,9 @@ def render_excel_report(
         raise ValueError(f"Output report must be a .docx file: {output}")
 
     output.parent.mkdir(parents=True, exist_ok=True)
-    log(f"SQLHealcheck Excel input: {excel}")
-    log(f"SQLHealcheck template: {template}")
-    log("Rendering SQLHealcheck Word report with fixed SQL placeholder mapping...")
+    log(f"SQLHealthcheck Excel input: {excel}")
+    log(f"SQLHealthcheck template: {template}")
+    log("Rendering SQLHealthcheck Word report with fixed SQL placeholder mapping...")
 
     generated = generate_sql_healthcheck_report(
         excel_file=excel,

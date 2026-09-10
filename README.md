@@ -72,11 +72,13 @@ http://127.0.0.1:8000
 
 ## Cấu trúc repo
 
-- `web/`: giao diện web, API FastAPI, static assets và templates.
-- `mapping/`: file mapping placeholder với dữ liệu OracleHC/SQLHealthcheck.
+- `web/`: giao diện web, API FastAPI, static assets và HTML template.
+- `resources/`: Word master templates và YAML mappings dùng khi generate report.
+- `mapping/`: Python package resolve placeholder mapping.
 - `extraction/`: parser đọc bảng và biểu đồ từ source HTML.
 - `rendering/`: logic render bảng/biểu đồ vào Word.
 - `sql_healthcheck/`: xử lý dữ liệu SQLHealthcheck.
+- `sql_report_renderer.py`: render SQLHealthcheck Excel data và summary vào Word.
 - `placeholder_inserter.py`: insert placeholder vào template Word.
 - `app_logic.py`: orchestration chính cho generate report.
 - `data/`, `runtime_jobs/`: dữ liệu runtime local, không commit lên GitHub.

@@ -13,17 +13,18 @@ from mapping.content_registry import ContentRegistry
 from mapping.mapper import resolve_mappings
 from models import ExtractedContent, GenerationReport, ImageContent, MappingRule, MultiImageContent, OperationCancelled, TableContent
 from placeholder_inserter import PlaceholderInsertReport, insert_mapping_placeholders
-from rpwithchart import render_excel_report
+from sql_report_renderer import render_excel_report
 from rendering.word_renderer import document_contains_placeholder, render_report
 from sql_healthcheck.merge_sql import merge_sql_root_healthcheck
 
 
 LogCallback = Callable[[str], None]
-DEFAULT_SQL_MAPPING = Path(__file__).resolve().parent / "mapping" / "sql_healthcheck_mapping.yaml"
-DEFAULT_EDB360_MASTER_TEMPLATE = Path(__file__).resolve().parent / "templates" / "edb360_master.docx"
-DEFAULT_SQL_MASTER_TEMPLATE = Path(__file__).resolve().parent / "templates" / "sql_healthcheck_master.docx"
-DEFAULT_EDB360_MASTER_TEMPLATE_EN = Path(__file__).resolve().parent / "templates" / "edb360_master_en.docx"
-DEFAULT_SQL_MASTER_TEMPLATE_EN = Path(__file__).resolve().parent / "templates" / "sql_healthcheck_master_en.docx"
+RESOURCES_DIR = Path(__file__).resolve().parent / "resources"
+DEFAULT_SQL_MAPPING = RESOURCES_DIR / "mappings" / "sql_healthcheck_mapping.yaml"
+DEFAULT_EDB360_MASTER_TEMPLATE = RESOURCES_DIR / "templates" / "edb360_master.docx"
+DEFAULT_SQL_MASTER_TEMPLATE = RESOURCES_DIR / "templates" / "sql_healthcheck_master.docx"
+DEFAULT_EDB360_MASTER_TEMPLATE_EN = RESOURCES_DIR / "templates" / "edb360_master_en.docx"
+DEFAULT_SQL_MASTER_TEMPLATE_EN = RESOURCES_DIR / "templates" / "sql_healthcheck_master_en.docx"
 DEFAULT_MAX_TABLE_DATA_ROWS = 50
 EDB360_CHART_GROUPS = {
     "<log_switch_charts>": ("log_switch_frequency_for_instance", "Instance {instance}: Log switch frequency"),
@@ -347,7 +348,7 @@ def run_sql_pipeline(
     log_callback: LogCallback | None = None,
     cancel_check: Callable[[], bool] | None = None,
 ) -> list[str]:
-    """Run SQLHealcheck CSV files -> merged Excel -> Word report."""
+    """Run SQLHealthcheck CSV files -> merged Excel -> Word report."""
     input_path = _validate_sql_input_root(input_root)
     template_path = _validate_word_file(template_file)
     output_root_path = _validate_or_create_output_root(output_root or input_path)
@@ -357,7 +358,7 @@ def run_sql_pipeline(
     excel_file = output_root_path / "merged_healthcheck_info.xlsx"
     report_file = output_root_path / "final_healthcheck_report.docx"
 
-    log("Running SQLHealcheck pipeline...")
+    log("Running SQLHealthcheck pipeline...")
     log(f"SQL root folder: {input_path}")
     log(f"Template: {template_path}")
     log(f"Selected output folder: {output_root_path}")
@@ -368,7 +369,7 @@ def run_sql_pipeline(
     merged_excel = merge_sql_root_healthcheck(input_path, excel_file, log_callback=log_callback, cancel_check=cancel_check)
     _check_cancelled(cancel_check)
     if not merged_excel:
-        raise ValueError(f"No SQLHealcheck files were generated from: {input_path}")
+        raise ValueError(f"No SQLHealthcheck files were generated from: {input_path}")
     _check_cancelled(cancel_check)
 
     generated_report = render_excel_report(
@@ -382,7 +383,7 @@ def run_sql_pipeline(
     _check_cancelled(cancel_check)
 
     log("")
-    log("SQLHealcheck completed.")
+    log("SQLHealthcheck completed.")
     log(f"Merged Excel file: {merged_excel}")
     log(f"Word report: {generated_report}")
     return [str(merged_excel), str(generated_report)]
