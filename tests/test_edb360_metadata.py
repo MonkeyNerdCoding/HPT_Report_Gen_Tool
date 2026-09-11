@@ -58,6 +58,39 @@ class Edb360AssessmentRuleTests(unittest.TestCase):
         self.assertIn("1 - 4 lần/giờ", mapping["{{assessment_log_switch}}"])
         self.assertNotIn("0 - 4 lần/giờ", mapping["{{assessment_log_switch}}"])
 
+    def test_recommends_19c_upgrade_for_versions_before_19c(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            _write_table(
+                root / "00064_edb360_2c_51_registry_sql_patch.html",
+                ["#", "ACTION_TIME", "DESCRIPTION", "VERSION"],
+                [["1", "2026-08-17", "Database PSU 12.1.0.2.170117, Oracle JavaVM Component (JAN2017)", "12.1.0.2.0"]],
+            )
+
+            mapping = build_edb360_assessment_mapping(root)
+
+        self.assertIn(
+            "Khuyến nghị: nâng cấp lên phiên bản 19C để tận dụng các tính năng về performance, bảo mật và sự hỗ trợ tốt nhất từ hãng",
+            mapping["{{recommendation_patching_19c}}"],
+        )
+        self.assertIn(
+            "Đánh giá kế hoạch nâng cấp patch theo chính sách vận hành và khuyến nghị bảo mật của Oracle.",
+            mapping["{{recommendation_patching}}"],
+        )
+
+    def test_does_not_recommend_19c_patch_for_19c_or_newer(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            _write_table(
+                root / "00064_edb360_2c_51_registry_sql_patch.html",
+                ["#", "ACTION_TIME", "DESCRIPTION", "VERSION"],
+                [["1", "2026-08-17", "Database Release Update 19.24.0.0.0", "19.24.0.0.0"]],
+            )
+
+            mapping = build_edb360_assessment_mapping(root)
+
+        self.assertEqual(mapping["{{recommendation_patching_19c}}"], "")
+
     def test_reads_dynamic_backup_cpu_log_switch_and_asm_values(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)

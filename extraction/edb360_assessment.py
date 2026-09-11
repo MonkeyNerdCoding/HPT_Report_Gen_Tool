@@ -194,6 +194,7 @@ def _patching_backup_assessment(registry_rows: list[list[str]], backup_rows: lis
     if patches:
         latest = patches[-1]
         patch_desc = latest.get("DESCRIPTION") or latest.get("VERSION") or latest.get("PATCH_ID", "")
+    patch_major_version = _oracle_major_version(latest) if patches else None
 
     completed = [row for row in backups if "COMPLETED" in row.get("STATUS", "").upper()]
     if backups:
@@ -219,8 +220,17 @@ def _patching_backup_assessment(registry_rows: list[list[str]], backup_rows: lis
             else "Khuyến nghị tạo thêm RMAN backup để thực hiện khôi phục hoàn toàn khi hệ thống\ngặp sự cố."
         )
 
+    patching_19c_recommendation = ""
+    if patch_major_version is not None and patch_major_version < 19:
+        patching_19c_recommendation = (
+            "Recommendation: upgrade to Oracle Database 19C to take advantage of performance, security, and the best vendor support."
+            if english
+            else "Khuyến nghị: nâng cấp lên phiên bản 19C để tận dụng các tính năng về performance, bảo mật và sự hỗ trợ tốt nhất từ hãng"
+        )
+
     return {
         "{{assessment_patching}}": (f"Current version/patch: {patch_desc}" if english else f"Phiên bản/patch hiện tại: {patch_desc}") if patch_desc else "",
+        "{{recommendation_patching_19c}}": patching_19c_recommendation,
         "{{recommendation_patching}}": (
             "Review the patch upgrade plan according to operational policy and Oracle security recommendations."
             if english
@@ -515,6 +525,21 @@ def _to_float(value: str) -> float | None:
     if not match:
         return None
     return float(match.group(0))
+
+
+def _oracle_major_version(row: dict[str, str]) -> int | None:
+    candidates = [
+        row.get("VERSION", ""),
+        row.get("DESCRIPTION", ""),
+        row.get("ACTION_TIME", ""),
+        row.get("BUNDLE_SERIES", ""),
+    ]
+    for value in candidates:
+        text = str(value or "")
+        match = re.search(r"\b(1[0-9]|2[0-9])(?:c|\.\d)", text, flags=re.IGNORECASE)
+        if match:
+            return int(match.group(1))
+    return None
 
 
 def _max_numeric(values: list[str]) -> float | None:
