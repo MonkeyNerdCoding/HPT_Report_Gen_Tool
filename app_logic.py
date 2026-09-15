@@ -36,6 +36,21 @@ EDB360_CHART_GROUPS = {
     "<sga_statistics_charts>": ("sga_statistics_for_instance", "Instance {instance}: SGA Statistics"),
     "<pga_statistics_charts>": ("pga_statistics_for_instance", "Instance {instance}: PGA Statistics"),
 }
+DATA_GUARD_PARAMETER_NAMES = {
+    "log_archive_config",
+    "log_archive_dest_1",
+    "log_archive_dest_2",
+    "log_archive_dest_3",
+    "log_archive_dest_4",
+    "log_archive_dest_state_1",
+    "log_archive_dest_state_2",
+    "log_archive_dest_state_3",
+    "log_archive_dest_state_4",
+    "dg_broker_config_file1",
+    "dg_broker_config_file2",
+    "fal_client",
+    "fal_server",
+}
 
 
 def generate_report(
@@ -196,7 +211,14 @@ def _apply_edb360_one_click_table_transforms(
     if "<control_files>" in resolved:
         rule, content = resolved["<control_files>"]
         if isinstance(content, TableContent):
-            resolved["<control_files>"] = (rule, _filter_parameter_rows(content, {"control_files"}))
+            resolved["<control_files>"] = (rule, _filter_parameter_rows(content, {"control_files"}, split_values=True))
+    if "<data_guard_parameters>" in resolved:
+        rule, content = resolved["<data_guard_parameters>"]
+        if isinstance(content, TableContent):
+            resolved["<data_guard_parameters>"] = (
+                rule,
+                _filter_parameter_rows(content, DATA_GUARD_PARAMETER_NAMES, output_headers=["NAME", "VALUE"]),
+            )
     for placeholder, (_rule, content) in list(resolved.items()):
         if isinstance(content, TableContent) and _is_empty_edb360_table(content):
             del resolved[placeholder]
@@ -265,7 +287,12 @@ def _instance_number(content: ExtractedContent) -> int | None:
     return int(match.group(1)) if match else None
 
 
-def _filter_parameter_rows(content: TableContent, parameter_names: set[str]) -> TableContent:
+def _filter_parameter_rows(
+    content: TableContent,
+    parameter_names: set[str],
+    split_values: bool = False,
+    output_headers: list[str] | None = None,
+) -> TableContent:
     if not content.rows:
         return content
     headers = content.rows[0]
@@ -276,13 +303,15 @@ def _filter_parameter_rows(content: TableContent, parameter_names: set[str]) -> 
         return content
     value_index = normalized_headers.index("VALUE") if "VALUE" in normalized_headers else None
 
-    output_headers = ["PARAMETER", "VALUE"] if value_index is not None else headers
-    output_rows = [output_headers]
+    selected_headers = output_headers or (["PARAMETER", "VALUE"] if value_index is not None else headers)
+    output_rows = [selected_headers]
     for row in content.rows[1:]:
         if name_index >= len(row) or row[name_index].strip().lower() not in parameter_names:
             continue
         if value_index is not None:
-            values = [value.strip() for value in row[value_index].split(",") if value.strip()]
+            values = [row[value_index]]
+            if split_values:
+                values = [value.strip() for value in row[value_index].split(",") if value.strip()]
             output_rows.extend([[row[name_index], value] for value in values] or [[row[name_index], ""]])
         else:
             output_rows.append(row)

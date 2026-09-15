@@ -328,6 +328,16 @@ placeholders:
   purpose: Render control_files parameter values
   source_html: all_parameters.html
   report_section: 1a.8
+- placeholder: <data_guard_parameters>
+  source_key: all_parameters
+  content_type: table
+  table_index: 0
+  description: Data Guard Parameters
+  template: EDB360 one-click master
+  location: PARAMETERS
+  purpose: Render Data Guard parameter values from All Parameters
+  source_html: all_parameters.html
+  report_section: 4.2.1
 - placeholder: <pdb_parameter_file>
   source_key: pdb_parameter_file
   content_type: table

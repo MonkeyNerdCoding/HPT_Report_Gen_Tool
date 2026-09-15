@@ -230,6 +230,10 @@ _PLACEHOLDER_STRATEGIES: dict[str, tuple[str | tuple[str, tuple[str, ...]], ...]
         "TẦN SUẤT LOG SWITCH",
         ("ONLINE REDO LOG", ("CẤU HÌNH LƯU TRỮ",)),
     ),
+    "<data_guard_parameters>": (
+        ("DATA GUARD", ("ARCHIVE DESTINATION STATUS",)),
+        "PARAMETERS",
+    ),
     "<aas_per_wait_class_for_instance_1>": (
         "WAIT CLASS",
         "AAS PER WAIT CLASS FOR INSTANCE 1",

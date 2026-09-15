@@ -38,6 +38,18 @@ class Edb360MetadataTests(unittest.TestCase):
 
 
 class Edb360AssessmentRuleTests(unittest.TestCase):
+    def test_database_display_name_prefers_db_unique_name(self):
+        mapping = build_edb360_text_mapping(
+            {
+                "database_name": "FSSPRO",
+                "db_unique_name": "FSSPRO_STBY",
+            }
+        )
+
+        self.assertEqual(mapping["{{database_name}}"], "FSSPRO")
+        self.assertEqual(mapping["{{db_unique_name}}"], "FSSPRO_STBY")
+        self.assertEqual(mapping["{{database_display_name}}"], "FSSPRO_STBY")
+
     def test_rman_backup_job_details_matches_rman_backup_alias(self):
         self.assertIn("rman_backup", content_key_aliases("RMAN Backup Job Details"))
 

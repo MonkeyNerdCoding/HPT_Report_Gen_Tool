@@ -30,8 +30,9 @@ def build_edb360_text_mapping(metadata: dict[str, str] | None = None) -> dict[st
         **(metadata or {}),
     }
     database_name = values.get("database_name") or values.get("db_name") or values.get("db_unique_name") or ""
+    database_display_name = values.get("db_unique_name") or database_name
     if database_name:
-        values.setdefault("database_display_name", database_name)
+        values.setdefault("database_display_name", database_display_name)
         values.setdefault("system_name", database_name)
         values.setdefault("customer_name", database_name)
 
